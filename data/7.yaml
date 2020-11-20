@@ -1,0 +1,38 @@
+properties:
+  
+  id: 7
+  title: Our First Kubernetes Outage
+  organization: Saltside
+  product: Kubernetes
+  start_ts: 2017/04/26
+  end_ts: 2017/04/26
+  author: Adam Hawkins (SRE Team Lead)
+  url: https://engineering.saltside.se/our-first-kubernetes-outage-c6b9249cfd3a
+  technologies: Amazon Elastic Compute Cloud (EC2) , Amazon Elastic Block Store (EBS)
+  quote: I checked on things two hours later. The issue had not resolved itself. It became larger.
+
+structured abstract:
+
+  - name: architecture
+    description: Multiple Kubernetes clusters for different use cases, each with Elastic Block Stores (EBS). 
+    blocks: 7
+    
+  - name: root cause
+    description: All activity on clusters exceeded available disk IO capacity (EBS IOPS).
+    blocks: 40
+    
+  - name: failure
+    description: A complete shutdown of an internal cluster.
+    blocks: 5
+    
+  - name: impact
+    description: Internal services provided by the cluster unavailable (Tiller, new pod creation, etc)
+    blocks: [9,10,11,12,13]
+    
+  - name: how it happened
+    description: While running tests on the internal Kubernetes clusters, a small number of containers were deployed, overloading the disk IO capacity.
+    blocks: 15
+  
+  - name: mitigation
+    description: Terminated three nodes and waited for new instances to join the cluster.
+    blocks: 24

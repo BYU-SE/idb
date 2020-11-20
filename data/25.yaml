@@ -1,0 +1,32 @@
+properties:
+
+  id: 25
+  title: Amazon ELB Service Event in the US-East Region
+  organization: Amazon Web Services
+  product: Amazon Elastic Load Balancing
+  start_ts: 2012/12/24 12:24
+  end_ts: 2012/12/25 12:05
+  author: 
+  url: https://aws.amazon.com/message/680587/
+  technologies: Elastic Load Balancing (ELB)
+  quote: This process was run by one of a very small number of developers who have access to this production environment. Unfortunately, the developer did not realize the mistake at the time.
+  
+structured abstract:
+  
+  - name: architecture
+    description: Load balancer service, with a control plane that manages the configuration of the load balancers (for one region) and is controlled via an API.
+  
+  - name: root cause
+    description: A maintenance process was inadvertently run against production, deleting state data.
+        
+  - name: failure
+    description: High latency and error rates for API calls to the control plane of the load balancer system; later load balancers began to experience performance issues.
+          
+  - name: impact
+    description: Customers could not manage existing load balancers, though they could create new load balancers. Some load balancers were also degraded.
+  
+  - name: how it happened
+    description: An engineer inadvertently executed a maintenance process against the production load balancer control plane, which led to state data being deleted and was unnoticed by the engineer. Some types of API calls to the control plane experienced high latency and error rates. As the control plane made modifications to load balancers performance was degraded (due to missing state data).
+        
+  - name: mitigation
+    description: Temporarily disabled control plane features that were causing problematic modifications to load balancers; restored deleted state and then merged that in to the system state for each affected load balancer; and reenabled disabled features.

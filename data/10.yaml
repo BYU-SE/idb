@@ -1,0 +1,38 @@
+properties:
+
+  id: 10
+  title: "Incident review: API and Dashboard outage on 10 October 2017"
+  organization: GoCardless
+  product: 
+  start_ts: 2017/10/10
+  end_ts: 2017/10/10
+  author: Chris Sinjakli, Harry Panayiotou, Lawrence Jones, Norberto Lopes, Raul Naveiras (Site Reliability Engineers)
+  url: https://gocardless.com/blog/incident-review-api-and-dashboard-outage-on-10th-october/
+  technologies: PostgreSQL, Pacemaker
+  quote: The Pacemaker cluster correctly observed that Postgres was unhealthy on the primary node. It repeatedly attempted to promote a new primary, but each time it couldn't decide where that primary should run.  
+  
+structured abstract:
+
+  - name: architecture
+    description: An API layer that connects to a PostgreSQL cluster using a virtual IP address. The cluster has 1 primary node, 1 synchronous replica node and 1 asynchronous replica node. The cluster and virtual IP address is managed by Pacemaker.
+    blocks: [12,13]
+  
+  - name: root cause
+    description: A disk array failure on the primary database node combined with a conicident database subprocess crashing on the synchronous replica and some subtle interactions between cluster management configurations.
+    blocks: [7,55,72]
+  
+  - name: failure
+    description: Primary database failed and the cluster (managed by Pacemaker) failed to promote a replica to be the new primary, leaving the database unavailable.
+    blocks: [7,8]
+  
+  - name: impact
+    description: 1 hour and 50 minute outage of API Dashboard.
+    blocks: 6 
+  
+  - name: how it happened
+    description: A disk array failed on the primary database node and conicidently a database subprocess crashed on the synchronous replica. The cluster management system was then unable to promote one of the replicas to be primary, due to subtle interactions between three configurations.
+    blocks: [7,8,55,72]
+
+  - name: mitigation
+    description: Put the cluster into maintenance mode, configured the synchronous replica to be a primary, and manually started database. Configured clients of the database with the (non-virtual) IP address of the new primary.
+    blocks: [33,34]

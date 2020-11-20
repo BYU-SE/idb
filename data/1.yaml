@@ -1,0 +1,38 @@
+properties:
+
+  title: Buildkite Outage
+  id: 1
+  organization: Buildkite
+  product: Buildkite
+  start_ts: 2016/09/23 17:21
+  end_ts: 2016/09/23 23:10
+  author: Kieth Pitt (Founder and CTO)
+  url: https://building.buildkite.com/outage-post-mortem-for-august-23rd-82b619a3679b
+  technologies: Amazon Elastic Compute Cloud (EC2), Amazon Relational Databases (RDS), PostgreSQL, Elastic Load Balancing (ELB)
+  quote: We woke up at 21:00 UTC almost 4 hours after we went offline to see our phones full of emails, tweets and Slack messages letting us know Buildkite was down. Many expletives were yelled as we all raced out of bed, opened laptops, and started figuring out what was going on.
+  
+structured abstract:
+  - name: architecture
+    description: A service running on multiple EC2 instances in an Autoscaling group (behind an Elastic Load Balancer) accessing a PostgreSQL Relational Database Service (RDS) instance.
+    blocks: [13,27]
+    
+  - name: root cause
+    description: Database was under-scaled for peak load. The service's health checks called the database.
+    blocks: [29]
+    
+  - name: failure
+    description: Failed connections to database; all EC2 instances removed and no new EC2 instances successfully activated.
+    blocks: [31,32]
+    
+  - name: impact
+    description: Users could not log in or access other system features.
+    blocks: [2]
+    
+  - name: how it happened
+    description: Downgraded to a lower capacity database instance. At subsequent daily peak, load exceeded database capacity and database connections failed. EC2 instances were removed by the load balancer due to health checks which called the database.
+    blocks: [12, 13, 14, 21]
+  
+  - name: mitigation
+    description: Upgraded database and added new EC2 instances to Elastic Load Balancer. 
+    blocks: [62, 63]
+    

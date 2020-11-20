@@ -1,0 +1,39 @@
+properties:
+
+  id: 24
+  title: Cloudflare outage on July 17, 2020
+  organization: Cloudflare
+  product: Cloudflare
+  start_ts: 2020/07/17 20:25
+  end_ts: 2020/07/17 22:10
+  author: John Graham-Cumming (CTO)
+  url: https://blog.cloudflare.com/cloudflare-outage-on-july-17-2020/
+  technologies:
+  quote: This configuration contained an error that caused all traffic across our backbone to be sent to Atlanta. This quickly overwhelmed the Atlanta router and caused Cloudflare network locations connected to the backbone to fail.
+  
+structured abstract:
+
+  - name: architecture
+    description: A private backbone that carries traffic between different data centers, without going over the public internet.
+    blocks: [10,11]
+    
+  - name: root cause
+    description: Configuration error on a router in one location, which inadvertently rerouted all traffic on that network ("backbone") through that router.
+    blocks: [3,4]
+    
+  - name: failure
+    description: Network router was overwhelmed and traffic to other locations was lost.
+    blocks: 4
+    
+  - name: impact
+    description: Outage for company's' services that lasted 27 minutes; logs and metrics were lost at the data centers processing logs.
+    blocks: [3,16]
+    
+  - name: how it happened
+    description: Responders mitigating an (unrelated congestion) issue updated the configuration on a router in one location (Atlanta), with the goal of alleviating congestion. That configuration contained a defect that caused all traffic across the global network to be routed through to that location, overwhelming that router and causing failures for all locations on that network.
+    blocks: [4,14]
+  
+  - name: mitigation
+    description: The router with the defective configuration was disabled, shutting down the backbone in that location.
+    blocks: [15,36]
+    

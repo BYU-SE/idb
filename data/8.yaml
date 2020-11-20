@@ -1,0 +1,39 @@
+properties:
+
+  id: 8
+  title: Postmortem of Sevice Outage at 3.4M CCU
+  organization: Epic
+  product: Fortnite
+  start_ts: 2018/02/03
+  end_ts: 2018/02/04
+  author: Epic Team
+  url: https://www.epicgames.com/fortnite/en-US/news/postmortem-of-service-outage-at-3-4m-ccu
+  technologies: MongoDB, Amazon Elastic Compute Cloud (EC2), NGINX
+  quote: Fortnite hit a new peak of 3.4 million concurrent players last Sunday... and that didn't come without issues! 
+
+structured abstract:
+
+  - name: architecture
+    description: (1) A service with a database connection pool that connects to a sidecar process which has its own connection pool for connecting to the shards in the 9 MongoDB shards, where each shard has a writer, two read replicas, and a hidden replica for redundancy. (2) A service with a sidecar process (as a shortcut for some request types) which has an NGINX proxy calling a Memcached instance. (3) A publish-subscribe messaging system based on XMPP.
+    blocks: [9,10,28,68]
+    
+  - name: root cause
+    description: The overall service hit a new peak of 3.4 million concurrent users, exceeding various datastore (MongoDB and Memcached) and loadbalancer limits. A latent configuration defect limited the number of service threads (in the db pool) to a smaller number than necessary.
+    blocks: [3,14]
+    
+  - name: failure
+    description: Multiple services were overwhelmed and failed. The MongoDB and memcached became unresponsive. A service experienced database thread pool starvation.
+    blocks: [6,12,15,39]
+    
+  - name: impact
+    description: There were 6 different incidents, with a mix of partial and total service disruptions.
+    blocks: [6,11]
+    
+  - name: how it happened
+    description: As the load increased, one shard of the MongoDB database became unresponsive and the service experienced thread pool starvation. Memcached failed underload which saturated NGINX because it was stuck waiting on long running failure calls to Memcached. This in turn lead to failed health checks leading to the load balancer pulling all nodes out of rotation. A load balancer for the messaging service was overloaded and failed, leading to clients disconnecting followed by a flood of reconnection requests, exacerbating the problem. 
+    blocks: [11,12,15,41,82]
+    
+  - name: mitigation
+    description: Manually failed over unresponsive MongoDB datastore; rolled back to previous thread pool configuration (raising limit on number of service threads); fixed NGINX issue by increasing Memcached capacity (and simplifying the architecture to remove a potential bottleneck).
+    blocks: [12,15,49,50,51]
+

@@ -1,0 +1,39 @@
+properties:
+
+  id: 39
+  title: Travis CI Container-based Linux Precise infrastructure emergency maintenance
+  organization: Travis CI
+  product: Travis CI
+  start_ts: 2017/02/02
+  end_ts: 2017/02/05 00:31
+  author: 
+  url: https://www.traviscistatus.com/incidents/sxrh0l46czqn
+  technologies: Amazon Elastic Compute Cloud (EC2), Docker, Google Compute Engine (GCE), vSphere
+  quote: This change appears to have effects on how bash handles exit codes, in a manner that we have fully investigated yet. This change was not detected by our staging environment tests and revealed insufficient diversity in how our tests reflect the variety of builds ou users are running.
+  
+structured abstract:
+
+  - name: architecture
+    description: A service that provisions virtual machines (VMs) or containers (for running software builds) and monitors those VMs over their lifetime. The service has multiple backends so the provisioned VM/container can be Docker, Google Compute Engine, vSphere for macOS, etc. The service is autoscaled using many EC2 instances (with solid state drives), with each running a finite number of concurrent jobs.
+    blocks: [5,6,7,8,9,10,11,12]
+    
+  - name: root cause
+    description: A new version of the service was deployed with a defect in how it determines a bash script failed or succeeded (ie in how it handles exit codes)
+    blocks: 27
+    
+  - name: failure
+    description: The service marked successful jobs as failures; A rollback of the service failed.
+    blocks: 17
+    
+  - name: impact
+    description: Cutsomer jobs run on VMs provisioned by the service were marked as failed even if they succeeded in some cases.
+    blocks: 17
+    
+  - name: how it happened
+    description: A new version of the service was deployed and builds were being incorrectly marked as failed, so the deployment was rolled back, but the rollback was unsuccessful as the previous version (ie, the version to rollback to) was not marked ("tagged") correctly in the source (Docker Hub).
+    blocks: [16,17,18,19]
+  
+  - name: mitigation
+    description: Responders correctly marked the target verion in the source (Docker Hub) and forced the rollback, rather than wait for the normal cycle.
+    blocks: [19,24]
+    

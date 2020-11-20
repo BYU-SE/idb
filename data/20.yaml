@@ -1,0 +1,38 @@
+properties:
+
+  id: 20
+  title: Outage post-mortem
+  organization: Dropbox
+  product: Dropbox
+  start_ts: 2014/01/10 17:30
+  end_ts: 2014/01/12 16:40
+  author: Akhil Gupta (Head of Infrastructure)
+  url: https://dropbox.tech/infrastructure/outage-post-mortem
+  technologies: MySQL
+  quote: For the past couple of days, we’ve been working around the clock to restore full access as soon as possible.
+
+structured abstract:
+
+  - name: architecture
+    description: Thousands of databases, each with a master machine and two replica machines.
+    blocks: 4
+    
+  - name: root cause
+    description: An upgrade script had a defect in the way that it determined whether a database machine was active (and therefore not safe to upgrade).
+    blocks: 6
+    
+  - name: failure
+    description: Multiple databases failed.
+    blocks: 6
+    
+  - name: impact
+    description: An outage for the service depending on those databases.
+    blocks: 6
+    
+  - name: how it happened
+    description: During a database upgrade, a defect in the upgrade script led it to believe several active databases were inactive and so it performed the upgrade. Database transactions/replication actions were interrupted and master-replica pairs failed.
+    blocks: [5,6]
+    
+  - name: mitigation
+    description: A recovery from backup for each affected database, which took from a few hours to 2 days depending on the database.
+    blocks: 8

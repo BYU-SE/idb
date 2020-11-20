@@ -1,0 +1,38 @@
+properties:
+
+  id: 13
+  title: October 21 post-incident analysis
+  organization: GitHub
+  product: GitHub
+  start_ts: 2018/10/21
+  end_ts: 2018/10/22
+  author: Jason Warner (CTO)
+  url: https://github.blog/2018-10-30-oct21-post-incident-analysis/
+  technologies: MySQL, Orchestrator, Raft
+  quote: Connectivity between these locations was restored in 43 seconds, but this brief outage triggered a chain of events that led to 24 hours and 11 minutes of service degradation.
+
+structured abstract:
+
+  - name: architecture
+    description: Multiple connected regional data centers. MySQL database clusters (storing metadata) each with one primary and dozens of read replicas. Data is sharded across clusters managed using Orchestrator and Raft.
+    blocks: [7,11,12]
+  
+  - name: root cause
+    description: Routine maintenance work to replace failing network equipment led to 43 seconds of lost connectivity and a cross-data center topology for clusters.
+    blocks: 8
+  
+  - name: failure
+    description: Writes to the ("old") primary nodes were not replicated to the new primary node which also began receiving un-replicated writes. Applications writing from one data center to the other experienced latency and timeouts.
+    blocks: [12,18]
+  
+  - name: impact
+    description: 24 hours of degraded service, including displaying out of date and inconsistent data, and some features were unavailable.
+    blocks: [13,29]
+  
+  - name: how it happened
+    description: Routine maintenance work to replace failing network equipment led to 43 seconds of lost connectivity between regional datacenters (ie, a network partition). The cluster management software then elected a new primary in a west coast data center (for multiple clusters), directing all writes from the east coast data center to the west coast data center, leaving some un-replicated writes in both data centers and so the primary could not be failed back over to the east coast data center. The resuling cluster topology was not supported.
+    blocks: [8,17,18,29]
+
+  - name: mitigation
+    description: Restored data from backups, synchronized replicas from both sites, (logging all conflicting writes for later, manual reconciliation), moved the primary node to the appropriate data center and resume queued jobs.
+    blocks: [31,57]

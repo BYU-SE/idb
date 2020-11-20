@@ -1,0 +1,38 @@
+properties:
+
+  id: 16
+  title: Google cloud Fails during maitainance
+  organization: Google
+  product: Google Cloud Platform
+  start_ts: 2019/06/02 11:45
+  end_ts: 2019/06/02 15:40
+  author: 
+  url: https://status.cloud.google.com/incident/cloud-networking/19009
+  technologies: Google Cloud Platform (GCP)
+  quote: Two normally-benign misconfigurations, and a specific software bug, combined to initiate the outage.
+
+structured abstract:
+
+  - name: architecture
+    description: Google Cloud regional datacenters each segregated into multiple logical clusters which each have their own dedicated cluster management software (for redundancy). The network control plane is managed by different instances of the same management software.
+    blocks: 12
+  
+  - name: root cause
+    description: "Two latent misconfigurations: network control plan jobs and associated infrastructure were configured to stop during maintenance events, and network control plan management software were configured to be included in a rare maintenance event type; and a piece of maintenance software had a bug which led to it de-scheduling multiple software clusters at once." 
+    blocks: 14
+  
+  - name: failure
+    description: Network congession and packet loss. 
+    blocks: 7
+  
+  - name: impact
+    description: Customers experienced increased latency, intermittent errors, and connectivity loss to instances in multiple datacenters (leading to outages of services in those datacenters, unless they could redirect users to unaffected data centers).
+    blocks: 7
+  
+  - name: how it happened
+    description: Maintenance event begins in a single location. Due to a misconfiguration automation software then descheduled the logical clusters running network control jobs (which should not have been configured to be stopped during such a maintenance event) in multiple locations (not just the location of the event). The network continued to run normally until BGP routing (between particular locations) was withdrawn, significantly reducing network capacity. 
+    blocks: [15,16]
+
+  - name: mitigation
+    description: Stopped the automation software which precipitated the event and restarted the network control plane and its infrastructure. Network configuration data was rebuilt and redistributed. In the meantime, responders redirected traffic to unaffected datacenters.
+    blocks: [18,19]

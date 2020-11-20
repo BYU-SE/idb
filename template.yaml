@@ -1,0 +1,39 @@
+properties:
+
+  id: 
+  title: 
+  organization: 
+  product: 
+  start_ts: 
+  end_ts: 
+  author: 
+  url: 
+  technologies: 
+  quote: 
+  
+structured abstract:
+
+  - name: architecture
+    description: 
+    blocks:
+    
+  - name: root cause
+    description: 
+    blocks: 
+    
+  - name: failure
+    description: 
+    blocks: 
+    
+  - name: impact
+    description: 
+    blocks: 
+    
+  - name: how it happened
+    description: 
+    blocks: 
+  
+  - name: mitigation
+    description: 
+    blocks: 
+    

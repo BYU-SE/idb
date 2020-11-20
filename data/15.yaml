@@ -1,0 +1,39 @@
+properties:
+
+  id: 15
+  title: Discord Outage March 2017
+  organization: Discord
+  product: Discord
+  start_ts: 2017/03/20
+  end_ts: 2017/03/20
+  author: 
+  url: https://status.discord.com/incidents/dj3l6lw926kl
+  technologies: Google Compute Engine (GCE)
+  quote: Shortly thereafter the nodes of another service [...] attempted a reconnection, triggering a massive 'thundering herd' towards the existing members of the presence cluster.
+  
+structured abstract:
+
+  - name: architecture
+    description: Multiple clusters with data dependencies between them.
+    blocks: 6
+    
+  - name: root cause
+    description: CPU soft lockups; a known defect that prevented the cluster from properly handling a lost node; and unbounded in memory event queues.
+    blocks: [10,11]
+    
+  - name: failure
+    description: Event queue exceeded memory limits crashing the (sessions) service.
+    blocks: 6
+    
+  - name: impact
+    description: One third of all clients could not send messages. Messaging sending was then disabled for all clients during mitigation and then clients were disconnected and reconnected, also as part of the mitigation.
+    blocks: [8,11]
+    
+  - name: how it happened
+    description: CPU soft-locks stalled the network stack and caused one cluster node to disconnect, leaving the cluster in a split state. Nodes from a dependent service attempted to reconnect to the cluster, increasing the load on existing nodes, causing failures in the service and unhandled events queuing up in memory, eventually consuming available memory and crashing the service. The same incident occured a second time about 1 hour later.
+    blocks: [6,8,10,11]
+  
+  - name: mitigation
+    description: The disconnected node was rebooted, which forced the virtual machine to land on another physical host and resolved the soft-lock issues. A reboot of (generallly) all services, disconnecting and reconnecting all clients in the process.
+    blocks: 8
+    

@@ -1,0 +1,39 @@
+properties:
+
+  id: 14
+  title: Tarsnap Outage 
+  organization: Tarsnap
+  product: Tarsnap
+  start_ts: 2016/07/24
+  end_ts: 2016/07/24
+  author: Colin Percival (Owner)
+  url: http://mail.tarsnap.com/tarsnap-announce/msg00035.html
+  technologies: Amazon Simple Storage Service (S3)
+  quote: I'm happy that the particular failure mode -- 'something weird happened; shut down all the things' -- ran exactly as I hoped.
+  
+structured abstract:
+
+  - name: architecture
+    description: A fleet of servers running an archiving service, and several supporting background jobs.
+    blocks: 10
+    
+  - name: root cause
+    description: The service experienced an increase in correlated timeout failures from a third party dependency (Amazon S3).
+    blocks: 9
+    
+  - name: failure
+    description: Timeout failures for requests to third party dependency; filesystem at 100% capacity led to the service shutting down.
+    blocks: [5,9]
+    
+  - name: impact
+    description: Service functionality was unavailable.
+    blocks: 5
+    
+  - name: how it happened
+    description: Write requests to a third party dependency (S3) began to experience timeout failures, likely due to a change on the third party side, for a subset of requests. These requests were retried until retry limits were hit. The process writing to the dependency aborted and automatically restarts, redundantly logging each time. The filesystem fills up and the primary service experiences disk write failures and shutsdown. 
+    blocks: [9,10,11,12]
+  
+  - name: mitigation
+    description: Deleted the log file that was filling up the file system, and restarted the service.
+    blocks: [16,17]
+  

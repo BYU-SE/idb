@@ -1,0 +1,39 @@
+properties:
+
+  id: 35
+  title: Elastic Cloud January 18, 2019 Incident Report
+  organization: Elastic
+  product: Elastic Cloud
+  start_ts: 2019/01/18 09:09
+  end_ts: 2019/01/18 13:03
+  author: Panagiotis Moustafellos (Tech Lead - SRE), Uri Cohen (Sr. Director - Product Management), Sylvain Wallez (Tech Lead - Software Engineer)
+  url: https://www.elastic.co/blog/elastic-cloud-january-18-2019-incident-report
+  technologies: Apache ZooKeeper, TreeCache
+  quote: So, if the ZooKeeper server is loaded and causes heartbeat timeouts because of GC pauses, TreeCache will start flooding ZooKeeper with requests, making the situation worse and leading to a chain reaction that prevents the ZooKeeper servers from recovering, and can also kill client services.
+  
+structured abstract:
+
+  - name: architecture
+    description: A proxy/routing layer that routes requests to cluster nodes manged by a ZooKeeper instance. The proxy/routing layer is a client to the ZooKeeper layer and caintains an in memory mirror (TreeCache) of all ZooKeeper node information. 
+    blocks: [12,13]
+    
+  - name: root cause
+    description: When there is network instability between the cluster manager hosts and its clients (the proxy layer), the clients send large reqeusts to refresh state, with retries and queuing of requests.
+    blocks: [35,36]
+    
+  - name: failure
+    description: Clients (ie, the proxy layer) were unavailable as the backlog of requests (to ZooKeeper) led to out of memory conditions.
+    blocks: 36
+    
+  - name: impact
+    description: Customers experienced severely degraded access to the service for 3 hours and 20 minutes.
+    blocks: 1
+    
+  - name: how it happened
+    description: CPU load on the cluster manager hosts increased resulting in some client disconnections and as a result clients sending large requests to update their mirror of cluster node information. Many of these requests failed and were resent by clients, with subsequent requests queuing up in the client. Clients started experiencing resource starvation due to these requests accumulating in memory, leading to out of memory errors and an outage.       
+    blocks: [35,36]
+  
+  - name: mitigation
+    description: Responders scaled up the proxy layer (to accomodate surging traffic), manually trigged a leader election and stabilizing the ZooKeeper ensemble.
+    blocks: 19
+  
