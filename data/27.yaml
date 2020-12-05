@@ -4,8 +4,8 @@ properties:
   title: CircleCI DB performance issue
   organization: CircleCI
   product: CircleCI
-  start_ts: 2015/07/25 09:55:00
-  end_ts: 2015/07/08 15:32:00
+  start_ts: 2015/07/25 09:55
+  end_ts: 2015/07/08 15:32
   author: 
   url: https://circleci.statuspage.io/incidents/hr0mm9xmm3x6
   technologies: GitHub

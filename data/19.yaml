@@ -4,8 +4,8 @@ properties:
   title: Why Reddit was down on Aug 11
   organization: Redit
   product: Redit
-  start_ts: 2017/08/11 15:24:00
-  end_ts: 2017/08/11 18:19:00
+  start_ts: 2017/08/11 15:24
+  end_ts: 2017/08/11 18:19
   author: u/gooeyblob (Infrastructure leader)
   url: https://www.reddit.com/r/announcements/comments/4y0m56/why_reddit_was_down_on_aug_11/
   technologies: Apache ZooKeeper

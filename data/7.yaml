@@ -15,24 +15,24 @@ structured abstract:
 
   - name: architecture
     description: Multiple Kubernetes clusters for different use cases, each with Elastic Block Stores (EBS). 
-    blocks: 7
+    blocks: 5
     
   - name: root cause
     description: All activity on clusters exceeded available disk IO capacity (EBS IOPS).
-    blocks: 40
+    blocks: 38
     
   - name: failure
     description: A complete shutdown of an internal cluster.
-    blocks: 5
+    blocks: 3
     
   - name: impact
     description: Internal services provided by the cluster unavailable (Tiller, new pod creation, etc)
-    blocks: [9,10,11,12,13]
+    blocks: [7,8,9,10,11]
     
   - name: how it happened
     description: While running tests on the internal Kubernetes clusters, a small number of containers were deployed, overloading the disk IO capacity.
-    blocks: 15
+    blocks: 13
   
   - name: mitigation
     description: Terminated three nodes and waited for new instances to join the cluster.
-    blocks: 24
+    blocks: 22
