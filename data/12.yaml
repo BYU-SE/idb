@@ -10,6 +10,7 @@ properties:
   url: https://blog.cloudflare.com/details-of-the-cloudflare-outage-on-july-2-2019/
   technologies: 
   quote: The real story of how the Cloudflare service went down for 27 minutes is much more complex than 'a regular expression went bad'.
+  summary: Configuration deployment led to an increase in CPU usage and a global outage of multiple services (Deployment)
   
 structured abstract:
 

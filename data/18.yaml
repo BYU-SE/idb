@@ -10,6 +10,7 @@ properties:
   url: https://www.traviscistatus.com/incidents/khzk8bg4p9sy
   technologies: vSphere
   quote: When the [passwords] rotation happened, the configuration for the vsphere-janitor service did not get updated.
+  summary: Compontent of a system was not updated with new passwords and failed silently, leading to resource leak
   
 structured abstract:
 

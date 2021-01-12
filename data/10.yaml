@@ -9,7 +9,8 @@ properties:
   author: Chris Sinjakli, Harry Panayiotou, Lawrence Jones, Norberto Lopes, Raul Naveiras (Site Reliability Engineers)
   url: https://gocardless.com/blog/incident-review-api-and-dashboard-outage-on-10th-october/
   technologies: PostgreSQL, Pacemaker
-  quote: The Pacemaker cluster correctly observed that Postgres was unhealthy on the primary node. It repeatedly attempted to promote a new primary, but each time it couldn't decide where that primary should run.  
+  quote: The Pacemaker cluster correctly observed that Postgres was unhealthy on the primary node. It repeatedly attempted to promote a new primary, but each time it couldn't decide where that primary should run. 
+  summary: Cluster management misconfiguration + coincident disk failure and process crash led to outage (System software or hardware failure) 
   
 structured abstract:
 

@@ -10,6 +10,7 @@ properties:
   url: https://medium.com/square-corner-blog/always-be-closing-3d5fda0e00da 
   technologies: Go
   quote: This root cause was tickled by a configuration change in another service, which inadvertently set its client request timeout to 60,000 seconds instead of the intended 60,000 milliseconds.
+  summary: Deployment of a configuration defect + a preexisting code defect led to a memory leak and a service outage (Deployment)
 
 structured abstract:
     

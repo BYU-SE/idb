@@ -10,6 +10,7 @@ properties:
   url: https://stripe.com/rcas/2019-07-10
   technologies:
   quote: The new version also introduced a subtle fault in the database’s failover system that only manifested in the presence of multiple stalled nodes. On the day of the events, one shard was in the specific state that triggered this fault.
+  summary: Existing configuration defect + multiple database failures caused a failed failover and an outage (System software or hardware failure)
     
 structured abstract:
 

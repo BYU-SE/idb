@@ -10,6 +10,7 @@ properties:
   url: https://blog.parse.ly/post/1738/kafkapocalypse/
   technologies: Amazon Elastic Compute Cloud (EC2), Apache Kafka, Opscode Chef, Apache ZooKeeper
   quote: The real problem here isn't failure, but correlated cluster-wide failure. Because we were close to network limits on all of our Kafka nodes, when one failed, the remaining nodes would have to serve more consumers, which would, in turn, lead to more network traffic on those remaining nodes.
+  summary: Usage growth exceeded network capacity of nodes in a data processing cluster and led to a cascading outage (Exceeding limits)
   
 structured abstract:
 

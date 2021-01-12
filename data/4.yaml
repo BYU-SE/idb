@@ -10,6 +10,7 @@ properties:
   url: https://blog.cloudflare.com/incident-report-on-memory-leak-caused-by-cloudflare-parser-bug/ 
   technologies: NGINX, Ragel
   quote: So, the bug had been dormant for years until the internal feng shui of the buffers passed between NGINX filter modules changed with the introduction of cf-html.
+  summary: Deployment altered webserver's buffering strategy, exposed a preexisting defect, and led to a buffer overflow (Deployment)
 
 structured abstract:
   - name: architecture

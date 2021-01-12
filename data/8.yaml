@@ -10,6 +10,7 @@ properties:
   url: https://www.epicgames.com/fortnite/en-US/news/postmortem-of-service-outage-at-3-4m-ccu
   technologies: MongoDB, Amazon Elastic Compute Cloud (EC2), NGINX
   quote: Fortnite hit a new peak of 3.4 million concurrent players last Sunday... and that didn't come without issues! 
+  summary: High traffic caused 6 outages due to exceeding various database,  loadbalancer, memcached limits (Exceeding limits)
 
 structured abstract:
 

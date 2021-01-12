@@ -10,6 +10,7 @@ properties:
   url: https://about.gitlab.com/blog/2017/02/10/postmortem-of-database-outage-of-january-31/
   technologies: PostgreSQL, Azure Disk Snapshots
   quote: Trying to restore the replication process, an engineer proceeds to wipe the PostgreSQL database directory, errantly thinking they were doing so on the secondary. Unfortunately this process was executed on the primary instead.
+  summary: Database replication failure due to high load and and accidental deletion of data led to database outage (Exceeding limits)
 
 structured abstract:
 

@@ -10,6 +10,7 @@ properties:
   url: https://status.cloud.google.com/incident/cloud-networking/19009
   technologies: Google Cloud Platform (GCP)
   quote: Two normally-benign misconfigurations, and a specific software bug, combined to initiate the outage.
+  summary: During maintenance a configuration error led automation system to deschedule network control jobs causing network outage (Configuration defect) 
 
 structured abstract:
 

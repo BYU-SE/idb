@@ -10,6 +10,7 @@ properties:
   url: https://building.buildkite.com/outage-post-mortem-for-august-23rd-82b619a3679b
   technologies: Amazon Elastic Compute Cloud (EC2), Amazon Relational Databases (RDS), PostgreSQL, Elastic Load Balancing (ELB)
   quote: We woke up at 21:00 UTC almost 4 hours after we went offline to see our phones full of emails, tweets and Slack messages letting us know Buildkite was down. Many expletives were yelled as we all raced out of bed, opened laptops, and started figuring out what was going on.
+  summary: Database downgrade and connection pool configuration change led to outage when daily peak load reached (Infrastructure change)
   
 structured abstract:
   - name: architecture

@@ -10,6 +10,7 @@ properties:
   url: https://status.discord.com/incidents/dj3l6lw926kl
   technologies: Google Compute Engine (GCE)
   quote: Shortly thereafter the nodes of another service [...] attempted a reconnection, triggering a massive 'thundering herd' towards the existing members of the presence cluster.
+  summary: Errors on one cluster instance + a preexisting defect led to a split cluster and delays for dependent clusters (System software)
   
 structured abstract:
 

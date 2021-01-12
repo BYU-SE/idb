@@ -10,6 +10,7 @@ properties:
   url: https://engineering.saltside.se/our-first-kubernetes-outage-c6b9249cfd3a
   technologies: Amazon Elastic Compute Cloud (EC2) , Amazon Elastic Block Store (EBS)
   quote: I checked on things two hours later. The issue had not resolved itself. It became larger.
+  summary: Exceeding disk space and available throughput limits led to a failed deployment and cluster instances in bad states (Exceeding limits)
 
 structured abstract:
 

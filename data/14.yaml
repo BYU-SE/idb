@@ -10,6 +10,7 @@ properties:
   url: http://mail.tarsnap.com/tarsnap-announce/msg00035.html
   technologies: Amazon Simple Storage Service (S3)
   quote: I'm happy that the particular failure mode -- 'something weird happened; shut down all the things' -- ran exactly as I hoped.
+  summary: Errors in a dependency caused excessive logging and full disks, which crashed application on same servers (Exceeding limits)
   
 structured abstract:
 
