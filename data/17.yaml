@@ -9,32 +9,19 @@ properties:
   author: 
   url: https://stackstatus.net/post/96025967369/outage-post-mortem-august-25th-2014
   technologies: HAProxy Load Balancer, Internet Information Services (IIS), Puppet
+  
   quote: While attempting to make a change enabling streamlined access for our web servers to internal API endpoints [...] a misleading comment in the iptables configuration led us to make a harmful change. 
+  
   summary: Defective configuration change to firewall blocked legitimate traffic (Deployment)
 
-structured abstract:
+  architecture: HAProxy load balancers (with firewall) and IIS web servers (maintained through Git). [3,4]
 
-  - name: architecture
-    description: HAProxy load balancers (with firewall) and IIS web servers (maintained through Git).
-    blocks: [3,4]
-    
-  - name: root cause
-    description: A defective iptable configuration change to the firewall on the load balancers.
-    blocks: 3
-    
-  - name: failure
-    description: The load balancers were not able to complete connections to the web servers because response traffic for those connections was being blocked by the firewall.
-    blocks: 4
-    
-  - name: impact
-    description: All requests to web servers (through load balancers) failed causing a complete outage.
-    blocks: 4
-    
-  - name: how it happened
-    description: Defective configuration change pushed to firewall on load balancers, without testing, which prevented load balancers from connecting with web servers since response traffic (from web servers) was blocked.
-    blocks: [3,4]
+  root cause: A defective iptable configuration change to the firewall on the load balancers. 3
+
+  failure: The load balancers were not able to complete connections to the web servers because response traffic for those connections was being blocked by the firewall. [4]
+
+  impact: All requests to web servers (through load balancers) failed causing a complete outage. [4]
+
+  how it happened: Defective configuration change pushed to firewall on load balancers, without testing, which prevented load balancers from connecting with web servers since response traffic (from web servers) was blocked. [3,4]
   
-  - name: mitigation
-    description: Reverted the change and manually ran the configuraion update (using Puppet) rather than wait from normal automatic updates.
-    blocks: 6
-    
+  mitigation: Reverted the change and manually ran the configuraion update (using Puppet) rather than wait from normal automatic updates. [6]

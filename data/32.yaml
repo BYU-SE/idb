@@ -9,24 +9,17 @@ properties:
   author: Scott Sanders (Senior Operations Engineer)
   url: https://github.blog/2016-02-03-january-28th-incident-report/
   technologies: Redis
+  
   quote: Slightly over 25% of our servers and several network devices rebooted as a result. This left our infrastructure in a partially operational state and generated alerts to multiple on-call engineers.
   
-structured abstract:
+  architecture: Datacenter with servers running applications with dependencies on Redis clusters.
 
-  - name: architecture
-    description: Datacenter with servers running applications with dependencies on Redis clusters.
+  root cause: Power disruption to database; a known firmware issue prevented machines from recognizing their own drives after power-cycle; and some application processes (unnecessarily) depend on Redis for starting up.
 
-  - name: root cause
-    description: Power disruption to database; a known firmware issue prevented machines from recognizing their own drives after power-cycle; and some application processes (unnecessarily) depend on Redis for starting up.
+  failure: Sever machines would not boot after power-cycle; Redis clusters were unavailable; and application processes failed to (re)start.
 
-  - name: failure
-    description: Sever machines would not boot after power-cycle; Redis clusters were unavailable; and application processes failed to (re)start.
-
-  - name: impact
-    description: Applications began serving HTTP 503 repsonses to users.
+  impact: Applications began serving HTTP 503 repsonses to users.
   
-  - name: how it happened
-    description: The datacenter experienced a brief disruption in the systems that supply power to the servers and equipment. 25% of servers and several network devices rebooted, leaving the infrastructure in a partially operational state. Reboots of some machine types failed (due to physical drives not being recognized) and some application processes would not start because Redis clusters were unavailable.
-      
-  - name: mitigation
-    description: Repaired servers that would not boot by removing residual static electricity (aka "flea power"); rebuilt Redis clusters on alternate hardware (ie, restoring data onto standby equipment).
+  how it happened: The datacenter experienced a brief disruption in the systems that supply power to the servers and equipment. 25% of servers and several network devices rebooted, leaving the infrastructure in a partially operational state. Reboots of some machine types failed (due to physical drives not being recognized) and some application processes would not start because Redis clusters were unavailable.
+  
+  mitigation: Repaired servers that would not boot by removing residual static electricity (aka "flea power"); rebuilt Redis clusters on alternate hardware (ie, restoring data onto standby equipment).

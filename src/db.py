@@ -55,13 +55,11 @@ def drop_database():
   c = cursor()
   c.execute(drop_incidents_table_stmt)
   c.execute(drop_blocks_table_stmt)
-  c.execute(drop_annotations_table_stmt)
   
 def create_database():
   c = cursor()
   c.execute(create_incidents_table_stmt)
   c.execute(create_blocks_table_stmt)
-  c.execute(create_annotations_table_stmt)
 
 def insert_incident(incident):
   p = incident.properties
@@ -75,7 +73,14 @@ def insert_incident(incident):
     incident.author, 
     incident.url,
     incident.technologies, 
-    incident.quote
+    incident.quote,
+    incident.summary,
+    incident.architecture,
+    incident.root_cause,
+    incident.failure,
+    incident.impact,
+    incident.how_it_happened,
+    incident.mitigation
   ))
 
 def insert_blocks(incident, blocks):
@@ -83,12 +88,6 @@ def insert_blocks(incident, blocks):
     for b in blocks]
   
   res = cursor().executemany(insert_block_stmt, blocks)
-  
-def insert_annotations(incident):
-  c = cursor()
-  for annotation in incident.annotations:
-    c.execute(insert_annotation_stmt, 
-      (incident.id, annotation.name, annotation.description))
 
 #
 # Functions for reading dimension data from the database.
@@ -136,24 +135,6 @@ def incident(id):
 
   return entities.Incident(get("select * from incidents where id=?", id))
 
-def annotations(incident=None):
-  #
-  # Get all annotations for a given incident or alternatively all incidents in the database, if no incident is specified. When an incident is provided can be either an entitites.Incident object or just incident_id
-  
-  if incident is None:
-    return [entities.Annotation(row) 
-      for row in get_all("select * from annotations")]
-  
-  sql = "select * from annotations where incident_id=?"
-  return [entities.Annotation(row) for row in get_all(sql, _id(incident))]
-
-def annotation(id):
-  #
-  # Get the annotation by id with the given id. 
-  
-  row = get("select * from annotations where id=?", id)
-  return [entities.Annotation(row) for row in rows] 
-
 def block(id=None, incident=None, position=None):
   #
   # Get the block with the given id, or alternatively an incident (or incident id) and position pair, which pair should also uniquely identify one block from the database.
@@ -193,7 +174,14 @@ create table if not exists incidents (
   author text,
   url text,
   technologies text,
-  quote text
+  quote text,
+  summary text,
+  architecture text,
+  root_cause text,
+  failure text,
+  impact text,
+  how_it_happened text,
+  mitigation text
 );
 """
 
@@ -212,24 +200,6 @@ create table if not exists blocks (
 );
 """
 
-drop_annotations_table_stmt = """
-drop table if exists annotations;
-"""
-
-create_annotations_table_stmt = """
-create table if not exists annotations (
-  id integer primary key autoincrement,
-  incident_id integer,
-  name text,
-  description text,
-  foreign key (incident_id) references incidents (id)
-);
-"""
-
-drop_annotations_blocks_table_stmt = """
-drop table if exists annotations_blocks;
-"""
-
 insert_incident_stmt = '''
 insert into incidents (
   id,
@@ -241,8 +211,15 @@ insert into incidents (
   author,
   url,
   technologies,
-  quote) 
-  values (?,?,?,?,?,?,?,?,?,?);
+  quote,
+  summary,
+  architecture,
+  root_cause,
+  failure,
+  impact,
+  how_it_happened,
+  mitigation)
+  values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);
 '''
 
 insert_block_stmt = '''
@@ -252,12 +229,4 @@ insert into blocks (
   section_header,
   content)
   values (?,?,?,?)
-'''
-
-insert_annotation_stmt = '''
-insert into annotations (
-  incident_id,
-  name,
-  description)
-  values (?,?,?)
 '''

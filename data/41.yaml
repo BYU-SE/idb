@@ -9,31 +9,17 @@ properties:
   author: 
   url: https://aws.amazon.com/message/11201/
   technologies: Amazon Kinesis
+  
   quote: The trigger, though not root cause, for the event was a relatively small addition of capacity
   
-structured abstract:
+  architecture: A streaming service (Kinesis) with front-end servers for routing requests and back-end server clusters for processing streams. Routing is based on a sharding strategy, with the shard-map cached by front-end servers. Communication between front-end servers uses one operating system thread per other server. [3,4]
 
-  - name: architecture
-    description: A streaming service (Kinesis) with front-end servers for routing requests and back-end server clusters for processing streams. Routing is based on a sharding strategy, with the shard-map cached by front-end servers. Communication between front-end servers uses one operating system thread per other server.
-    blocks: [3,4]
-    
-  - name: root cause
-    description: New capacity caused all front-end servers to execced maxiumn number of allowed operating system threads.
-    blocks: 6
-    
-  - name: failure
-    description: Cache construction failed on front-end servers (leading to an out of date shard-map) and routing failed.
-    blocks: 6
-    
-  - name: impact
-    description: Service outage in one region; errors and failures in dependent services (Cognito, CloudWatch, AutoScaling and Lambda).
-    blocks: [8,9,10,11]
-    
-  - name: how it happened
-    description: New servers were added to the front-end fleet in one region, increasing the number operating system threads used in each of the new and existing front-end server, exceeding the thread limit. Then a wide variety of errors began being reported in the logs and operations began failing.
-    blocks: [3,5]
+  root cause: New capacity caused all front-end servers to execced maxiumn number of allowed operating system threads. 6
+
+  failure: Cache construction failed on front-end servers (leading to an out of date shard-map) and routing failed. 6
+
+  impact: Service outage in one region; errors and failures in dependent services (Cognito, CloudWatch, AutoScaling and Lambda). [8,9,10,11]
+
+  how it happened: New servers were added to the front-end fleet in one region, increasing the number operating system threads used in each of the new and existing front-end server, exceeding the thread limit. Then a wide variety of errors began being reported in the logs and operations began failing. [3,5]
   
-  - name: mitigation
-    description: Eliminated the additional capacity; made a configuration change to front-end servers to get data from authoritative metadata store rather than from peer servers (to avoid servers being judged as unhealthy during startup); multi-hour restart of front-end.
-    blocks: [5,6]
-    
+  mitigation: Eliminated the additional capacity; made a configuration change to front-end servers to get data from authoritative metadata store rather than from peer servers (to avoid servers being judged as unhealthy during startup); multi-hour restart of front-end. [5,6]

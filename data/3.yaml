@@ -11,30 +11,19 @@ properties:
   technologies: Redis, Google Cloud Platform (GCP)
   fault_type: permanent
   failure_type: fail-silent
+  
   quote: These issues caused enough critical impact that Discord's engineering team was forced to fully restart the service, reconnecting millions of clients over a period of 20 minutes.
+  
   summary: Automated migration of primary datastore instance + a preexisting failover defect led to cascading outages (Infrastructure change)
 
-structured abstract:
-  - name: architecture
-    description: Multiple highly available clusters with Redis primary and secondary instances.
-    blocks: 3
-    
-  - name: root cause
-    description: Previously known defect preventing proper failover behavior.
-    blocks: 39
-    
-  - name: failure
-    description: Memory exhaustion and failing cluster nodes.
-    blocks: 40
-    
-  - name: impact
-    description: Partial outage and reduced performance.
-    blocks: 3
-    
-  - name: how it happened
-    description: Automatic migration changed the Redis secondary instance to be the primary instance. Due to a defect in failover code, the cluster nodes did not correctly failover to the new primary instance. This failure cascaded through many dependent systems.
-    blocks: [39,40]
+  architecture: Multiple highly available clusters with Redis primary and secondary instances. [3]
+
+  root cause: Previously known defect preventing proper failover behavior. [39]
+
+  failure: Memory exhaustion and failing cluster nodes. [40]
+
+  impact: Partial outage and reduced performance. [3]
+
+  how it happened: Automatic migration changed the Redis secondary instance to be the primary instance. Due to a defect in failover code, the cluster nodes did not correctly failover to the new primary instance. This failure cascaded through many dependent systems. [39,40]
   
-  - name: mitigation
-    description: A full restart of service necessitating reconnecting millions of clients.
-    blocks: 46
+  mitigation: A full restart of service necessitating reconnecting millions of clients. [46]

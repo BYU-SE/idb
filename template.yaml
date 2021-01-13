@@ -9,31 +9,17 @@ properties:
   author: 
   url: 
   technologies: 
+  
   quote: 
   
-structured abstract:
+  architecture:
 
-  - name: architecture
-    description: 
-    blocks:
-    
-  - name: root cause
-    description: 
-    blocks: 
-    
-  - name: failure
-    description: 
-    blocks: 
-    
-  - name: impact
-    description: 
-    blocks: 
-    
-  - name: how it happened
-    description: 
-    blocks: 
+  root cause:  
+
+  failure:  
+
+  impact:  
+
+  how it happened:  
   
-  - name: mitigation
-    description: 
-    blocks: 
-    
+  mitigation:  

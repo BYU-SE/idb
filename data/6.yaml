@@ -9,31 +9,19 @@ properties:
   author: Sid Sijbrandij (CEO)
   url: https://about.gitlab.com/blog/2017/02/10/postmortem-of-database-outage-of-january-31/
   technologies: PostgreSQL, Azure Disk Snapshots
+  
   quote: Trying to restore the replication process, an engineer proceeds to wipe the PostgreSQL database directory, errantly thinking they were doing so on the secondary. Unfortunately this process was executed on the primary instead.
+  
   summary: Database replication failure due to high load and and accidental deletion of data led to database outage (Exceeding limits)
 
-structured abstract:
+  architecture: PostgreSQL database with primary and secondary servers. Azure disk snapshots, Logical Volume Manager (LVM) snapshots, and full backups uploaded to Amazon S3. [9]
 
-  - name: architecture
-    description: PostgreSQL database with primary and secondary servers. Azure disk snapshots, Logical Volume Manager (LVM) snapshots, and full backups uploaded to Amazon S3. 
-    blocks: 9
-    
-  - name: root cause
-    description: High load on database servers; the accidental removal of 300 GB of data from primary database server (during mitigation).
-    blocks: [17,18,24]
-    
-  - name: failure
-    description: Data replication between primary and secondary servers fell behind and then failed. Data removal from primary database.
-    blocks: [19,24] 
-    
-  - name: impact
-    description: Service outage and permanent data loss (5,000 projects, 5,000 comments, and 700 new accounts).
-    blocks: [4,5]
-    
-  - name: how it happened
-    description: Increased load on database servers (due to spam and/or an automated maintenance script) led to replication between primary and secondary falling behind and then failing. During mitigation an engineer accidentally deleted data from the primary database server, thinking they were operating on the secondary.
-    blocks: [17,18,24]
+  root cause: High load on database servers; the accidental removal of 300 GB of data from primary database server (during mitigation). [17,18,24]
+
+  failure: Data replication between primary and secondary servers fell behind and then failed. Data removal from primary database. [19,24] 
+
+  impact: Service outage and permanent data loss (5,000 projects, 5,000 comments, and 700 new accounts). [4,5]
+
+  how it happened: Increased load on database servers (due to spam and/or an automated maintenance script) led to replication between primary and secondary falling behind and then failing. During mitigation an engineer accidentally deleted data from the primary database server, thinking they were operating on the secondary. [17,18,24]
   
-  - name: mitigation
-    description: Responders restored the databases using the Logical Volume Manager (LVM) snapshot created 6 hours before the outage.
-    blocks: 52
+  mitigation: Responders restored the databases using the Logical Volume Manager (LVM) snapshot created 6 hours before the outage. [52]

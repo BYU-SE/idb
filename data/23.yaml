@@ -9,30 +9,17 @@ properties:
   author: Eliot Horowitz (CTO 10gen)
   url: https://groups.google.com/forum/#!topic/mongodb-user/UoqU8ofp134
   technologies:  MongoDB, Amazon Elastic Compute Cloud (EC2), Amazon Elastic Block Store (EBS)
+  
   quote: Over these two months, check-ins were being written continually to each shard. Unfortunately, these check-ins did not grow evenly across chunks.
   
-structured abstract:
+  architecture: A MongoDB database on a two-shard cluster, each replicating to a slave for redundancy. Frequently used data is stored in RAM. Sharding is based on user id. [4,5]
 
-  - name: architecture
-    description: A MongoDB database on a two-shard cluster, each replicating to a slave for redundancy. Frequently used data is stored in RAM. Sharding is based on user id.
-    blocks: [4,5]
-    
-  - name: root cause
-    description: Data in two shards grew unevenly eventually consuming all available RAM in one of the shards, requring reads and writes to hit EBS volumes.
-    blocks: [7,9]
-    
-  - name: failure
-    description: Key queries had high latency leading to a backlog of requests.
-    blocks: 9
-    
-  - name: impact
-    description: Multiple days of outages for the site. 
-    blocks: [9,11]
-    
-  - name: how it happened
-    description: Data grew unevenly between two database shards, consuming available memory (66GB) in one shard leading to data reads and writes going to the disk, increasing latency by an order of magnitude for key queries. Requests began backing up and the site crashed. 
-    blocks: 7
+  root cause: Data in two shards grew unevenly eventually consuming all available RAM in one of the shards, requring reads and writes to hit EBS volumes. [7,9]
+
+  failure: Key queries had high latency leading to a backlog of requests. [9]
+
+  impact: Multiple days of outages for the site. [9,11]
+
+  how it happened: Data grew unevenly between two database shards, consuming available memory (66GB) in one shard leading to data reads and writes going to the disk, increasing latency by an order of magnitude for key queries. Requests began backing up and the site crashed. [7]
   
-  - name: mitigation
-    description: Created a third MongoDB shard and moved 5% of the data to the new shard, ran a command (on primary and replica) to compact the database (repairDatabase) to free up enough memory to bring the system online.
-    blocks: [10,11]
+  mitigation: Created a third MongoDB shard and moved 5% of the data to the new shard, ran a command (on primary and replica) to compact the database (repairDatabase) to free up enough memory to bring the system online. [10,11]

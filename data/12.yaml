@@ -9,31 +9,19 @@ properties:
   author: John Graham-Cumming (CTO)
   url: https://blog.cloudflare.com/details-of-the-cloudflare-outage-on-july-2-2019/
   technologies: 
+  
   quote: The real story of how the Cloudflare service went down for 27 minutes is much more complex than 'a regular expression went bad'.
+  
   summary: Configuration deployment led to an increase in CPU usage and a global outage of multiple services (Deployment)
   
-structured abstract:
+  architecture: Web application firewalls and tooling for quickly updating rules worldwide. [21]
 
-  - name: architecture
-    description: Web application firewalls and tooling for quickly updating rules worldwide.
-    blocks: 21
-    
-  - name: root cause
-    description: A regular expression in a web application firewall rule contained excessive backtracking.
-    blocks: [21,83,84]
-    
-  - name: failure
-    description: CPU exhaustion leading to a failure in proxy, CDN and firewall services globally.
-    blocks: [21, 22]
-    
-  - name: impact
-    description: Users were served a 502 error page when visiting any affected domain. 
-    blocks: 25
-    
-  - name: how it happened
-    description: Engineer deployed a new web application firewall rule (to protect against cross-site scripting attacks). That rule required excessive CPU time to process for each request and led to a failure of all services accessed through the firewall, including services needed to mitigate the issue.
-    blocks: [33,41,42,64]
+  root cause: A regular expression in a web application firewall rule contained excessive backtracking. [21,83,84]
+
+  failure: CPU exhaustion leading to a failure in proxy, CDN and firewall services globally. [21, 22]
+
+  impact: Users were served a 502 error page when visiting any affected domain. [25]
+
+  how it happened: Engineer deployed a new web application firewall rule (to protect against cross-site scripting attacks). That rule required excessive CPU time to process for each request and led to a failure of all services accessed through the firewall, including services needed to mitigate the issue. [33,41,42,64]
   
-  - name: mitigation
-    description: Responders disabled the web application firewall component, reverted the change and re-enabled the firewall.
-    blocks: [43,44,45]
+  mitigation: Responders disabled the web application firewall component, reverted the change and re-enabled the firewall. [43,44,45]

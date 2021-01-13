@@ -9,31 +9,18 @@ properties:
   author: u/gooeyblob (Infrastructure leader)
   url: https://www.reddit.com/r/announcements/comments/4y0m56/why_reddit_was_down_on_aug_11/
   technologies: Apache ZooKeeper
+  
   quote: Autoscaler read the partially migrated Zookeeper data and terminated many of our application servers, which serve our website and API, and our caching servers, in 16 seconds.
   
-structured abstract:
+  architecture: Application servers and caching servers managed by an autoscaler (which uses Zookeeper for server health information). [8]
 
-  - name: architecture
-    description: Application servers and caching servers managed by an autoscaler (which uses Zookeeper for server health information).
-    blocks: 8
-    
-  - name: root cause
-    description: Autoscaler (unintentionally) running during a Zookeeper upgrade. 
-    blocks: 9
-    
-  - name: failure
-    description: Terminated application and caching servers.
-    blocks: 9
-    
-  - name: impact
-    description: Service unavailable for 1.5 hours followed by an additional 1.5 hours of increased response time.
-    blocks: 2
-    
-  - name: how it happened
-    description: Before an upgrade of a Zookeeper system the autoscaler was manually turned off by making a configuration change, since it depends on Zookeeper for server health information. During the upgrade, the package manager reverted the configuration change (since it detected it had been made manually), turing back on the autoscaler. The autoscaler (based on partial Zookeeper data) terminated many healthy servers, including caching servers.
-    blocks: 9
+  root cause: Autoscaler (unintentionally) running during a Zookeeper upgrade. [9]
+
+  failure: Terminated application and caching servers. [9]
+
+  impact: Service unavailable for 1.5 hours followed by an additional 1.5 hours of increased response time. [2]
+
+  how it happened: Before an upgrade of a Zookeeper system the autoscaler was manually turned off by making a configuration change, since it depends on Zookeeper for server health information. During the upgrade, the package manager reverted the configuration change (since it detected it had been made manually), turing back on the autoscaler. The autoscaler (based on partial Zookeeper data) terminated many healthy servers, including caching servers. [9]
   
-  - name: mitigation
-    description: Engineers restored the servers (ending the outage) and waited for the caches to fill (ending the performance degradation period).
-    blocks: 10
-    
+  mitigation: Engineers restored the servers (ending the outage) and waited for the caches to fill (ending the performance degradation period). [10]
+

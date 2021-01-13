@@ -9,32 +9,18 @@ properties:
   author: The Joyent Team
   url: https://www.joyent.com/blog/manta-postmortem-7-27-2015
   technologies: PostgreSQL
+  
   quote: There was a single 'DROP TRIGGER' query that was attempting to take an exclusive lock on the whole table. It appears that PostgreSQL blocks new attempts to take a shared lock while an exclusive lock is wanted. 
 
-structured abstract:
+  architecture: An API layer that calls multiple sharded PostgreSQL databases. Each shard is a three-node PostgreSQL cluster using synchronous replication. [8,9,10]
 
-  - name: architecture
-    description: An API layer that calls multiple sharded PostgreSQL databases. Each shard is a three-node PostgreSQL cluster using synchronous replication.
-    blocks: [8,9,10]
-    
-  - name: root cause
-    description: During a particular database maintenance operation (vacuuming to prevent transaction id wraparound) any transaction that requests an exclusive lock is blocked and subsequent requests for a shared lock are blocked.
-    blocks: [13,30,31]
-    
-  - name: failure
-    description: All transactions on one table on one shard were blocked.
-    blocks: 13
-    
-  - name: impact
-    description: API clients experienced high-latency failures (500-level responses) for between 19% and 27% for requests.
-    blocks: [4,12]
-    
-  - name: how it happened
-    description: Vacuuming to prevent transaction id wraparound was automatically initiated by the PostgreSQL autovacuuming process. While that was running a ('drop trigger') transaction requested an exclusive lock, blocking until the autovacuuming process completed. Subsequent transactions (requesting a shared lock) blocked behind the 'drop trigger' request causing failures and high latency.
-    blocks: [28,29,30]
+  root cause: During a particular database maintenance operation (vacuuming to prevent transaction id wraparound) any transaction that requests an exclusive lock is blocked and subsequent requests for a shared lock are blocked. [13,30,31]
+
+  failure: All transactions on one table on one shard were blocked. [13]
+
+  impact: API clients experienced high-latency failures (500-level responses) for between 19% and 27% for requests. [4,12]
+
+  how it happened: Vacuuming to prevent transaction id wraparound was automatically initiated by the PostgreSQL autovacuuming process. While that was running a ('drop trigger') transaction requested an exclusive lock, blocking until the autovacuuming process completed. Subsequent transactions (requesting a shared lock) blocked behind the 'drop trigger' request causing failures and high latency. [28,29,30]
   
-  - name: mitigation
-    description: Retune the threshold at which "vacuuming to prevent transaction id wraparound" occurs, temporarily opting to monitor transaction metrics and manually initiate the database maintenance process.
-    blocks: 40
-    
-    
+  mitigation: Retune the threshold at which "vacuuming to prevent transaction id wraparound" occurs, temporarily opting to monitor transaction metrics and manually initiate the database maintenance process. [40]
+

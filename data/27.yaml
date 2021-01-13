@@ -9,24 +9,17 @@ properties:
   author: 
   url: https://circleci.statuspage.io/incidents/hr0mm9xmm3x6
   technologies: GitHub
+  
   quote: "At this point, we were in extended failure mode: the original cause of the outage was no longer the fire to be fought. We were suffering a cascading effect, and that was now where we needed to put our focus."
   
-structured abstract:
+  architecture: An event queue (receiving external events, from GitHub); and service reading from that queue and querying a database (with events being re-queued if the query failed).
 
-  - name: architecture
-    description: An event queue (receiving external events, from GitHub); and service reading from that queue and querying a database (with events being re-queued if the queryß failed).
-        
-  - name: root cause
-    description: A surge of events exceeded the database's capacity.
-    
-  - name: failure
-    description: Database became unresponsive due to resource contention.
-    
-  - name: impact
-    description: External events were not processed and customer's could not reach the site.
-    
-  - name: how it happened
-    description: There was an interruption in receiving external events (push hooks from GitHub), followed by a burst of events built up during the interruption (causing an arrival rate several multiples of normal peak). The queue backed up and event processing dropped to one per minute because the database became unresponsive due to resource contention. Engineers throttled incoming traffic at the load balancer (in an attempt to allow the queue to drain) but this made the entire site unresponsive as customer and event traffic came trhough the same load balancers.
-        
-  - name: mitigation
-    description: Turned off automatic re-queueing of builds, optimized several slow running queries and then killed many active jobs (ie, the work of the event processing service) by clearing various queues.
+  root cause: A surge of events exceeded the database's capacity.
+
+  failure: Database became unresponsive due to resource contention.
+
+  impact: External events were not processed and customer's could not reach the site.
+
+  how it happened: There was an interruption in receiving external events (push hooks from GitHub), followed by a burst of events built up during the interruption (causing an arrival rate several multiples of normal peak). The queue backed up and event processing dropped to one per minute because the database became unresponsive due to resource contention. Engineers throttled incoming traffic at the load balancer (in an attempt to allow the queue to drain) but this made the entire site unresponsive as customer and event traffic came trhough the same load balancers.
+
+  mitigation: Turned off automatic re-queueing of builds, optimized several slow running queries and then killed many active jobs (ie, the work of the event processing service) by clearing various queues.

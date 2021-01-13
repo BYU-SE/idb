@@ -9,30 +9,17 @@ properties:
   author: Eric Muntz (SVP of Technology)
   url: https://mailchimp.com/what-we-learned-from-the-recent-mandrill-outage/
   technologies: PostgreSQL
+  
   quote: In November of 2018, engineers on our Mandrill team identified the potential to reach wraparound, as the XIDs were climbing to approximately half their total limit during peak load. Our team determined wraparound was not an immediate threat, but we added a ticket to the backlog to set up additional monitoring.
   
-structured abstract:
+  architecture: Job processing application using several PostgreSQL databases as a shared key-value store that is sharded by key. [12]
 
-  - name: architecture
-    description: Job processing application using several PostgreSQL databases as a shared key-value store that is sharded by key.  
-    blocks: 12
-    
-  - name: root cause
-    description: The sharding algorithm caused one database to have higher than normal writes and the autovacuuming process failed or fell behind.
-    blocks: [12,13]
-    
-  - name: failure
-    description: The databases went into safety shutdown mode leading to failed database writes.
-    blocks: 13
-    
-  - name: impact
-    description: 20% of jobs were delayed.
-    blocks: [3,24]
-    
-  - name: how it happened
-    description: Due to higher than normal traffic to one database (ie, one shard) the autovacuuming process failed or fell behind, and so the database went into safety shutdown mode to prevent transaction id wraparound. Jobs failed and were queued on the application servers causing disk space to run low.
-    blocks: [12,13,14,15]
+  root cause: The sharding algorithm caused one database to have higher than normal writes and the autovacuuming process failed or fell behind. [12,13]
+
+  failure: The databases went into safety shutdown mode leading to failed database writes. [13]
+
+  impact: 20% of jobs were delayed. [3,24]
+
+  how it happened: Due to higher than normal traffic to one database (ie, one shard) the autovacuuming process failed or fell behind, and so the database went into safety shutdown mode to prevent transaction id wraparound. Jobs failed and were queued on the application servers causing disk space to run low. [12,13,14,15]
   
-  - name: mitigation
-    description: Dumped and restored the database while the vacuum process was in progress, leaving out non-essential data tables to speed up process.
-    blocks: 22
+  mitigation: Dumped and restored the database while the vacuum process was in progress, leaving out non-essential data tables to speed up process. [22]

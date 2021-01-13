@@ -9,32 +9,19 @@ properties:
   author: 
   url: https://www.traviscistatus.com/incidents/khzk8bg4p9sy
   technologies: vSphere
+  
   quote: When the [passwords] rotation happened, the configuration for the vsphere-janitor service did not get updated.
+  
   summary: Compontent of a system was not updated with new passwords and failed silently, leading to resource leak
   
-structured abstract:
+  architecture: Build services (creation, build and cleanup) running on Xserve hosts virtualized using a vSphere cluster and hosted by MacStadium. [5]
 
-  - name: architecture
-    description: Build services (creation, build and cleanup) running on Xserve hosts virtualized using a vSphere cluster and hosted by MacStadium.
-    blocks: 5
-    
-  - name: root cause
-    description: A resource clean up service did not get updated with the new credentials for the (vSphere) API; a configuration defect approved more virual machines than could be supprted by the underlying cluster.
-    blocks: [9,10,11,18]
-    
-  - name: failure
-    description: Creating new virtual machines on the cluster failed, which led to elevated requeue rates and a backlog of work.
-    blocks: [7,8,9]
-    
-  - name: impact
-    description: A period of instability and and outage for the service.
-    blocks: 3
-    
-  - name: how it happened
-    description: Passwords were rotated for the vSphere API as required and the resource clean up service was not reconfigured with the new password. The clean up service could then no longer clean up virtual machines after use, leading to more than 6000 virtual machines on a cluster that typically has around 200. Due to a defect, the clean up service continued to report the last known number of virtual machines to the metrics system (which delayed notification). Once the initial problem was mitigated, the build service worked to catch up on queued jobs but exceeded capacity of the cluster.
-    blocks: [9,10,18,20]
+  root cause: A resource clean up service did not get updated with the new credentials for the (vSphere) API; a configuration defect approved more virual machines than could be supprted by the underlying cluster. [9,10,11,18]
+
+  failure: Creating new virtual machines on the cluster failed, which led to elevated requeue rates and a backlog of work. [7,8,9]
+
+  impact: A period of instability and and outage for the service. [3]
+
+  how it happened: Passwords were rotated for the vSphere API as required and the resource clean up service was not reconfigured with the new password. The clean up service could then no longer clean up virtual machines after use, leading to more than 6000 virtual machines on a cluster that typically has around 200. Due to a defect, the clean up service continued to report the last known number of virtual machines to the metrics system (which delayed notification). Once the initial problem was mitigated, the build service worked to catch up on queued jobs but exceeded capacity of the cluster. [9,10,18,20]
   
-  - name: mitigation
-    description: Paused work, reconfigured the clean up service to use the appropriate password and restarted the service. Again paused work, fixed the "CPU reservation" configuration and restarted the build service.
-    blocks: [11,21]
-    
+  mitigation: Paused work, reconfigured the clean up service to use the appropriate password and restarted the service. Again paused work, fixed the "CPU reservation" configuration and restarted the build service. [11,21]

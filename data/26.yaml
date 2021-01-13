@@ -9,31 +9,18 @@ properties:
   author: Chris Sinjakli (Senior Site Reliability Engineer)
   url: https://gocardless.com/blog/zero-downtime-postgres-migrations-the-hard-parts/
   technologies: PostgreSQL
+  
   quote: We deployed the changes, and all of our assumptions got blown out of the water. Just after the schema migration started, we started getting alerts about API requests timing out. 
   
-structured abstract:
+  architecture: Web API backed by a PostgreSQL database [1,2]
 
-  - name: architecture
-    description: Web API backed by a PostgreSQL database
-    blocks: [1,2]
-    
-  - name: root cause
-    description: While adding a foreign key constraint (and the associated enforcing trigger) to a table, PostgreSQL attempts to take an exclusive lock on both tables invovled in the constraint, and if it is unable to get that lock it is queued. Other conflicting locks then queue up behind blocking other operations on the table.
-    blocks: 16
-    
-  - name: failure
-    description: Database transactions were blocked until the schema migration completed (specifically, the part of the migration that required adding a foreign key constraint).
-    blocks: 16
-    
-  - name: impact
-    description: Client API requests to (payments) API timed out and failed for around 15 seconds.
-    blocks: 13
-    
-  - name: how it happened
-    description: Schema changes to a database were deployed, modifying tables that were empty and unused. The change added a foreign key constraint and attempted to take an exclusive lock on both the empty table and an in use table and ended up being queued until that lock could be granted. All other operations (that would want a conflicting lock on the table) were blocked until the exclusive lock was granted and the migration completed.
-    blocks: [10,11,13,16]
+  root cause: While adding a foreign key constraint (and the associated enforcing trigger) to a table, PostgreSQL attempts to take an exclusive lock on both tables invovled in the constraint, and if it is unable to get that lock it is queued. Other conflicting locks then queue up behind blocking other operations on the table. [16]
+
+  failure: Database transactions were blocked until the schema migration completed (specifically, the part of the migration that required adding a foreign key constraint). [16]
+
+  impact: Client API requests to (payments) API timed out and failed for around 15 seconds. [13]
+
+  how it happened: Schema changes to a database were deployed, modifying tables that were empty and unused. The change added a foreign key constraint and attempted to take an exclusive lock on both the empty table and an in use table and ended up being queued until that lock could be granted. All other operations (that would want a conflicting lock on the table) were blocked until the exclusive lock was granted and the migration completed. [10,11,13,16]
   
-  - name: mitigation
-    description: Incident was resolved naturally as the database change completed.
-    blocks: 13
-    
+  mitigation: Incident was resolved naturally as the database change completed. [13]
+

@@ -9,30 +9,17 @@ properties:
   author: Panagiotis Moustafellos (Tech Lead - SRE), Ben Osborne (Site Reliability) Engineer
   url: https://www.elastic.co/blog/elastic-cloud-incident-report-feburary-4-2019
   technologies: Apache ZooKeeper, Elasticsearch, Kibana
+  
   quote: Service metrics had reported the hosts as healthy, thus signaling that it was safe to proceed with the maintenance; however, the metrics proved to be insufficient in conveying the state of individual hosts and of the coordination layer as a whole. 
   
-structured abstract:
+  architecture: "A multi-layer application: (1) a Kibana frontend, (2) a proxy/routing layer that routes requests to cluster nodes, and (3) a coordination layer which maintains node state and location (implemented as a three-node Apache ZooKeeper ensemble). [10,11,12,13,14]"
 
-  - name: architecture
-    description: "A multi-layer application: (1) a Kibana frontend, (2) a proxy/routing layer that routes requests to cluster nodes, and (3) a coordination layer which maintains node state and location (implemented as a three-node Apache ZooKeeper ensemble)."
-    blocks: [10,11,12,13,14]
-    
-  - name: root cause
-    description: During an upgrade, hosts in the coordination layer were under too much load (due to client traffic, including reconnect attempts) to establish quorum; and a defect in runc.
-    blocks: [23,24]
-    
-  - name: failure
-    description: The coordination layer had increasd latency and low availability, and cluster hosts experienced soft locks; responders eliminated nearly all client traffic to help with mitigation.
-    blocks: 26
-    
-  - name: impact
-    description: Customers experienced reduced functionality or a partial outage and later a complete in one region.
-    blocks: [59,60,61,63,64,65]
-    
-  - name: how it happened
-    description: During an upgrade of hosts in the coordination layer (in which hosts were patched and then used to replace old hosts) high traffic and a defect led to CPU softlocks and a ZooKeeper failure. A portion of the high traffic was due to reconnection attempts due to the instability caused by high latency. A second set of services (kibana dashboards) that depend on the ZooKeeper ensemble also failed due to a defect that left unsuccessful connections open (and there were many of these because of failures to connect to the zookeeper ensemble). 
-    blocks: 51
+  root cause: During an upgrade, hosts in the coordination layer were under too much load (due to client traffic, including reconnect attempts) to establish quorum; and a defect in runc. [23,24]
+
+  failure: The coordination layer had increasd latency and low availability, and cluster hosts experienced soft locks; responders eliminated nearly all client traffic to help with mitigation. [26]
+
+  impact: Customers experienced reduced functionality or a partial outage and later a complete in one region. [59,60,61,63,64,65]
+
+  how it happened: During an upgrade of hosts in the coordination layer (in which hosts were patched and then used to replace old hosts) high traffic and a defect led to CPU softlocks and a ZooKeeper failure. A portion of the high traffic was due to reconnection attempts due to the instability caused by high latency. A second set of services (kibana dashboards) that depend on the ZooKeeper ensemble also failed due to a defect that left unsuccessful connections open (and there were many of these because of failures to connect to the zookeeper ensemble). [51]
   
-  - name: mitigation
-    description: Rolled back ZooKeeper hosts to previous version and removed client traffic to allow the ensemble to get up correctly. Restarted kibana instances and applied limits to avoid keeping connections open.
-    blocks: [54,55,56]
+  mitigation: Rolled back ZooKeeper hosts to previous version and removed client traffic to allow the ensemble to get up correctly. Restarted kibana instances and applied limits to avoid keeping connections open. [54,55,56]

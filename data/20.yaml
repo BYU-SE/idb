@@ -9,30 +9,17 @@ properties:
   author: Akhil Gupta (Head of Infrastructure)
   url: https://dropbox.tech/infrastructure/outage-post-mortem
   technologies: MySQL
+  
   quote: For the past couple of days, we’ve been working around the clock to restore full access as soon as possible.
 
-structured abstract:
+  architecture: Thousands of databases, each with a master machine and two replica machines. [4]
 
-  - name: architecture
-    description: Thousands of databases, each with a master machine and two replica machines.
-    blocks: 4
-    
-  - name: root cause
-    description: An upgrade script had a defect in the way that it determined whether a database machine was active (and therefore not safe to upgrade).
-    blocks: 6
-    
-  - name: failure
-    description: Multiple databases failed.
-    blocks: 6
-    
-  - name: impact
-    description: An outage for the service depending on those databases.
-    blocks: 6
-    
-  - name: how it happened
-    description: During a database upgrade, a defect in the upgrade script led it to believe several active databases were inactive and so it performed the upgrade. Database transactions/replication actions were interrupted and master-replica pairs failed.
-    blocks: [5,6]
-    
-  - name: mitigation
-    description: A recovery from backup for each affected database, which took from a few hours to 2 days depending on the database.
-    blocks: 8
+  root cause: An upgrade script had a defect in the way that it determined whether a database machine was active (and therefore not safe to upgrade). [6]
+
+  failure: Multiple databases failed. [6]
+
+  impact: An outage for the service depending on those databases. [6]
+
+  how it happened: During a database upgrade, a defect in the upgrade script led it to believe several active databases were inactive and so it performed the upgrade. Database transactions/replication actions were interrupted and master-replica pairs failed. [5,6]
+
+  mitigation: A recovery from backup for each affected database, which took from a few hours to 2 days depending on the database. [8]

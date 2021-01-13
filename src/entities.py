@@ -22,9 +22,15 @@ class Incident:
     self.url = properties['url']
     self.technologies = properties['technologies'] or ''
     self.quote = properties.get('quote')
+    self.summary = properties.get('summary')
+    self.architecture = properties.get('summary')
+    self.root_cause = properties.get('root cause')
+    self.failure = properties.get('failure')
+    self.impact = properties.get('impact')
+    self.how_it_happened = properties.get('how it happened')
+    self.mitigation = properties.get('mitigation')
     
     self.properties = properties
-    self.annotations = []
 
   def year(self):
     if type(self.start_ts) == int:
@@ -34,11 +40,6 @@ class Incident:
 
   def date(self):
     return datetime.strptime(self.start_ts.split(' ')[0], '%Y/%m/%d')
-
-  def annotation(self, name):
-    for a in self.annotations:
-      if a.name == name:
-        return a
         
   def tech(self):
     return [t.strip() for t in self.technologies.split(',')]

@@ -17,8 +17,6 @@ def incident(yaml_filename):
   with open(yaml_filename) as file:
     obj = yaml.load(file, Loader=yaml.FullLoader)
     incident = entities.Incident(obj['properties'])
-    incident.annotations = [entities.Annotation(a) 
-      for a in obj['structured abstract']]
     return incident
 
 def blocks(md_filename):

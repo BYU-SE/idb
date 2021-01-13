@@ -17,7 +17,7 @@ Many organizations conduct a postmortem analysis when they experience significan
 
 To build the database and website on your own machine you need to have Python3 installed. To get started, download or clone this repository and then run the following command:
 
-    $ python bin/build.py
+    $ python src/build.py
 
 With that done, just open the file html/index.html in a web browser. If you know SQL You can also explore the database directly by running the sqlite3 command and executing queries. 
 

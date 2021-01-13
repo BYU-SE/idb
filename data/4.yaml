@@ -9,31 +9,20 @@ properties:
   author: John Graham-Cumming (Chief Technology Officer)
   url: https://blog.cloudflare.com/incident-report-on-memory-leak-caused-by-cloudflare-parser-bug/ 
   technologies: NGINX, Ragel
+  
   quote: So, the bug had been dormant for years until the internal feng shui of the buffers passed between NGINX filter modules changed with the introduction of cf-html.
+  
   summary: Deployment altered webserver's buffering strategy, exposed a preexisting defect, and led to a buffer overflow (Deployment)
 
-structured abstract:
-  - name: architecture
-    description: NGINX webserver, with multiple custom modules, including a Ragel based HTML parser used to modify HTML.
-    blocks: [15,18]
-    
-  - name: root cause
-    description: A latent defect in how a custom webserver module checked for the end of a buffer.
-    blocks: [27,98]
-    
-  - name: failure
-    description: Buffer overrun while preparing responses to some HTTP requests.
-    blocks: 28 
-    
-  - name: impact
-    description: Webserver returned corrupted webpages which contained private information (cookies, authentication tokens, etc).
-    blocks: [3,9]
-    
-  - name: how it happened
-    description: A new module was added to the webserver which subtly changed its buffering and triggered the latent defect (in a second module) leading to the buffer overrun and corrupted webpages.
-    blocks: 20
+  architecture: NGINX webserver, with multiple custom modules, including a Ragel based HTML parser used to modify HTML. [15,18]
   
-  - name: mitigation
-    description: Deployed fix for end of buffer check. Requested external organizations to clear corrupted pages from caches.
-    blocks: [39,94]
-    
+  root cause: A latent defect in how a custom webserver module checked for the end of a buffer. [27,98]
+  
+  failure: Buffer overrun while preparing responses to some HTTP requests. [28]
+  
+  impact: Webserver returned corrupted webpages which contained private information (cookies, authentication tokens, etc). [3,9]
+  
+  how it happened: A new module was added to the webserver which subtly changed its buffering and triggered the latent defect (in a second module) leading to the buffer overrun and corrupted webpages. [20]
+  
+  mitigation: Deployed fix for end of buffer check. Requested external organizations to clear corrupted pages from caches. [39,94]
+

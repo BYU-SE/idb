@@ -9,31 +9,17 @@ properties:
   author: 
   url: https://status.duo.com/incidents/4w07bmvnt359
   technologies: 
+  
   quote: Once this problem was identified, these queues were flushed on each application server and things immediately began to stabilize. In hindsight, this is effectively what the software rollback did as part of the issue on August 20th, which is why the rollback solved that prior issue. 
   
-structured abstract:
+  architecture: A fleet of application servers (running an authentication service) backed by a relational database. [10]
 
-  - name: architecture
-    description: A fleet of application servers (running an authentication service) backed by a relational database.
-    blocks: 10
-    
-  - name: root cause
-    description: Traffic exceeded database capacity; and a queuing strategy for failed database requests.
-    blocks: 10
-    
-  - name: failure
-    description: Database requests failed and were were queued on the application servers.
-    blocks: 10
-    
-  - name: impact
-    description: Increased authentication latency and intermittent request timeouts for all customer applications.
-    blocks: 5
-    
-  - name: how it happened
-    description: A surge of inbound requests exceeded database capacity and were queued by the application. Even after the traffic subsided the queued requests prevented the database from recovering (ie, capacity was still exceeded).
-    blocks: 10
+  root cause: Traffic exceeded database capacity; and a queuing strategy for failed database requests. [10]
+
+  failure: Database requests failed and were were queued on the application servers. [10]
+
+  impact: Increased authentication latency and intermittent request timeouts for all customer applications. [5]
+
+  how it happened: A surge of inbound requests exceeded database capacity and were queued by the application. Even after the traffic subsided the queued requests prevented the database from recovering (ie, capacity was still exceeded). [10]
   
-  - name: mitigation
-    description: Application request queues were flushed.
-    blocks: 10
-    
+  mitigation: Application request queues were flushed. [10]

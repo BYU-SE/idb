@@ -9,31 +9,19 @@ properties:
   author: Adam Hawkins (SRE Team Lead)
   url: https://engineering.saltside.se/our-first-kubernetes-outage-c6b9249cfd3a
   technologies: Amazon Elastic Compute Cloud (EC2) , Amazon Elastic Block Store (EBS)
+  
   quote: I checked on things two hours later. The issue had not resolved itself. It became larger.
+  
   summary: Exceeding disk space and available throughput limits led to a failed deployment and cluster instances in bad states (Exceeding limits)
 
-structured abstract:
-
-  - name: architecture
-    description: Multiple Kubernetes clusters for different use cases, each with Elastic Block Stores (EBS). 
-    blocks: 5
-    
-  - name: root cause
-    description: All activity on clusters exceeded available disk IO capacity (EBS IOPS).
-    blocks: 38
-    
-  - name: failure
-    description: A complete shutdown of an internal cluster.
-    blocks: 3
-    
-  - name: impact
-    description: Internal services provided by the cluster unavailable (Tiller, new pod creation, etc)
-    blocks: [7,8,9,10,11]
-    
-  - name: how it happened
-    description: While running tests on the internal Kubernetes clusters, a small number of containers were deployed, overloading the disk IO capacity.
-    blocks: 13
+  architecture: Multiple Kubernetes clusters for different use cases, each with Elastic Block Stores (EBS). [5]
   
-  - name: mitigation
-    description: Terminated three nodes and waited for new instances to join the cluster.
-    blocks: 22
+  root cause: All activity on clusters exceeded available disk IO capacity (EBS IOPS). [38]
+
+  failure: A complete shutdown of an internal cluster. [3]
+
+  impact: Internal services provided by the cluster unavailable (Tiller, new pod creation, etc) [7,8,9,10,11]
+
+  how it happened: While running tests on the internal Kubernetes clusters, a small number of containers were deployed, overloading the disk IO capacity. [13]
+  
+  mitigation: Terminated three nodes and waited for new instances to join the cluster. [22]

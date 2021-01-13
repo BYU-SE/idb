@@ -9,31 +9,19 @@ properties:
   author: Andrew Montalenti (Founder & Chief Product Officer)
   url: https://blog.parse.ly/post/1738/kafkapocalypse/
   technologies: Amazon Elastic Compute Cloud (EC2), Apache Kafka, Opscode Chef, Apache ZooKeeper
+  
   quote: The real problem here isn't failure, but correlated cluster-wide failure. Because we were close to network limits on all of our Kafka nodes, when one failed, the remaining nodes would have to serve more consumers, which would, in turn, lead to more network traffic on those remaining nodes.
+  
   summary: Usage growth exceeded network capacity of nodes in a data processing cluster and led to a cascading outage (Exceeding limits)
   
-structured abstract:
-
-  - name: architecture
-    description: Two analytics dashboard systems (one production and one beta) powered by two parallel backend data processing systems that process data from a JavaScript tracker and forward it to a Kafka cluster.
-    blocks: [3,15,16,17]
-    
-  - name: root cause
-    description: Outbound network traffic on cluster nodes exceeded the capacity of the machines those nodes were running on (either a hardware or system software limit); and a configuration defect in the cluster management system which led to new nodes being assigned incorrect ip addresses. 
-    blocks: [33,38]
-    
-  - name: failure
-    description: Some nodes in the cluster failed and were removed from the cluster. Clients writing to the cluster (mistakenly) determined the cluster was unavailable and stopped writing to the cluster.
-    blocks: [38,39,52]
-    
-  - name: impact
-    description: Several hours of no data processing and no new data appearing in the analytics dashboards. Data processing was delayed but no data was lost.
-    blocks: [6,19]
-    
-  - name: how it happened
-    description: Data volumes hit a new high which increased the outbound network volumes beyond the capcity of the machines running cluster nodes (either a hardware or system software limit). As a node in the cluster failed, load increased on the remaining nodes leading to more nodes failing for the same reason. As new nodes were added (as part of the mitigation) clients stopped writing to the cluster due to a defect in the configuration management system that led to new nodes being added to the cluster with incorrect host names.
-    blocks: [6,19,33,38,39,49,51,52]
+  architecture: Two analytics dashboard systems (one production and one beta) powered by two parallel backend data processing systems that process data from a JavaScript tracker and forward it to a Kafka cluster. [3,15,16,17]
   
-  - name: mitigation
-    description: Corrected the configuration and then added new nodes to the cluster (bringing the per machine network usage under the limits). Restarted downstream data consumers of the cluster.
-    blocks: [53,54]
+  root cause: Outbound network traffic on cluster nodes exceeded the capacity of the machines those nodes were running on (either a hardware or system software limit); and a configuration defect in the cluster management system which led to new nodes being assigned incorrect ip addresses. [33,38]
+  
+  failure: Some nodes in the cluster failed and were removed from the cluster. Clients writing to the cluster (mistakenly) determined the cluster was unavailable and stopped writing to the cluster. [38,39,52]
+  
+  impact: Several hours of no data processing and no new data appearing in the analytics dashboards. Data processing was delayed but no data was lost. [6,19]
+  
+  how it happened: Data volumes hit a new high which increased the outbound network volumes beyond the capcity of the machines running cluster nodes (either a hardware or system software limit). As a node in the cluster failed, load increased on the remaining nodes leading to more nodes failing for the same reason. As new nodes were added (as part of the mitigation) clients stopped writing to the cluster due to a defect in the configuration management system that led to new nodes being added to the cluster with incorrect host names. [6,19,33,38,39,49,51,52]
+  
+  mitigation: Corrected the configuration and then added new nodes to the cluster (bringing the per machine network usage under the limits). Restarted downstream data consumers of the cluster. [53,54]

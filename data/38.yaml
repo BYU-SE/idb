@@ -9,30 +9,17 @@ properties:
   author: Tim Post (Community Evangelist)
   url: https://meta.stackoverflow.com/questions/340960/a-post-mortem-on-the-recent-developer-story-information-leak
   technologies:
+  
   quote: A bug that caused the user’s phone number and email address to render in the HTML source for people that weren’t the user or an employer attempting to contact the user went unnoticed, because the information wasn’t actually rendered on the page.
   
-structured abstract:
+  architecture: Web application rendering HTML for web browser clients. [3]
 
-  - name: architecture
-    description: Web application rendering HTML for web browser clients.
-    blocks: 3
-    
-  - name: root cause
-    description: A defect causing a user’s phone number and email address to be returned (unrendered) in the HTML source.
-    blocks: 13
-    
-  - name: failure
-    description: Email addresses and phone numbers of users included in HTML source.
-    blocks: 9
-    
-  - name: impact
-    description: Possible exposure of user’s phone number and email addres.
-    blocks: 9
-    
-  - name: how it happened
-    description: A defect was deployed in a private beta feature (developer story CV) and the feature was made public. The defect wasn't noticed because the contact information was not visible on the page. 6 weeks later a user reported that a search for their phone number showed their public CV as the first search result.
-    blocks: [9,10,13]
+  root cause: A defect causing a user’s phone number and email address to be returned (unrendered) in the HTML source. [13]
+
+  failure: Email addresses and phone numbers of users included in HTML source. [9]
+
+  impact: Possible exposure of user’s phone number and email addres. [9]
+
+  how it happened: A defect was deployed in a private beta feature (developer story CV) and the feature was made public. The defect wasn't noticed because the contact information was not visible on the page. 6 weeks later a user reported that a search for their phone number showed their public CV as the first search result. [9,10,13]
   
-  - name: mitigation
-    description: Fixed and deployed defect and worked with popular search engines and the Internet Archive to remove the data.
-    blocks: [15,16]
+  mitigation: Fixed and deployed defect and worked with popular search engines and the Internet Archive to remove the data. [15,16]

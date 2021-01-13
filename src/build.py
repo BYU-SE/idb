@@ -35,9 +35,6 @@ for filename in datafilenames:
     # insert blocks (ie, paragraphs) for that incident
     blocks = parse.blocks(path + '.' + 'md')
     db.insert_blocks(incident, blocks)
-    
-    # insert annotations
-    db.insert_annotations(incident)
 
 db.connection().commit()
 
@@ -52,8 +49,6 @@ for d in [html_dir, incidents_dir]:
     os.makedirs(d)
     
 incidents = db.incidents()
-for incident in incidents:
-  incident.annotations = db.annotations(incident)
 
 #
 # Create an index.html file listing all incidents

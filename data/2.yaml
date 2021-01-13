@@ -9,31 +9,19 @@ properties:
   author: Alec Homes (Software Engineer)
   url: https://medium.com/square-corner-blog/always-be-closing-3d5fda0e00da 
   technologies: Go
+  
   quote: This root cause was tickled by a configuration change in another service, which inadvertently set its client request timeout to 60,000 seconds instead of the intended 60,000 milliseconds.
+  
   summary: Deployment of a configuration defect + a preexisting code defect led to a memory leak and a service outage (Deployment)
 
-structured abstract:
-    
-  - name: architecture
-    description: Multiple clients and a shared server.
-    blocks:
-    
-  - name: root cause
-    description: One client's timeout was set too high (due to confusing seconds with milliseconds); a latent code defect in the server (failure to cleanup per-request context). 
-    blocks: [8, 9]
-    
-  - name: failure
-    description: High memory and CPU utilization on the server.
-    blocks: 3
-    
-  - name: impact
-    description: Degraded performance and then an outage for all client of the server.
-    blocks: 30
-    
-  - name: how it happened
-    description: A configuration change setting client timeout to 60K secs (rather than the intended 60K ms) was deployed to one of the server's clients. Due to a latent defect, requests from that client were held in memory for 60K seconds. Memory and CPU utilization grew steadily until server was unable to serve requests.
-    blocks: 9
+  architecture: Multiple clients and a shared server.
+
+  root cause: One client's timeout was set too high (due to confusing seconds with milliseconds); a latent code defect in the server (failure to cleanup per-request context). [8, 9]
+
+  failure: High memory and CPU utilization on the server. [3]
+
+  impact: Degraded performance and then an outage for all client of the server. [30]
+
+  how it happened: A configuration change setting client timeout to 60K secs (rather than the intended 60K ms) was deployed to one of the server's clients. Due to a latent defect, requests from that client were held in memory for 60K seconds. Memory and CPU utilization grew steadily until server was unable to serve requests. [9]
   
-  - name: mitigation
-    description: Deployed fix for configuration and code defects.
-    blocks: 25
+  mitigation: Deployed fix for configuration and code defects. [25]

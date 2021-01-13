@@ -1,6 +1,7 @@
 #
 # Functions for generating static html pages for incidents (the detail()) and lists of incidents (the index function). I'm just using python format strings for now, eventually using a templating library may make more sense. I'm just reluctant to add a dependency, atm.
 
+import re
 import urllib.parse
 import db
 
@@ -69,11 +70,19 @@ def _url(s):
   else:
     return s
 
+def _remove_annotations(props):
+  def sub(value):
+    if type(value) == str:
+      return re.sub(r'\s*\[\d+(,\s*\d+)*\]\s*$', '', value)
+    return value
+    
+  return {k:sub(v) for (k,v) in props.items()}
+
 def _properties_map(incident):
   #
   # Return a properties map for the given index, suitable for python string formats. The map will include annotations (with the name of the annotation as the key and the description as the value).
   
-  props = dict([(a.name, a.description) for a in incident.annotations])
+  props = {}
   props.update(incident.properties)
   props['year'] = incident.year()
   props['date'] = _date_str(incident.start_ts)
@@ -91,7 +100,7 @@ def _properties_map(incident):
   
   props['organization_url'] = _url(incident.organization)
   
-  return props
+  return _remove_annotations(props)
 
 #
 # HTML templates. As mentioned above, these are simply python style string templates, expecting a dict.
@@ -176,10 +185,10 @@ detail_html = '''
 
   <tr>
     <td>
-      Summary
+      How it happened
     </td>
     <td>
-      {how it happened}
+      {how_it_happened}
     </td>
   </tr>
   <tr>
@@ -203,7 +212,7 @@ detail_html = '''
       Root cause
     </td>
     <td>
-      {root cause}
+      {root_cause}
     </td>
   </tr>
   <tr>

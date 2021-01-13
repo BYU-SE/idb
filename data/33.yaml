@@ -9,30 +9,17 @@ properties:
   author: 
   url: https://aws.amazon.com/message/41926/
   technologies: Amazon Simple Storage Service (S3), Amazon Elastic Compute Cloud (EC2), Amazon Elastic Block Store (EBS), AWS Lambda
+  
   quote: Unfortunately, one of the inputs to the command was entered incorrectly and a larger set of servers was removed than intended.
   
-structured abstract:
+  architecture: Multiple regional datacenters with multiple subsystems each with multiple servers. [1]
 
-  - name: architecture
-    description: Multiple regional datacenters with multiple subsystems each with multiple servers.
-    blocks: 1
-    
-  - name: root cause
-    description: A command executed by an engineer with incorrect paramters.
-    blocks: 1
-    
-  - name: failure
-    description: A large number of servers were removed from two sybsystems, beyond the number that could be tolerated.
-    blocks: 1
-    
-  - name: impact
-    description: Complete outage of the (S3) service API in one region.
-    blocks: 1
-    
-  - name: how it happened
-    description: In response to slowness in the billing system, an engineer executed a command to remove a small number of servers from a subsystem and entered the command incorrectly. A larger number of servers than intended were removed, leading to outages in two subsystems and many dependent services. 
-    blocks: 1
+  root cause: A command executed by an engineer with incorrect paramters. [1]
+
+  failure: A large number of servers were removed from two sybsystems, beyond the number that could be tolerated. [1]
+
+  impact: Complete outage of the (S3) service API in one region. [1]
+
+  how it happened: In response to slowness in the billing system, an engineer executed a command to remove a small number of servers from a subsystem and entered the command incorrectly. A larger number of servers than intended were removed, leading to outages in two subsystems and many dependent services. [1]
   
-  - name: mitigation
-    description: A full resart of the two subsystems restored functionality within 5 hours. 
-    blocks: [1,2]
+  mitigation: A full resart of the two subsystems restored functionality within 5 hours. [1,2]
