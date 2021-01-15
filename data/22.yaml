@@ -4,8 +4,8 @@ properties:
   title: Amazon EC2 and Amazon RDS Service Disruption in the US East Region
   organization: Amazon Web Services
   product: Amazon Elastic Compute Cloud
-  start_ts: 2019/04/21 00:47
-  end_ts: 2019/04/29
+  start_ts: 2011/04/21 00:47
+  end_ts: 2011/04/29
   author: 
   url: https://aws.amazon.com/message/65648/
   technologies: Amazon Elastic Compute Cloud (EC2), Amazon Elastic Block Store (EBS), Relational Database Service (RDS), Amazon Virtual Private Cloud (VPC) Regions

@@ -23,7 +23,7 @@ class Incident:
     self.technologies = properties['technologies'] or ''
     self.quote = properties.get('quote')
     self.summary = properties.get('summary')
-    self.architecture = properties.get('summary')
+    self.architecture = properties.get('architecture')
     self.root_cause = properties.get('root cause')
     self.failure = properties.get('failure')
     self.impact = properties.get('impact')
