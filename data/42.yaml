@@ -1,0 +1,28 @@
+properties:
+
+  id: 42
+  title: Elevated error rate with Google Cloud Storage
+  organization: Google
+  product: Google Cloud Storage
+  start_ts: 2019/03/12 18:40
+  end_ts:  2019/03/12 22:50
+  author: 
+  author role: 
+  url: https://status.cloud.google.com/incident/storage/19002
+  technologies: Google’s internal blob, Google Cloud Platform, Google Cloud Storage, Stackdriver Monitoring, App’s Engine Blobstore API, Google services (Gmail, Photos, Google Drive, etc.)
+  
+  quote: User-visible [services that use the failing service] also saw elevated error rates, although the user impact was greatly reduced by caching and redundancy built into those services. 
+  
+  summary: Configuration change caused an overload of traffic and a cascade of failures through mulitple services (Deployment)
+
+  architecture: A data store system (storing "blob" data) with multiple dependent systems, most of which cache the data.
+  
+  root cause: A configuration change to the data store system that overloaded one of the subsystems.
+  
+  failure: Elevated error rates (20% on average, peaking at 31%) from data store system.
+  
+  impact: Services that depend on the storage system (eg, Gmail, Photos, Google Drive) experienced failures (mimized by data caching), increased (long tail) latency.
+  
+  how it happened: A data store system had an (unexplained in the report) increase in storage resources used, and so responders made a configuration change which had a side effect of overloading the subsystem used for looking up location of stored data. The increased load led to a cascading failure.
+  
+  mitigation: Engineers stopped the configuration change deployment and manually reduced traffic levels until tasks restarted (as they would otherwise crash on star up due to load).
