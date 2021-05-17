@@ -1,0 +1,131 @@
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>High queue times on OSX builds (.com and .org)</title>
+    <style>
+      
+body {
+  font-family: Helvetica, sans-serif;
+}
+a, a:visited {
+  color:#03e;
+}
+table {
+  border-collapse: collapse;
+}
+td {
+  border: 1px solid #ddd;
+  vertical-align:top;
+  text-align:left;
+  padding:10px;
+  line-height:150%;
+}
+blockquote {
+  font-size:125%;
+  padding:0px 20px;
+  margin:20px 0px;
+  border-left:1px solid #ddd;
+}
+tr.category td {
+  font-weight:bold;
+  background-color:#ffd;
+}
+tr.head {
+  font-weight:bold;
+}
+p.footer {
+  font-size:75%;
+}
+
+    </style>
+  </head>
+  <body>
+  <h1>
+    High queue times on OSX builds (.com and .org)
+  </h1>
+  
+<blockquote>
+  &ldquo;When the [passwords] rotation happened, the configuration for the vsphere-janitor service did not get updated.&rdquo;
+</blockquote>
+
+<table>
+  <tr>
+    <td>
+      Incident
+    </td>
+    <td>
+      #18 at 
+      <a href="../organizations.html#Travis+CI">Travis CI</a> on 
+      <a href="../years.html#2015">2015/08/04</a> 
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Full report
+    </td>
+    <td>
+      <a href="https://www.traviscistatus.com/incidents/khzk8bg4p9sy">https://www.traviscistatus.com/incidents/khzk8bg4p9sy</a>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      How it happened
+    </td>
+    <td>
+      Passwords were rotated for the vSphere API as required and the resource clean up service was not reconfigured with the new password. The clean up service could then no longer clean up virtual machines after use, leading to more than 6000 virtual machines on a cluster that typically has around 200. Due to a defect, the clean up service continued to report the last known number of virtual machines to the metrics system (which delayed notification). Once the initial problem was mitigated, the build service worked to catch up on queued jobs but exceeded capacity of the cluster.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Architecture
+    </td>
+    <td>
+      Build services (creation, build and cleanup) running on Xserve hosts virtualized using a vSphere cluster and hosted by MacStadium.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Technologies
+    </td>
+    <td>
+      <a href="../technologies.html#vSphere">vSphere</a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Root cause
+    </td>
+    <td>
+      A resource clean up service did not get updated with the new credentials for the (vSphere) API; a configuration defect approved more virtual machines than could be supprted by the underlying cluster.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Failure
+    </td>
+    <td>
+      Creating new virtual machines on the cluster failed, which led to elevated requeue rates and a backlog of work.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Impact
+    </td>
+    <td>
+      A period of instability and and outage for the service.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Mitigation
+    </td>
+    <td>
+      Paused work, reconfigured the clean up service to use the appropriate password and restarted the service. Again paused work, fixed the "CPU reservation" configuration and restarted the build service.
+    </td>
+  </tr>
+</table>
+
+  </body>
+</html>

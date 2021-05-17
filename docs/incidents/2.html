@@ -1,0 +1,131 @@
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Always Be Closing: The Tale of a Go Resource Leak</title>
+    <style>
+      
+body {
+  font-family: Helvetica, sans-serif;
+}
+a, a:visited {
+  color:#03e;
+}
+table {
+  border-collapse: collapse;
+}
+td {
+  border: 1px solid #ddd;
+  vertical-align:top;
+  text-align:left;
+  padding:10px;
+  line-height:150%;
+}
+blockquote {
+  font-size:125%;
+  padding:0px 20px;
+  margin:20px 0px;
+  border-left:1px solid #ddd;
+}
+tr.category td {
+  font-weight:bold;
+  background-color:#ffd;
+}
+tr.head {
+  font-weight:bold;
+}
+p.footer {
+  font-size:75%;
+}
+
+    </style>
+  </head>
+  <body>
+  <h1>
+    Always Be Closing: The Tale of a Go Resource Leak
+  </h1>
+  
+<blockquote>
+  &ldquo;This root cause was tickled by a configuration change in another service, which inadvertently set its client request timeout to 60,000 seconds instead of the intended 60,000 milliseconds.&rdquo;
+</blockquote>
+
+<table>
+  <tr>
+    <td>
+      Incident
+    </td>
+    <td>
+      #2 at 
+      <a href="../organizations.html#Square">Square</a> on 
+      <a href="../years.html#2017">2017/01/19</a> by Alec Homes (Software Engineer)
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Full report
+    </td>
+    <td>
+      <a href="https://medium.com/square-corner-blog/always-be-closing-3d5fda0e00da">https://medium.com/square-corner-blog/always-be-closing-3d5fda0e00da</a>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      How it happened
+    </td>
+    <td>
+      A configuration change setting client timeout to 60K secs (rather than the intended 60K ms) was deployed to one of the server's clients. Due to a latent defect, requests from that client were held in memory for 60K seconds. Memory and CPU utilization grew steadily until server was unable to serve requests.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Architecture
+    </td>
+    <td>
+      Multiple clients and a shared server.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Technologies
+    </td>
+    <td>
+      <a href="../technologies.html#Go">Go</a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Root cause
+    </td>
+    <td>
+      One client's timeout was set too high (due to confusing seconds with milliseconds); a latent code defect in the server (failure to cleanup per-request context).
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Failure
+    </td>
+    <td>
+      High memory and CPU utilization on the server.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Impact
+    </td>
+    <td>
+      Degraded performance and then an outage for all client of the server.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Mitigation
+    </td>
+    <td>
+      Deployed fix for configuration and code defects.
+    </td>
+  </tr>
+</table>
+
+  </body>
+</html>

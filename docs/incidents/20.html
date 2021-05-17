@@ -1,0 +1,131 @@
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Outage post-mortem</title>
+    <style>
+      
+body {
+  font-family: Helvetica, sans-serif;
+}
+a, a:visited {
+  color:#03e;
+}
+table {
+  border-collapse: collapse;
+}
+td {
+  border: 1px solid #ddd;
+  vertical-align:top;
+  text-align:left;
+  padding:10px;
+  line-height:150%;
+}
+blockquote {
+  font-size:125%;
+  padding:0px 20px;
+  margin:20px 0px;
+  border-left:1px solid #ddd;
+}
+tr.category td {
+  font-weight:bold;
+  background-color:#ffd;
+}
+tr.head {
+  font-weight:bold;
+}
+p.footer {
+  font-size:75%;
+}
+
+    </style>
+  </head>
+  <body>
+  <h1>
+    Outage post-mortem
+  </h1>
+  
+<blockquote>
+  &ldquo;For the past couple of days, we’ve been working around the clock to restore full access as soon as possible.&rdquo;
+</blockquote>
+
+<table>
+  <tr>
+    <td>
+      Incident
+    </td>
+    <td>
+      #20 at 
+      <a href="../organizations.html#Dropbox">Dropbox</a> on 
+      <a href="../years.html#2014">2014/01/10</a> by Akhil Gupta (Head of Infrastructure)
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Full report
+    </td>
+    <td>
+      <a href="https://dropbox.tech/infrastructure/outage-post-mortem">https://dropbox.tech/infrastructure/outage-post-mortem</a>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      How it happened
+    </td>
+    <td>
+      During a database upgrade, a defect in the upgrade script led it to believe several active databases were inactive and so it performed the upgrade. Database transactions/replication actions were interrupted and master-replica pairs failed.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Architecture
+    </td>
+    <td>
+      Thousands of databases, each with a master machine and two replica machines.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Technologies
+    </td>
+    <td>
+      <a href="../technologies.html#MySQL">MySQL</a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Root cause
+    </td>
+    <td>
+      An upgrade script had a defect in the way that it determined whether a database machine was active (and therefore not safe to upgrade).
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Failure
+    </td>
+    <td>
+      Multiple databases failed.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Impact
+    </td>
+    <td>
+      An outage for the service depending on those databases.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Mitigation
+    </td>
+    <td>
+      A recovery from backup for each affected database, which took from a few hours to 2 days depending on the database.
+    </td>
+  </tr>
+</table>
+
+  </body>
+</html>

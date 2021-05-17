@@ -1,0 +1,131 @@
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>What We Learned from the Recent Mandrill Outage</title>
+    <style>
+      
+body {
+  font-family: Helvetica, sans-serif;
+}
+a, a:visited {
+  color:#03e;
+}
+table {
+  border-collapse: collapse;
+}
+td {
+  border: 1px solid #ddd;
+  vertical-align:top;
+  text-align:left;
+  padding:10px;
+  line-height:150%;
+}
+blockquote {
+  font-size:125%;
+  padding:0px 20px;
+  margin:20px 0px;
+  border-left:1px solid #ddd;
+}
+tr.category td {
+  font-weight:bold;
+  background-color:#ffd;
+}
+tr.head {
+  font-weight:bold;
+}
+p.footer {
+  font-size:75%;
+}
+
+    </style>
+  </head>
+  <body>
+  <h1>
+    What We Learned from the Recent Mandrill Outage
+  </h1>
+  
+<blockquote>
+  &ldquo;In November of 2018, engineers on our Mandrill team identified the potential to reach wraparound, as the XIDs were climbing to approximately half their total limit during peak load. Our team determined wraparound was not an immediate threat, but we added a ticket to the backlog to set up additional monitoring.&rdquo;
+</blockquote>
+
+<table>
+  <tr>
+    <td>
+      Incident
+    </td>
+    <td>
+      #5 at 
+      <a href="../organizations.html#Mailchimp">Mailchimp</a> on 
+      <a href="../years.html#2019">2019/02/04</a> by Eric Muntz (SVP of Technology)
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Full report
+    </td>
+    <td>
+      <a href="https://mailchimp.com/what-we-learned-from-the-recent-mandrill-outage/">https://mailchimp.com/what-we-learned-from-the-recent-mandrill-outage/</a>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      How it happened
+    </td>
+    <td>
+      Due to higher than normal traffic to one database (ie, one shard) the autovacuuming process failed or fell behind, and so the database went into safety shutdown mode to prevent transaction id wraparound. Jobs failed and were queued on the application servers causing disk space to run low.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Architecture
+    </td>
+    <td>
+      Job processing application using several PostgreSQL databases as a shared key-value store that is sharded by key.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Technologies
+    </td>
+    <td>
+      <a href="../technologies.html#PostgreSQL">PostgreSQL</a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Root cause
+    </td>
+    <td>
+      The sharding algorithm caused one database to have higher than normal writes and the autovacuuming process failed or fell behind.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Failure
+    </td>
+    <td>
+      The databases went into safety shutdown mode leading to failed database writes.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Impact
+    </td>
+    <td>
+      20% of jobs were delayed.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Mitigation
+    </td>
+    <td>
+      Dumped and restored the database while the vacuum process was in progress, leaving out non-essential data tables to speed up process.
+    </td>
+  </tr>
+</table>
+
+  </body>
+</html>

@@ -1,0 +1,131 @@
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Summary of the AWS Service Event in the Sydney Region</title>
+    <style>
+      
+body {
+  font-family: Helvetica, sans-serif;
+}
+a, a:visited {
+  color:#03e;
+}
+table {
+  border-collapse: collapse;
+}
+td {
+  border: 1px solid #ddd;
+  vertical-align:top;
+  text-align:left;
+  padding:10px;
+  line-height:150%;
+}
+blockquote {
+  font-size:125%;
+  padding:0px 20px;
+  margin:20px 0px;
+  border-left:1px solid #ddd;
+}
+tr.category td {
+  font-weight:bold;
+  background-color:#ffd;
+}
+tr.head {
+  font-weight:bold;
+}
+p.footer {
+  font-size:75%;
+}
+
+    </style>
+  </head>
+  <body>
+  <h1>
+    Summary of the AWS Service Event in the Sydney Region
+  </h1>
+  
+<blockquote>
+  &ldquo;The specific signature of this weekend’s utility power failure resulted in an unusually long voltage sag (rather than a complete outage).&rdquo;
+</blockquote>
+
+<table>
+  <tr>
+    <td>
+      Incident
+    </td>
+    <td>
+      #36 at 
+      <a href="../organizations.html#Amazon+Web+Services">Amazon Web Services</a> on 
+      <a href="../years.html#2016">2016/06/04</a> by AWS Team
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Full report
+    </td>
+    <td>
+      <a href="https://aws.amazon.com/message/4372T8/">https://aws.amazon.com/message/4372T8/</a>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      How it happened
+    </td>
+    <td>
+      Sever weather caused a reduction of utility power at one datacenter (experienced initially as an unusually long voltage sag rather than a complete outage). A set of breakers that would have opened in a complete outage did not open soon enough and the stored power (in the DRUPS) drained into the power grid and the DRUPS system shutdown leaving many visual instances with no power.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Architecture
+    </td>
+    <td>
+      Virtual servers (EC2) and attached storage units (EBS)
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Technologies
+    </td>
+    <td>
+      <a href="../technologies.html#Amazon+Elastic+Block+Store+%28EBS%29">Amazon Elastic Block Store (EBS)</a>, <a href="../technologies.html#Diesel+Rotary+Uninterruptable+Power+Supply+%28DRUPS%29">Diesel Rotary Uninterruptable Power Supply (DRUPS)</a>, <a href="../technologies.html#Amazon+Elastic+Compute+Cloud+%28EC2%29">Amazon Elastic Compute Cloud (EC2)</a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Root cause
+    </td>
+    <td>
+      Power redundancy system failed to open breakers during a loss of power from utility (initially an unusually long voltage sag and then a complete outage).
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Failure
+    </td>
+    <td>
+      Loss of power to a significant number of instances led to unavailable (virtual) servers and attached storage units.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Impact
+    </td>
+    <td>
+      Customers and auto-scaling systems could not launch new virtual servers (until responders manually failed over to other availability zones).
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Mitigation
+    </td>
+    <td>
+      Once responders determined it was safe to do so, they re-engaged the power line-ups, and then some virtual servers and storage units needed to be manually restored.
+    </td>
+  </tr>
+</table>
+
+  </body>
+</html>

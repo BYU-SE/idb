@@ -1,0 +1,131 @@
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Postmortem for July 27 outage of the Manta service</title>
+    <style>
+      
+body {
+  font-family: Helvetica, sans-serif;
+}
+a, a:visited {
+  color:#03e;
+}
+table {
+  border-collapse: collapse;
+}
+td {
+  border: 1px solid #ddd;
+  vertical-align:top;
+  text-align:left;
+  padding:10px;
+  line-height:150%;
+}
+blockquote {
+  font-size:125%;
+  padding:0px 20px;
+  margin:20px 0px;
+  border-left:1px solid #ddd;
+}
+tr.category td {
+  font-weight:bold;
+  background-color:#ffd;
+}
+tr.head {
+  font-weight:bold;
+}
+p.footer {
+  font-size:75%;
+}
+
+    </style>
+  </head>
+  <body>
+  <h1>
+    Postmortem for July 27 outage of the Manta service
+  </h1>
+  
+<blockquote>
+  &ldquo;There was a single 'DROP TRIGGER' query that was attempting to take an exclusive lock on the whole table. It appears that PostgreSQL blocks new attempts to take a shared lock while an exclusive lock is wanted.&rdquo;
+</blockquote>
+
+<table>
+  <tr>
+    <td>
+      Incident
+    </td>
+    <td>
+      #21 at 
+      <a href="../organizations.html#Joyent">Joyent</a> on 
+      <a href="../years.html#2015">2015/07/27</a> by The Joyent Team
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Full report
+    </td>
+    <td>
+      <a href="https://www.joyent.com/blog/manta-postmortem-7-27-2015">https://www.joyent.com/blog/manta-postmortem-7-27-2015</a>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      How it happened
+    </td>
+    <td>
+      Vacuuming to prevent transaction id wraparound was automatically initiated by the PostgreSQL autovacuuming process. While that was running a ('drop trigger') transaction requested an exclusive lock, blocking until the autovacuuming process completed. Subsequent transactions (requesting a shared lock) blocked behind the 'drop trigger' request causing failures and high latency.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Architecture
+    </td>
+    <td>
+      An API layer that calls multiple sharded PostgreSQL databases. Each shard is a three-node PostgreSQL cluster using synchronous replication.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Technologies
+    </td>
+    <td>
+      <a href="../technologies.html#PostgreSQL">PostgreSQL</a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Root cause
+    </td>
+    <td>
+      During a particular database maintenance operation (vacuuming to prevent transaction id wraparound) any transaction that requests an exclusive lock is blocked and subsequent requests for a shared lock are blocked.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Failure
+    </td>
+    <td>
+      All transactions on one table on one shard were blocked.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Impact
+    </td>
+    <td>
+      API clients experienced high-latency failures (500-level responses) for between 19% and 27% for requests.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Mitigation
+    </td>
+    <td>
+      Retune the threshold at which "vacuuming to prevent transaction id wraparound" occurs, temporarily opting to monitor transaction metrics and manually initiate the database maintenance process.
+    </td>
+  </tr>
+</table>
+
+  </body>
+</html>

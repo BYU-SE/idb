@@ -1,0 +1,131 @@
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Cloudflare outage on July 17, 2020</title>
+    <style>
+      
+body {
+  font-family: Helvetica, sans-serif;
+}
+a, a:visited {
+  color:#03e;
+}
+table {
+  border-collapse: collapse;
+}
+td {
+  border: 1px solid #ddd;
+  vertical-align:top;
+  text-align:left;
+  padding:10px;
+  line-height:150%;
+}
+blockquote {
+  font-size:125%;
+  padding:0px 20px;
+  margin:20px 0px;
+  border-left:1px solid #ddd;
+}
+tr.category td {
+  font-weight:bold;
+  background-color:#ffd;
+}
+tr.head {
+  font-weight:bold;
+}
+p.footer {
+  font-size:75%;
+}
+
+    </style>
+  </head>
+  <body>
+  <h1>
+    Cloudflare outage on July 17, 2020
+  </h1>
+  
+<blockquote>
+  &ldquo;This configuration contained an error that caused all traffic across our backbone to be sent to Atlanta. This quickly overwhelmed the Atlanta router and caused Cloudflare network locations connected to the backbone to fail.&rdquo;
+</blockquote>
+
+<table>
+  <tr>
+    <td>
+      Incident
+    </td>
+    <td>
+      #24 at 
+      <a href="../organizations.html#Cloudflare">Cloudflare</a> on 
+      <a href="../years.html#2020">2020/07/17</a> by John Graham-Cumming (CTO)
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Full report
+    </td>
+    <td>
+      <a href="https://blog.cloudflare.com/cloudflare-outage-on-july-17-2020/">https://blog.cloudflare.com/cloudflare-outage-on-july-17-2020/</a>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      How it happened
+    </td>
+    <td>
+      Responders mitigating an (unrelated congestion) issue updated the configuration on a router in one location (Atlanta), with the goal of alleviating congestion. That configuration contained a defect that caused all traffic across the global network to be routed through to that location, overwhelming that router and causing failures for all locations on that network.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Architecture
+    </td>
+    <td>
+      A private backbone that carries traffic between different data centers, without going over the public internet.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Technologies
+    </td>
+    <td>
+      <a href="../technologies.html#"></a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Root cause
+    </td>
+    <td>
+      Configuration error on a router in one location, which inadvertently rerouted all traffic on that network ("backbone") through that router.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Failure
+    </td>
+    <td>
+      Network router was overwhelmed and traffic to other locations was lost.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Impact
+    </td>
+    <td>
+      Outage for company's' services that lasted 27 minutes; logs and metrics were lost at the data centers processing logs.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Mitigation
+    </td>
+    <td>
+      The router with the defective configuration was disabled, shutting down the backbone in that location.
+    </td>
+  </tr>
+</table>
+
+  </body>
+</html>

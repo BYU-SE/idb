@@ -1,0 +1,131 @@
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Amazon EC2 and Amazon RDS Service Disruption in the US East Region</title>
+    <style>
+      
+body {
+  font-family: Helvetica, sans-serif;
+}
+a, a:visited {
+  color:#03e;
+}
+table {
+  border-collapse: collapse;
+}
+td {
+  border: 1px solid #ddd;
+  vertical-align:top;
+  text-align:left;
+  padding:10px;
+  line-height:150%;
+}
+blockquote {
+  font-size:125%;
+  padding:0px 20px;
+  margin:20px 0px;
+  border-left:1px solid #ddd;
+}
+tr.category td {
+  font-weight:bold;
+  background-color:#ffd;
+}
+tr.head {
+  font-weight:bold;
+}
+p.footer {
+  font-size:75%;
+}
+
+    </style>
+  </head>
+  <body>
+  <h1>
+    Amazon EC2 and Amazon RDS Service Disruption in the US East Region
+  </h1>
+  
+<blockquote>
+  &ldquo;As with any complicated operational issue, this one was caused by several root causes interacting with one another and therefore gives us many opportunities to protect the service against any similar event reoccurring.&rdquo;
+</blockquote>
+
+<table>
+  <tr>
+    <td>
+      Incident
+    </td>
+    <td>
+      #22 at 
+      <a href="../organizations.html#Amazon+Web+Services">Amazon Web Services</a> on 
+      <a href="../years.html#2011">2011/04/21</a> 
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Full report
+    </td>
+    <td>
+      <a href="https://aws.amazon.com/message/65648/">https://aws.amazon.com/message/65648/</a>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      How it happened
+    </td>
+    <td>
+      A network change (to increase capacity) was performed as part of normal maintenance. During the change, EBS traffic was (inadvertently) shifted to a router with insufficient capacity (the secondary network intended only for node to node traffic), isolating many nodes in the EBS cluster as both networks became unavailable simultaneously. When the traffic was shifted back to the new primary network, the extra traffic on the secondary network (from many primary nodes looking for new replica space) exceeded capacity, leaving nodes "stuck" (aka a "re-mirroring storm"). The control plane's requests to create new volumes (which have long time out values) backed up and lead to thread starvation on control plane servers.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Architecture
+    </td>
+    <td>
+      A distributed three layer system: (1) virtual machines (EC2), (2) a distributed, replicated block data store for virtual machine instances (EBS), and (3) a control plane that coordinates user requests to EBS clusters. The nodes in the EBS cluster are connected with two networks, the second one is intended for only node to node network traffic.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Technologies
+    </td>
+    <td>
+      <a href="../technologies.html#Amazon+Elastic+Compute+Cloud+%28EC2%29">Amazon Elastic Compute Cloud (EC2)</a>, <a href="../technologies.html#Amazon+Elastic+Block+Store+%28EBS%29">Amazon Elastic Block Store (EBS)</a>, <a href="../technologies.html#Relational+Database+Service+%28RDS%29">Relational Database Service (RDS)</a>, <a href="../technologies.html#Amazon+Virtual+Private+Cloud+%28VPC%29+Regions">Amazon Virtual Private Cloud (VPC) Regions</a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Root cause
+    </td>
+    <td>
+      During routine maintenance traffic from the primary network was redirected to the secondary, leaving both unavailable; and a race condition in the code on the EBS nodes (causing failure when a large number of requests for replication were concurrently closed).
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Failure
+    </td>
+    <td>
+      EBS volumes became unable to service read and write operations; virtual machines reading from these disks became "stuck" waiting for disk operations; and the control plane experienced thread starvation due to "hung" requests to EBS.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Impact
+    </td>
+    <td>
+      Customers experienced elevated error rates on virual machine instances (with affected block storage attached) and attempts to create new instances failed.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Mitigation
+    </td>
+    <td>
+      Severed all communication between the degraded network and the control plane, allowing instances to recover over several days; gradually reconnected to the network and manually recovered volumes (from snapshots taken at begining of the event) that did not recover on their own.
+    </td>
+  </tr>
+</table>
+
+  </body>
+</html>

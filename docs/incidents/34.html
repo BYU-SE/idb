@@ -1,0 +1,131 @@
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>The day we deleted our VM images</title>
+    <style>
+      
+body {
+  font-family: Helvetica, sans-serif;
+}
+a, a:visited {
+  color:#03e;
+}
+table {
+  border-collapse: collapse;
+}
+td {
+  border: 1px solid #ddd;
+  vertical-align:top;
+  text-align:left;
+  padding:10px;
+  line-height:150%;
+}
+blockquote {
+  font-size:125%;
+  padding:0px 20px;
+  margin:20px 0px;
+  border-left:1px solid #ddd;
+}
+tr.category td {
+  font-weight:bold;
+  background-color:#ffd;
+}
+tr.head {
+  font-weight:bold;
+}
+p.footer {
+  font-size:75%;
+}
+
+    </style>
+  </head>
+  <body>
+  <h1>
+    The day we deleted our VM images
+  </h1>
+  
+<blockquote>
+  &ldquo;To avoid running out of space, we have an automated cleanup service in place to delete images that have been removed from our internal image catalog service. You may already see where this is going.&rdquo;
+</blockquote>
+
+<table>
+  <tr>
+    <td>
+      Incident
+    </td>
+    <td>
+      #34 at 
+      <a href="../organizations.html#Travis+CI">Travis CI</a> on 
+      <a href="../years.html#2016">2016/08/09</a> by Konstantin Haase (Chief Technology Officer)
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Full report
+    </td>
+    <td>
+      <a href="https://blog.travis-ci.com/2016-09-30-the-day-we-deleted-our-vm-images/">https://blog.travis-ci.com/2016-09-30-the-day-we-deleted-our-vm-images/</a>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      How it happened
+    </td>
+    <td>
+      To troubleshoot a bug, the clean up process was turned off and in the meantime the organization began creating more virtual machine images than before, including images that had not yet beeen fully tested. The clean up process was turned back on and retrieved from the database a partial list of valid images (due to a limit of 100 on the query). The clean up process then deleted older, but still in use, images (including the images used most).
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Architecture
+    </td>
+    <td>
+      Continuous integration tool running build jobs on Linux virtual machines in Google Compute Engine.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Technologies
+    </td>
+    <td>
+      <a href="../technologies.html#Google+Compute+Engine+%28GCE%29">Google Compute Engine (GCE)</a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Root cause
+    </td>
+    <td>
+      Virtual machine image cleanup script that queried a database for a list of valid images (so it knew what not to delete) had a limit of 100 on the query.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Failure
+    </td>
+    <td>
+      Deletion of virtual machine images being used in client build jobs.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Impact
+    </td>
+    <td>
+      Extended outage and permanent loss of virual machine images, breaking many customer's build jobs.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Mitigation
+    </td>
+    <td>
+      Recovering deleted virtual machine images was not an option so they rolled forward all jobs to the new (not well tested) images. The engineering team spent more than a week fixing issues that arose.
+    </td>
+  </tr>
+</table>
+
+  </body>
+</html>

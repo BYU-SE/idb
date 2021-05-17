@@ -1,0 +1,772 @@
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Incident database</title>
+    <style>
+      
+body {
+  font-family: Helvetica, sans-serif;
+}
+a, a:visited {
+  color:#03e;
+}
+table {
+  border-collapse: collapse;
+}
+td {
+  border: 1px solid #ddd;
+  vertical-align:top;
+  text-align:left;
+  padding:10px;
+  line-height:150%;
+}
+blockquote {
+  font-size:125%;
+  padding:0px 20px;
+  margin:20px 0px;
+  border-left:1px solid #ddd;
+}
+tr.category td {
+  font-weight:bold;
+  background-color:#ffd;
+}
+tr.head {
+  font-weight:bold;
+}
+p.footer {
+  font-size:75%;
+}
+
+    </style>
+  </head>
+  <body>
+  <h1>
+    Incident database
+  </h1>
+  <table>
+
+<tr class="head">
+  <td>#</td>
+  <td>Org</td>
+  <td>Year</td>
+  <td>Report</td>
+</tr>
+
+
+<tr>
+  <td>
+    1
+  </td>
+  <td>
+    <a href="organizations.html#Buildkite">Buildkite</a>
+  </td>
+  <td>
+    <a href="years.html#2016">2016</a>
+  </td>
+  <td>
+  <a href="incidents/1.html">Buildkite Outage</a>:
+    &ldquo;We woke up at 21:00 UTC almost 4 hours after we went offline to see our phones full of emails, tweets and Slack messages letting us know Buildkite was down. Many expletives were yelled as we all raced out of bed, opened laptops, and started figuring out what was going on.&rdquo;
+  </td>
+</tr>
+
+
+<tr>
+  <td>
+    2
+  </td>
+  <td>
+    <a href="organizations.html#Square">Square</a>
+  </td>
+  <td>
+    <a href="years.html#2017">2017</a>
+  </td>
+  <td>
+  <a href="incidents/2.html">Always Be Closing: The Tale of a Go Resource Leak</a>:
+    &ldquo;This root cause was tickled by a configuration change in another service, which inadvertently set its client request timeout to 60,000 seconds instead of the intended 60,000 milliseconds.&rdquo;
+  </td>
+</tr>
+
+
+<tr>
+  <td>
+    3
+  </td>
+  <td>
+    <a href="organizations.html#Discord">Discord</a>
+  </td>
+  <td>
+    <a href="years.html#2017">2017</a>
+  </td>
+  <td>
+  <a href="incidents/3.html">Unavailable Guilds & Connection Issues</a>:
+    &ldquo;These issues caused enough critical impact that Discord's engineering team was forced to fully restart the service, reconnecting millions of clients over a period of 20 minutes.&rdquo;
+  </td>
+</tr>
+
+
+<tr>
+  <td>
+    4
+  </td>
+  <td>
+    <a href="organizations.html#Cloudflare">Cloudflare</a>
+  </td>
+  <td>
+    <a href="years.html#2017">2017</a>
+  </td>
+  <td>
+  <a href="incidents/4.html">Incident report on memory leak caused by Cloudflare parser bug</a>:
+    &ldquo;So, the bug had been dormant for years until the internal feng shui of the buffers passed between NGINX filter modules changed with the introduction of cf-html.&rdquo;
+  </td>
+</tr>
+
+
+<tr>
+  <td>
+    5
+  </td>
+  <td>
+    <a href="organizations.html#Mailchimp">Mailchimp</a>
+  </td>
+  <td>
+    <a href="years.html#2019">2019</a>
+  </td>
+  <td>
+  <a href="incidents/5.html">What We Learned from the Recent Mandrill Outage</a>:
+    &ldquo;In November of 2018, engineers on our Mandrill team identified the potential to reach wraparound, as the XIDs were climbing to approximately half their total limit during peak load. Our team determined wraparound was not an immediate threat, but we added a ticket to the backlog to set up additional monitoring.&rdquo;
+  </td>
+</tr>
+
+
+<tr>
+  <td>
+    6
+  </td>
+  <td>
+    <a href="organizations.html#Gitlab">Gitlab</a>
+  </td>
+  <td>
+    <a href="years.html#2017">2017</a>
+  </td>
+  <td>
+  <a href="incidents/6.html">Postmortem of database outage of January 31</a>:
+    &ldquo;Trying to restore the replication process, an engineer proceeds to wipe the PostgreSQL database directory, errantly thinking they were doing so on the secondary. Unfortunately this process was executed on the primary instead.&rdquo;
+  </td>
+</tr>
+
+
+<tr>
+  <td>
+    7
+  </td>
+  <td>
+    <a href="organizations.html#Saltside">Saltside</a>
+  </td>
+  <td>
+    <a href="years.html#2017">2017</a>
+  </td>
+  <td>
+  <a href="incidents/7.html">Our First Kubernetes Outage</a>:
+    &ldquo;I checked on things two hours later. The issue had not resolved itself. It became larger.&rdquo;
+  </td>
+</tr>
+
+
+<tr>
+  <td>
+    8
+  </td>
+  <td>
+    <a href="organizations.html#Epic">Epic</a>
+  </td>
+  <td>
+    <a href="years.html#2018">2018</a>
+  </td>
+  <td>
+  <a href="incidents/8.html">Postmortem of Sevice Outage at 3.4M CCU</a>:
+    &ldquo;Fortnite hit a new peak of 3.4 million concurrent players last Sunday... and that didn't come without issues!&rdquo;
+  </td>
+</tr>
+
+
+<tr>
+  <td>
+    9
+  </td>
+  <td>
+    <a href="organizations.html#Parse.ly">Parse.ly</a>
+  </td>
+  <td>
+    <a href="years.html#2015">2015</a>
+  </td>
+  <td>
+  <a href="incidents/9.html">Kafkapocalypse: a postmortem on our service outage</a>:
+    &ldquo;The real problem here isn't failure, but correlated cluster-wide failure. Because we were close to network limits on all of our Kafka nodes, when one failed, the remaining nodes would have to serve more consumers, which would, in turn, lead to more network traffic on those remaining nodes.&rdquo;
+  </td>
+</tr>
+
+
+<tr>
+  <td>
+    10
+  </td>
+  <td>
+    <a href="organizations.html#GoCardless">GoCardless</a>
+  </td>
+  <td>
+    <a href="years.html#2017">2017</a>
+  </td>
+  <td>
+  <a href="incidents/10.html">Incident review: API and Dashboard outage on 10 October 2017</a>:
+    &ldquo;The Pacemaker cluster correctly observed that Postgres was unhealthy on the primary node. It repeatedly attempted to promote a new primary, but each time it couldn't decide where that primary should run.&rdquo;
+  </td>
+</tr>
+
+
+<tr>
+  <td>
+    11
+  </td>
+  <td>
+    <a href="organizations.html#Stripe">Stripe</a>
+  </td>
+  <td>
+    <a href="years.html#2019">2019</a>
+  </td>
+  <td>
+  <a href="incidents/11.html">Root cause analysis: significantly elevated error rates on 2019-07-10</a>:
+    &ldquo;The new version also introduced a subtle fault in the database’s failover system that only manifested in the presence of multiple stalled nodes. On the day of the events, one shard was in the specific state that triggered this fault.&rdquo;
+  </td>
+</tr>
+
+
+<tr>
+  <td>
+    12
+  </td>
+  <td>
+    <a href="organizations.html#Cloudflare">Cloudflare</a>
+  </td>
+  <td>
+    <a href="years.html#2019">2019</a>
+  </td>
+  <td>
+  <a href="incidents/12.html">Details of the Cloudflare outage on July 2, 2019</a>:
+    &ldquo;The real story of how the Cloudflare service went down for 27 minutes is much more complex than 'a regular expression went bad'.&rdquo;
+  </td>
+</tr>
+
+
+<tr>
+  <td>
+    13
+  </td>
+  <td>
+    <a href="organizations.html#GitHub">GitHub</a>
+  </td>
+  <td>
+    <a href="years.html#2018">2018</a>
+  </td>
+  <td>
+  <a href="incidents/13.html">October 21 post-incident analysis</a>:
+    &ldquo;Connectivity between these locations was restored in 43 seconds, but this brief outage triggered a chain of events that led to 24 hours and 11 minutes of service degradation.&rdquo;
+  </td>
+</tr>
+
+
+<tr>
+  <td>
+    14
+  </td>
+  <td>
+    <a href="organizations.html#Tarsnap">Tarsnap</a>
+  </td>
+  <td>
+    <a href="years.html#2016">2016</a>
+  </td>
+  <td>
+  <a href="incidents/14.html">Tarsnap Outage</a>:
+    &ldquo;I'm happy that the particular failure mode -- 'something weird happened; shut down all the things' -- ran exactly as I hoped.&rdquo;
+  </td>
+</tr>
+
+
+<tr>
+  <td>
+    15
+  </td>
+  <td>
+    <a href="organizations.html#Discord">Discord</a>
+  </td>
+  <td>
+    <a href="years.html#2017">2017</a>
+  </td>
+  <td>
+  <a href="incidents/15.html">Discord Outage March 2017</a>:
+    &ldquo;Shortly thereafter the nodes of another service [...] attempted a reconnection, triggering a massive 'thundering herd' towards the existing members of the presence cluster.&rdquo;
+  </td>
+</tr>
+
+
+<tr>
+  <td>
+    16
+  </td>
+  <td>
+    <a href="organizations.html#Google">Google</a>
+  </td>
+  <td>
+    <a href="years.html#2019">2019</a>
+  </td>
+  <td>
+  <a href="incidents/16.html">Google cloud Fails during maitainance</a>:
+    &ldquo;Two normally-benign misconfigurations, and a specific software bug, combined to initiate the outage.&rdquo;
+  </td>
+</tr>
+
+
+<tr>
+  <td>
+    17
+  </td>
+  <td>
+    <a href="organizations.html#Stack+Exchange">Stack Exchange</a>
+  </td>
+  <td>
+    <a href="years.html#2014">2014</a>
+  </td>
+  <td>
+  <a href="incidents/17.html">Stack Exchange Configuration Error</a>:
+    &ldquo;While attempting to make a change enabling streamlined access for our web servers to internal API endpoints [...] a misleading comment in the iptables configuration led us to make a harmful change.&rdquo;
+  </td>
+</tr>
+
+
+<tr>
+  <td>
+    18
+  </td>
+  <td>
+    <a href="organizations.html#Travis+CI">Travis CI</a>
+  </td>
+  <td>
+    <a href="years.html#2015">2015</a>
+  </td>
+  <td>
+  <a href="incidents/18.html">High queue times on OSX builds (.com and .org)</a>:
+    &ldquo;When the [passwords] rotation happened, the configuration for the vsphere-janitor service did not get updated.&rdquo;
+  </td>
+</tr>
+
+
+<tr>
+  <td>
+    19
+  </td>
+  <td>
+    <a href="organizations.html#Redit">Redit</a>
+  </td>
+  <td>
+    <a href="years.html#2017">2017</a>
+  </td>
+  <td>
+  <a href="incidents/19.html">Why Reddit was down on Aug 11</a>:
+    &ldquo;Autoscaler read the partially migrated Zookeeper data and terminated many of our application servers, which serve our website and API, and our caching servers, in 16 seconds.&rdquo;
+  </td>
+</tr>
+
+
+<tr>
+  <td>
+    20
+  </td>
+  <td>
+    <a href="organizations.html#Dropbox">Dropbox</a>
+  </td>
+  <td>
+    <a href="years.html#2014">2014</a>
+  </td>
+  <td>
+  <a href="incidents/20.html">Outage post-mortem</a>:
+    &ldquo;For the past couple of days, we’ve been working around the clock to restore full access as soon as possible.&rdquo;
+  </td>
+</tr>
+
+
+<tr>
+  <td>
+    21
+  </td>
+  <td>
+    <a href="organizations.html#Joyent">Joyent</a>
+  </td>
+  <td>
+    <a href="years.html#2015">2015</a>
+  </td>
+  <td>
+  <a href="incidents/21.html">Postmortem for July 27 outage of the Manta service</a>:
+    &ldquo;There was a single 'DROP TRIGGER' query that was attempting to take an exclusive lock on the whole table. It appears that PostgreSQL blocks new attempts to take a shared lock while an exclusive lock is wanted.&rdquo;
+  </td>
+</tr>
+
+
+<tr>
+  <td>
+    22
+  </td>
+  <td>
+    <a href="organizations.html#Amazon+Web+Services">Amazon Web Services</a>
+  </td>
+  <td>
+    <a href="years.html#2011">2011</a>
+  </td>
+  <td>
+  <a href="incidents/22.html">Amazon EC2 and Amazon RDS Service Disruption in the US East Region</a>:
+    &ldquo;As with any complicated operational issue, this one was caused by several root causes interacting with one another and therefore gives us many opportunities to protect the service against any similar event reoccurring.&rdquo;
+  </td>
+</tr>
+
+
+<tr>
+  <td>
+    23
+  </td>
+  <td>
+    <a href="organizations.html#Foursquare">Foursquare</a>
+  </td>
+  <td>
+    <a href="years.html#2010">2010</a>
+  </td>
+  <td>
+  <a href="incidents/23.html">Forsquare outage post mortem</a>:
+    &ldquo;Over these two months, check-ins were being written continually to each shard. Unfortunately, these check-ins did not grow evenly across chunks.&rdquo;
+  </td>
+</tr>
+
+
+<tr>
+  <td>
+    24
+  </td>
+  <td>
+    <a href="organizations.html#Cloudflare">Cloudflare</a>
+  </td>
+  <td>
+    <a href="years.html#2020">2020</a>
+  </td>
+  <td>
+  <a href="incidents/24.html">Cloudflare outage on July 17, 2020</a>:
+    &ldquo;This configuration contained an error that caused all traffic across our backbone to be sent to Atlanta. This quickly overwhelmed the Atlanta router and caused Cloudflare network locations connected to the backbone to fail.&rdquo;
+  </td>
+</tr>
+
+
+<tr>
+  <td>
+    25
+  </td>
+  <td>
+    <a href="organizations.html#Amazon+Web+Services">Amazon Web Services</a>
+  </td>
+  <td>
+    <a href="years.html#2012">2012</a>
+  </td>
+  <td>
+  <a href="incidents/25.html">Amazon ELB Service Event in the US-East Region</a>:
+    &ldquo;This process was run by one of a very small number of developers who have access to this production environment. Unfortunately, the developer did not realize the mistake at the time.&rdquo;
+  </td>
+</tr>
+
+
+<tr>
+  <td>
+    26
+  </td>
+  <td>
+    <a href="organizations.html#GoCardless">GoCardless</a>
+  </td>
+  <td>
+    <a href="years.html#2015">2015</a>
+  </td>
+  <td>
+  <a href="incidents/26.html">Zero-downtime Postgres migrations - the hard parts</a>:
+    &ldquo;We deployed the changes, and all of our assumptions got blown out of the water. Just after the schema migration started, we started getting alerts about API requests timing out.&rdquo;
+  </td>
+</tr>
+
+
+<tr>
+  <td>
+    27
+  </td>
+  <td>
+    <a href="organizations.html#CircleCI">CircleCI</a>
+  </td>
+  <td>
+    <a href="years.html#2015">2015</a>
+  </td>
+  <td>
+  <a href="incidents/27.html">CircleCI DB performance issue</a>:
+    &ldquo;At this point, we were in extended failure mode: the original cause of the outage was no longer the fire to be fought. We were suffering a cascading effect, and that was now where we needed to put our focus.&rdquo;
+  </td>
+</tr>
+
+
+<tr>
+  <td>
+    28
+  </td>
+  <td>
+    <a href="organizations.html#Twilio">Twilio</a>
+  </td>
+  <td>
+    <a href="years.html#2013">2013</a>
+  </td>
+  <td>
+  <a href="incidents/28.html">Billing Incident Post-Mortem: Breakdown, Analysis and Root Cause</a>:
+    &ldquo;This caused all redis-slaves to reconnect and request full synchronization with the master at the same time. Receiving full sync requests from each redis-slave caused the master to suffer extreme load, resulting in performance degradation of the master and timeouts from redis-slaves to redis-master.&rdquo;
+  </td>
+</tr>
+
+
+<tr>
+  <td>
+    29
+  </td>
+  <td>
+    <a href="organizations.html#Stack+Exchange">Stack Exchange</a>
+  </td>
+  <td>
+    <a href="years.html#2017">2017</a>
+  </td>
+  <td>
+  <a href="incidents/29.html">Outage Postmortem - January 24 2017</a>:
+    &ldquo;It took us 2 minutes to notice the issue, 5 minutes to locate the source of the issue and 10 minutes to get service restored.&rdquo;
+  </td>
+</tr>
+
+
+<tr>
+  <td>
+    30
+  </td>
+  <td>
+    <a href="organizations.html#Heroku">Heroku</a>
+  </td>
+  <td>
+    <a href="years.html#2017">2017</a>
+  </td>
+  <td>
+  <a href="incidents/30.html">Heroku April 2017 App Crashes</a>:
+    &ldquo;These missed state updates were very hard for us to discover because our routing fleet only maintains a connection to the affected class of instance for 30 minutes. After this time the connection is terminated and cycled to another server.&rdquo;
+  </td>
+</tr>
+
+
+<tr>
+  <td>
+    31
+  </td>
+  <td>
+    <a href="organizations.html#Google">Google</a>
+  </td>
+  <td>
+    <a href="years.html#2015">2015</a>
+  </td>
+  <td>
+  <a href="incidents/31.html">Google Compute Engine Persistent Disk issue in europe-west1-b</a>:
+    &ldquo;Four successive lightning strikes on the local utilities grid that powers our European datacenter caused a brief loss of power to storage systems which host disk capacity for GCE instances in the europe-west1-b zone.&rdquo;
+  </td>
+</tr>
+
+
+<tr>
+  <td>
+    32
+  </td>
+  <td>
+    <a href="organizations.html#Github">Github</a>
+  </td>
+  <td>
+    <a href="years.html#2016">2016</a>
+  </td>
+  <td>
+  <a href="incidents/32.html">GitHub January 28th Incident Report</a>:
+    &ldquo;Slightly over 25% of our servers and several network devices rebooted as a result. This left our infrastructure in a partially operational state and generated alerts to multiple on-call engineers.&rdquo;
+  </td>
+</tr>
+
+
+<tr>
+  <td>
+    33
+  </td>
+  <td>
+    <a href="organizations.html#Amazon+Web+Services">Amazon Web Services</a>
+  </td>
+  <td>
+    <a href="years.html#2017">2017</a>
+  </td>
+  <td>
+  <a href="incidents/33.html">Summary of the Amazon S3 Service Disruption in the Northern Virginia (US-EAST-1) Region</a>:
+    &ldquo;Unfortunately, one of the inputs to the command was entered incorrectly and a larger set of servers was removed than intended.&rdquo;
+  </td>
+</tr>
+
+
+<tr>
+  <td>
+    34
+  </td>
+  <td>
+    <a href="organizations.html#Travis+CI">Travis CI</a>
+  </td>
+  <td>
+    <a href="years.html#2016">2016</a>
+  </td>
+  <td>
+  <a href="incidents/34.html">The day we deleted our VM images</a>:
+    &ldquo;To avoid running out of space, we have an automated cleanup service in place to delete images that have been removed from our internal image catalog service. You may already see where this is going.&rdquo;
+  </td>
+</tr>
+
+
+<tr>
+  <td>
+    35
+  </td>
+  <td>
+    <a href="organizations.html#Elastic">Elastic</a>
+  </td>
+  <td>
+    <a href="years.html#2019">2019</a>
+  </td>
+  <td>
+  <a href="incidents/35.html">Elastic Cloud January 18, 2019 Incident Report</a>:
+    &ldquo;So, if the ZooKeeper server is loaded and causes heartbeat timeouts because of GC pauses, TreeCache will start flooding ZooKeeper with requests, making the situation worse and leading to a chain reaction that prevents the ZooKeeper servers from recovering, and can also kill client services.&rdquo;
+  </td>
+</tr>
+
+
+<tr>
+  <td>
+    36
+  </td>
+  <td>
+    <a href="organizations.html#Amazon+Web+Services">Amazon Web Services</a>
+  </td>
+  <td>
+    <a href="years.html#2016">2016</a>
+  </td>
+  <td>
+  <a href="incidents/36.html">Summary of the AWS Service Event in the Sydney Region</a>:
+    &ldquo;The specific signature of this weekend’s utility power failure resulted in an unusually long voltage sag (rather than a complete outage).&rdquo;
+  </td>
+</tr>
+
+
+<tr>
+  <td>
+    37
+  </td>
+  <td>
+    <a href="organizations.html#Duo">Duo</a>
+  </td>
+  <td>
+    <a href="years.html#2018">2018</a>
+  </td>
+  <td>
+  <a href="incidents/37.html">Authentication Latency on DUO1 Deployment</a>:
+    &ldquo;Once this problem was identified, these queues were flushed on each application server and things immediately began to stabilize. In hindsight, this is effectively what the software rollback did as part of the issue on August 20th, which is why the rollback solved that prior issue.&rdquo;
+  </td>
+</tr>
+
+
+<tr>
+  <td>
+    38
+  </td>
+  <td>
+    <a href="organizations.html#Stack+Exchange">Stack Exchange</a>
+  </td>
+  <td>
+    <a href="years.html#2016">2016</a>
+  </td>
+  <td>
+  <a href="incidents/38.html">A Post-Mortem on the Recent Developer Story Information Leak</a>:
+    &ldquo;A bug that caused the user’s phone number and email address to render in the HTML source for people that weren’t the user or an employer attempting to contact the user went unnoticed, because the information wasn’t actually rendered on the page.&rdquo;
+  </td>
+</tr>
+
+
+<tr>
+  <td>
+    39
+  </td>
+  <td>
+    <a href="organizations.html#Travis+CI">Travis CI</a>
+  </td>
+  <td>
+    <a href="years.html#2017">2017</a>
+  </td>
+  <td>
+  <a href="incidents/39.html">Travis CI Container-based Linux Precise infrastructure emergency maintenance</a>:
+    &ldquo;This change appears to have effects on how bash handles exit codes, in a manner that we have fully investigated yet. This change was not detected by our staging environment tests and revealed insufficient diversity in how our tests reflect the variety of builds ou users are running.&rdquo;
+  </td>
+</tr>
+
+
+<tr>
+  <td>
+    40
+  </td>
+  <td>
+    <a href="organizations.html#Elastic">Elastic</a>
+  </td>
+  <td>
+    <a href="years.html#2019">2019</a>
+  </td>
+  <td>
+  <a href="incidents/40.html">Elastic Cloud Incident Report: February 4, 2019</a>:
+    &ldquo;Service metrics had reported the hosts as healthy, thus signaling that it was safe to proceed with the maintenance; however, the metrics proved to be insufficient in conveying the state of individual hosts and of the coordination layer as a whole.&rdquo;
+  </td>
+</tr>
+
+
+<tr>
+  <td>
+    41
+  </td>
+  <td>
+    <a href="organizations.html#Amazon+Web+Services">Amazon Web Services</a>
+  </td>
+  <td>
+    <a href="years.html#2020">2020</a>
+  </td>
+  <td>
+  <a href="incidents/41.html">Summary of the Amazon Kinesis Event in the Northern Virginia (US-EAST-1) Region</a>:
+    &ldquo;The trigger, though not root cause, for the event was a relatively small addition of capacity&rdquo;
+  </td>
+</tr>
+
+
+<tr>
+  <td>
+    42
+  </td>
+  <td>
+    <a href="organizations.html#Google">Google</a>
+  </td>
+  <td>
+    <a href="years.html#2019">2019</a>
+  </td>
+  <td>
+  <a href="incidents/42.html">Elevated error rate with Google Cloud Storage</a>:
+    &ldquo;User-visible [services that use the failing service] also saw elevated error rates, although the user impact was greatly reduced by caching and redundancy built into those services.&rdquo;
+  </td>
+</tr>
+
+</table>
+  </body>
+</html>

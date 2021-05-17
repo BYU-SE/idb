@@ -1,0 +1,131 @@
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Forsquare outage post mortem</title>
+    <style>
+      
+body {
+  font-family: Helvetica, sans-serif;
+}
+a, a:visited {
+  color:#03e;
+}
+table {
+  border-collapse: collapse;
+}
+td {
+  border: 1px solid #ddd;
+  vertical-align:top;
+  text-align:left;
+  padding:10px;
+  line-height:150%;
+}
+blockquote {
+  font-size:125%;
+  padding:0px 20px;
+  margin:20px 0px;
+  border-left:1px solid #ddd;
+}
+tr.category td {
+  font-weight:bold;
+  background-color:#ffd;
+}
+tr.head {
+  font-weight:bold;
+}
+p.footer {
+  font-size:75%;
+}
+
+    </style>
+  </head>
+  <body>
+  <h1>
+    Forsquare outage post mortem
+  </h1>
+  
+<blockquote>
+  &ldquo;Over these two months, check-ins were being written continually to each shard. Unfortunately, these check-ins did not grow evenly across chunks.&rdquo;
+</blockquote>
+
+<table>
+  <tr>
+    <td>
+      Incident
+    </td>
+    <td>
+      #23 at 
+      <a href="../organizations.html#Foursquare">Foursquare</a> on 
+      <a href="../years.html#2010">2010/10/05</a> by Eliot Horowitz (CTO 10gen)
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Full report
+    </td>
+    <td>
+      <a href="https://groups.google.com/forum/#!topic/mongodb-user/UoqU8ofp134">https://groups.google.com/forum/#!topic/mongodb-user/UoqU8ofp134</a>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      How it happened
+    </td>
+    <td>
+      Data grew unevenly between two database shards, consuming available memory (66GB) in one shard leading to data reads and writes going to the disk, increasing latency by an order of magnitude for key queries. Requests began backing up and the site crashed.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Architecture
+    </td>
+    <td>
+      A MongoDB database on a two-shard cluster, each replicating to a slave for redundancy. Frequently used data is stored in RAM. Sharding is based on user id.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Technologies
+    </td>
+    <td>
+      <a href="../technologies.html#MongoDB">MongoDB</a>, <a href="../technologies.html#Amazon+Elastic+Compute+Cloud+%28EC2%29">Amazon Elastic Compute Cloud (EC2)</a>, <a href="../technologies.html#Amazon+Elastic+Block+Store+%28EBS%29">Amazon Elastic Block Store (EBS)</a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Root cause
+    </td>
+    <td>
+      Data in two shards grew unevenly eventually consuming all available RAM in one of the shards, requring reads and writes to hit EBS volumes.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Failure
+    </td>
+    <td>
+      Key queries had high latency leading to a backlog of requests.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Impact
+    </td>
+    <td>
+      Multiple days of outages for the site.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Mitigation
+    </td>
+    <td>
+      Created a third MongoDB shard and moved 5% of the data to the new shard, ran a command (on primary and replica) to compact the database (repairDatabase) to free up enough memory to bring the system online.
+    </td>
+  </tr>
+</table>
+
+  </body>
+</html>

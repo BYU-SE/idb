@@ -1,0 +1,131 @@
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Postmortem of Sevice Outage at 3.4M CCU</title>
+    <style>
+      
+body {
+  font-family: Helvetica, sans-serif;
+}
+a, a:visited {
+  color:#03e;
+}
+table {
+  border-collapse: collapse;
+}
+td {
+  border: 1px solid #ddd;
+  vertical-align:top;
+  text-align:left;
+  padding:10px;
+  line-height:150%;
+}
+blockquote {
+  font-size:125%;
+  padding:0px 20px;
+  margin:20px 0px;
+  border-left:1px solid #ddd;
+}
+tr.category td {
+  font-weight:bold;
+  background-color:#ffd;
+}
+tr.head {
+  font-weight:bold;
+}
+p.footer {
+  font-size:75%;
+}
+
+    </style>
+  </head>
+  <body>
+  <h1>
+    Postmortem of Sevice Outage at 3.4M CCU
+  </h1>
+  
+<blockquote>
+  &ldquo;Fortnite hit a new peak of 3.4 million concurrent players last Sunday... and that didn't come without issues!&rdquo;
+</blockquote>
+
+<table>
+  <tr>
+    <td>
+      Incident
+    </td>
+    <td>
+      #8 at 
+      <a href="../organizations.html#Epic">Epic</a> on 
+      <a href="../years.html#2018">2018/02/03</a> by Epic Team
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Full report
+    </td>
+    <td>
+      <a href="https://www.epicgames.com/fortnite/en-US/news/postmortem-of-service-outage-at-3-4m-ccu">https://www.epicgames.com/fortnite/en-US/news/postmortem-of-service-outage-at-3-4m-ccu</a>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      How it happened
+    </td>
+    <td>
+      As the load increased, one shard of the MongoDB database became unresponsive and the service experienced thread pool starvation. Memcached failed underload which saturated NGINX because it was stuck waiting on long running failure calls to Memcached. This in turn lead to failed health checks leading to the load balancer pulling all nodes out of rotation. A load balancer for the messaging service was overloaded and failed, leading to clients disconnecting followed by a flood of reconnection requests, exacerbating the problem.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Architecture
+    </td>
+    <td>
+      (1) A service with a database connection pool that connects to a sidecar process which has its own connection pool for connecting to the shards in the 9 MongoDB shards, where each shard has a writer, two read replicas, and a hidden replica for redundancy. (2) A service with a sidecar process (as a shortcut for some request types) which has an NGINX proxy calling a Memcached instance. (3) A publish-subscribe messaging system based on XMPP.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Technologies
+    </td>
+    <td>
+      <a href="../technologies.html#MongoDB">MongoDB</a>, <a href="../technologies.html#Amazon+Elastic+Compute+Cloud+%28EC2%29">Amazon Elastic Compute Cloud (EC2)</a>, <a href="../technologies.html#NGINX">NGINX</a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Root cause
+    </td>
+    <td>
+      The overall service hit a new peak of 3.4 million concurrent users, exceeding various datastore (MongoDB and Memcached) and loadbalancer limits. A latent configuration defect limited the number of service threads (in the db pool) to a smaller number than necessary.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Failure
+    </td>
+    <td>
+      Multiple services were overwhelmed and failed. The MongoDB and memcached became unresponsive. A service experienced database thread pool starvation.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Impact
+    </td>
+    <td>
+      There were 6 different incidents, with a mix of partial and total service disruptions.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Mitigation
+    </td>
+    <td>
+      Manually failed over unresponsive MongoDB datastore; rolled back to previous thread pool configuration (raising limit on number of service threads); fixed NGINX issue by increasing Memcached capacity (and simplifying the architecture to remove a potential bottleneck).
+    </td>
+  </tr>
+</table>
+
+  </body>
+</html>

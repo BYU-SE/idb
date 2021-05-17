@@ -1,0 +1,131 @@
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Elastic Cloud January 18, 2019 Incident Report</title>
+    <style>
+      
+body {
+  font-family: Helvetica, sans-serif;
+}
+a, a:visited {
+  color:#03e;
+}
+table {
+  border-collapse: collapse;
+}
+td {
+  border: 1px solid #ddd;
+  vertical-align:top;
+  text-align:left;
+  padding:10px;
+  line-height:150%;
+}
+blockquote {
+  font-size:125%;
+  padding:0px 20px;
+  margin:20px 0px;
+  border-left:1px solid #ddd;
+}
+tr.category td {
+  font-weight:bold;
+  background-color:#ffd;
+}
+tr.head {
+  font-weight:bold;
+}
+p.footer {
+  font-size:75%;
+}
+
+    </style>
+  </head>
+  <body>
+  <h1>
+    Elastic Cloud January 18, 2019 Incident Report
+  </h1>
+  
+<blockquote>
+  &ldquo;So, if the ZooKeeper server is loaded and causes heartbeat timeouts because of GC pauses, TreeCache will start flooding ZooKeeper with requests, making the situation worse and leading to a chain reaction that prevents the ZooKeeper servers from recovering, and can also kill client services.&rdquo;
+</blockquote>
+
+<table>
+  <tr>
+    <td>
+      Incident
+    </td>
+    <td>
+      #35 at 
+      <a href="../organizations.html#Elastic">Elastic</a> on 
+      <a href="../years.html#2019">2019/01/18</a> by Panagiotis Moustafellos (Tech Lead - SRE), Uri Cohen (Sr. Director - Product Management), Sylvain Wallez (Tech Lead - Software Engineer)
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Full report
+    </td>
+    <td>
+      <a href="https://www.elastic.co/blog/elastic-cloud-january-18-2019-incident-report">https://www.elastic.co/blog/elastic-cloud-january-18-2019-incident-report</a>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      How it happened
+    </td>
+    <td>
+      CPU load on the cluster manager hosts increased resulting in some client disconnections and as a result clients sending large requests to update their mirror of cluster node information. Many of these requests failed and were resent by clients, with subsequent requests queuing up in the client. Clients started experiencing resource starvation due to these requests accumulating in memory, leading to out of memory errors and an outage.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Architecture
+    </td>
+    <td>
+      A proxy/routing layer that routes requests to cluster nodes manged by a ZooKeeper instance. The proxy/routing layer is a client to the ZooKeeper layer and caintains an in memory mirror (TreeCache) of all ZooKeeper node information.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Technologies
+    </td>
+    <td>
+      <a href="../technologies.html#Apache+ZooKeeper">Apache ZooKeeper</a>, <a href="../technologies.html#TreeCache">TreeCache</a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Root cause
+    </td>
+    <td>
+      When there is network instability between the cluster manager hosts and its clients (the proxy layer), the clients send large reqeusts to refresh state, with retries and queuing of requests.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Failure
+    </td>
+    <td>
+      Clients (ie, the proxy layer) were unavailable as the backlog of requests (to ZooKeeper) led to out of memory conditions.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Impact
+    </td>
+    <td>
+      Customers experienced severely degraded access to the service for 3 hours and 20 minutes.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Mitigation
+    </td>
+    <td>
+      Responders scaled up the proxy layer (to accomodate surging traffic), manually trigged a leader election and stabilizing the ZooKeeper ensemble.
+    </td>
+  </tr>
+</table>
+
+  </body>
+</html>

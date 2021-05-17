@@ -1,0 +1,131 @@
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Elastic Cloud Incident Report: February 4, 2019</title>
+    <style>
+      
+body {
+  font-family: Helvetica, sans-serif;
+}
+a, a:visited {
+  color:#03e;
+}
+table {
+  border-collapse: collapse;
+}
+td {
+  border: 1px solid #ddd;
+  vertical-align:top;
+  text-align:left;
+  padding:10px;
+  line-height:150%;
+}
+blockquote {
+  font-size:125%;
+  padding:0px 20px;
+  margin:20px 0px;
+  border-left:1px solid #ddd;
+}
+tr.category td {
+  font-weight:bold;
+  background-color:#ffd;
+}
+tr.head {
+  font-weight:bold;
+}
+p.footer {
+  font-size:75%;
+}
+
+    </style>
+  </head>
+  <body>
+  <h1>
+    Elastic Cloud Incident Report: February 4, 2019
+  </h1>
+  
+<blockquote>
+  &ldquo;Service metrics had reported the hosts as healthy, thus signaling that it was safe to proceed with the maintenance; however, the metrics proved to be insufficient in conveying the state of individual hosts and of the coordination layer as a whole.&rdquo;
+</blockquote>
+
+<table>
+  <tr>
+    <td>
+      Incident
+    </td>
+    <td>
+      #40 at 
+      <a href="../organizations.html#Elastic">Elastic</a> on 
+      <a href="../years.html#2019">2019/02/04</a> by Panagiotis Moustafellos (Tech Lead - SRE), Ben Osborne (Site Reliability) Engineer
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Full report
+    </td>
+    <td>
+      <a href="https://www.elastic.co/blog/elastic-cloud-incident-report-feburary-4-2019">https://www.elastic.co/blog/elastic-cloud-incident-report-feburary-4-2019</a>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      How it happened
+    </td>
+    <td>
+      During an upgrade of hosts in the coordination layer (in which hosts were patched and then used to replace old hosts) high traffic and a defect led to CPU softlocks and a ZooKeeper failure. A portion of the high traffic was due to reconnection attempts due to the instability caused by high latency. A second set of services (kibana dashboards) that depend on the ZooKeeper ensemble also failed due to a defect that left unsuccessful connections open (and there were many of these because of failures to connect to the zookeeper ensemble).
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Architecture
+    </td>
+    <td>
+      A multi-layer application: (1) a Kibana frontend, (2) a proxy/routing layer that routes requests to cluster nodes, and (3) a coordination layer which maintains node state and location (implemented as a three-node Apache ZooKeeper ensemble).
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Technologies
+    </td>
+    <td>
+      <a href="../technologies.html#Apache+ZooKeeper">Apache ZooKeeper</a>, <a href="../technologies.html#Elasticsearch">Elasticsearch</a>, <a href="../technologies.html#Kibana">Kibana</a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Root cause
+    </td>
+    <td>
+      During an upgrade, hosts in the coordination layer were under too much load (due to client traffic, including reconnect attempts) to establish quorum; and a defect in runc.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Failure
+    </td>
+    <td>
+      The coordination layer had increasd latency and low availability, and cluster hosts experienced soft locks; responders eliminated nearly all client traffic to help with mitigation.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Impact
+    </td>
+    <td>
+      Customers experienced reduced functionality or a partial outage and later a complete in one region.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Mitigation
+    </td>
+    <td>
+      Rolled back ZooKeeper hosts to previous version and removed client traffic to allow the ensemble to get up correctly. Restarted kibana instances and applied limits to avoid keeping connections open.
+    </td>
+  </tr>
+</table>
+
+  </body>
+</html>

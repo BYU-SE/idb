@@ -41,7 +41,7 @@ db.connection().commit()
 #
 # Next we query the just built database to create a static website in the 'html' directory (creating that directory in the process, if needed)
 
-html_dir = 'html'
+html_dir = 'docs'
 incidents_dir = html_dir + '/incidents'
 
 for d in [html_dir, incidents_dir]:
@@ -104,4 +104,4 @@ for i in incidents:
 
 print('Build complete')
 print('- Run "sqlite3 idb.db" to query the database')
-print('- Open "html/index.html" to browse incidents')
+print('- Open "docs/index.html" to browse incidents')

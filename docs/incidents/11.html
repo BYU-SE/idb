@@ -1,0 +1,131 @@
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Root cause analysis: significantly elevated error rates on 2019-07-10</title>
+    <style>
+      
+body {
+  font-family: Helvetica, sans-serif;
+}
+a, a:visited {
+  color:#03e;
+}
+table {
+  border-collapse: collapse;
+}
+td {
+  border: 1px solid #ddd;
+  vertical-align:top;
+  text-align:left;
+  padding:10px;
+  line-height:150%;
+}
+blockquote {
+  font-size:125%;
+  padding:0px 20px;
+  margin:20px 0px;
+  border-left:1px solid #ddd;
+}
+tr.category td {
+  font-weight:bold;
+  background-color:#ffd;
+}
+tr.head {
+  font-weight:bold;
+}
+p.footer {
+  font-size:75%;
+}
+
+    </style>
+  </head>
+  <body>
+  <h1>
+    Root cause analysis: significantly elevated error rates on 2019-07-10
+  </h1>
+  
+<blockquote>
+  &ldquo;The new version also introduced a subtle fault in the database’s failover system that only manifested in the presence of multiple stalled nodes. On the day of the events, one shard was in the specific state that triggered this fault.&rdquo;
+</blockquote>
+
+<table>
+  <tr>
+    <td>
+      Incident
+    </td>
+    <td>
+      #11 at 
+      <a href="../organizations.html#Stripe">Stripe</a> on 
+      <a href="../years.html#2019">2019/07/10</a> by David Singleton (CTO)
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Full report
+    </td>
+    <td>
+      <a href="https://stripe.com/rcas/2019-07-10">https://stripe.com/rcas/2019-07-10</a>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      How it happened
+    </td>
+    <td>
+      Two database cluster nodes became stalled for unknown reasons, stopped emitting metrics reporting their replication lag and continued to respond as healthy to checks. The primary node for the database cluster failed and the custer was not able to elect a primary, due to a database defect that only manifested in the presense of multiple stalled nodes. To prevent a repeat incident, reposnders rolled back the database election code causing a second failure due to an incompatible cluster configuration.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Architecture
+    </td>
+    <td>
+      A database cluster with multiple shards. Each shard has multiple redundant nodes.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Technologies
+    </td>
+    <td>
+      <a href="../technologies.html#"></a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Root cause
+    </td>
+    <td>
+      A database election protocol defect that only manifests when there are multiple stalled nodes; and later a configuration that was not compatible with the version of the database's election protocol that was reverted to during the incident.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Failure
+    </td>
+    <td>
+      Database nodes failed for one shard. When that shard's primary node also failed, election of new primary node failed and the shard was unable to accept writes; and later CPU starvation on multiple shards.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Impact
+    </td>
+    <td>
+      Applications that write to the shard began to timeout and the API returned errors for users.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Mitigation
+    </td>
+    <td>
+      Restarted all nodes in the database cluster, resulting in a successful election and a restoration of servive; and then updated the cluster configuration.
+    </td>
+  </tr>
+</table>
+
+  </body>
+</html>

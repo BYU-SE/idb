@@ -1,0 +1,131 @@
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Zero-downtime Postgres migrations - the hard parts</title>
+    <style>
+      
+body {
+  font-family: Helvetica, sans-serif;
+}
+a, a:visited {
+  color:#03e;
+}
+table {
+  border-collapse: collapse;
+}
+td {
+  border: 1px solid #ddd;
+  vertical-align:top;
+  text-align:left;
+  padding:10px;
+  line-height:150%;
+}
+blockquote {
+  font-size:125%;
+  padding:0px 20px;
+  margin:20px 0px;
+  border-left:1px solid #ddd;
+}
+tr.category td {
+  font-weight:bold;
+  background-color:#ffd;
+}
+tr.head {
+  font-weight:bold;
+}
+p.footer {
+  font-size:75%;
+}
+
+    </style>
+  </head>
+  <body>
+  <h1>
+    Zero-downtime Postgres migrations - the hard parts
+  </h1>
+  
+<blockquote>
+  &ldquo;We deployed the changes, and all of our assumptions got blown out of the water. Just after the schema migration started, we started getting alerts about API requests timing out.&rdquo;
+</blockquote>
+
+<table>
+  <tr>
+    <td>
+      Incident
+    </td>
+    <td>
+      #26 at 
+      <a href="../organizations.html#GoCardless">GoCardless</a> on 
+      <a href="../years.html#2015">2015</a> by Chris Sinjakli (Senior Site Reliability Engineer)
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Full report
+    </td>
+    <td>
+      <a href="https://gocardless.com/blog/zero-downtime-postgres-migrations-the-hard-parts/">https://gocardless.com/blog/zero-downtime-postgres-migrations-the-hard-parts/</a>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      How it happened
+    </td>
+    <td>
+      Schema changes to a database were deployed, modifying tables that were empty and unused. The change added a foreign key constraint and attempted to take an exclusive lock on both the empty table and an in use table and ended up being queued until that lock could be granted. All other operations (that would want a conflicting lock on the table) were blocked until the exclusive lock was granted and the migration completed.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Architecture
+    </td>
+    <td>
+      Web API backed by a PostgreSQL database
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Technologies
+    </td>
+    <td>
+      <a href="../technologies.html#PostgreSQL">PostgreSQL</a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Root cause
+    </td>
+    <td>
+      While adding a foreign key constraint (and the associated enforcing trigger) to a table, PostgreSQL attempts to take an exclusive lock on both tables invovled in the constraint, and if it is unable to get that lock it is queued. Other conflicting locks then queue up behind blocking other operations on the table.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Failure
+    </td>
+    <td>
+      Database transactions were blocked until the schema migration completed (specifically, the part of the migration that required adding a foreign key constraint).
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Impact
+    </td>
+    <td>
+      Client API requests to (payments) API timed out and failed for around 15 seconds.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Mitigation
+    </td>
+    <td>
+      Incident was resolved naturally as the database change completed.
+    </td>
+  </tr>
+</table>
+
+  </body>
+</html>

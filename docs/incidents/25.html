@@ -1,0 +1,131 @@
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Amazon ELB Service Event in the US-East Region</title>
+    <style>
+      
+body {
+  font-family: Helvetica, sans-serif;
+}
+a, a:visited {
+  color:#03e;
+}
+table {
+  border-collapse: collapse;
+}
+td {
+  border: 1px solid #ddd;
+  vertical-align:top;
+  text-align:left;
+  padding:10px;
+  line-height:150%;
+}
+blockquote {
+  font-size:125%;
+  padding:0px 20px;
+  margin:20px 0px;
+  border-left:1px solid #ddd;
+}
+tr.category td {
+  font-weight:bold;
+  background-color:#ffd;
+}
+tr.head {
+  font-weight:bold;
+}
+p.footer {
+  font-size:75%;
+}
+
+    </style>
+  </head>
+  <body>
+  <h1>
+    Amazon ELB Service Event in the US-East Region
+  </h1>
+  
+<blockquote>
+  &ldquo;This process was run by one of a very small number of developers who have access to this production environment. Unfortunately, the developer did not realize the mistake at the time.&rdquo;
+</blockquote>
+
+<table>
+  <tr>
+    <td>
+      Incident
+    </td>
+    <td>
+      #25 at 
+      <a href="../organizations.html#Amazon+Web+Services">Amazon Web Services</a> on 
+      <a href="../years.html#2012">2012/12/24</a> 
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Full report
+    </td>
+    <td>
+      <a href="https://aws.amazon.com/message/680587/">https://aws.amazon.com/message/680587/</a>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      How it happened
+    </td>
+    <td>
+      An engineer inadvertently executed a maintenance process against the production load balancer control plane, which led to state data being deleted and was unnoticed by the engineer. Some types of API calls to the control plane experienced high latency and error rates. As the control plane made modifications to load balancers performance was degraded (due to missing state data).
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Architecture
+    </td>
+    <td>
+      Load balancer service, with a control plane that manages the configuration of the load balancers (for one region) and is controlled via an API.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Technologies
+    </td>
+    <td>
+      <a href="../technologies.html#Elastic+Load+Balancing+%28ELB%29">Elastic Load Balancing (ELB)</a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Root cause
+    </td>
+    <td>
+      A maintenance process was inadvertently run against production, deleting state data.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Failure
+    </td>
+    <td>
+      High latency and error rates for API calls to the control plane of the load balancer system; later load balancers began to experience performance issues.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Impact
+    </td>
+    <td>
+      Customers could not manage existing load balancers, though they could create new load balancers. Some load balancers were also degraded.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Mitigation
+    </td>
+    <td>
+      Temporarily disabled control plane features that were causing problematic modifications to load balancers; restored deleted state and then merged that in to the system state for each affected load balancer; and reenabled disabled features.
+    </td>
+  </tr>
+</table>
+
+  </body>
+</html>

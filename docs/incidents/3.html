@@ -1,0 +1,131 @@
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Unavailable Guilds & Connection Issues</title>
+    <style>
+      
+body {
+  font-family: Helvetica, sans-serif;
+}
+a, a:visited {
+  color:#03e;
+}
+table {
+  border-collapse: collapse;
+}
+td {
+  border: 1px solid #ddd;
+  vertical-align:top;
+  text-align:left;
+  padding:10px;
+  line-height:150%;
+}
+blockquote {
+  font-size:125%;
+  padding:0px 20px;
+  margin:20px 0px;
+  border-left:1px solid #ddd;
+}
+tr.category td {
+  font-weight:bold;
+  background-color:#ffd;
+}
+tr.head {
+  font-weight:bold;
+}
+p.footer {
+  font-size:75%;
+}
+
+    </style>
+  </head>
+  <body>
+  <h1>
+    Unavailable Guilds & Connection Issues
+  </h1>
+  
+<blockquote>
+  &ldquo;These issues caused enough critical impact that Discord's engineering team was forced to fully restart the service, reconnecting millions of clients over a period of 20 minutes.&rdquo;
+</blockquote>
+
+<table>
+  <tr>
+    <td>
+      Incident
+    </td>
+    <td>
+      #3 at 
+      <a href="../organizations.html#Discord">Discord</a> on 
+      <a href="../years.html#2017">2017/10/13</a> 
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Full report
+    </td>
+    <td>
+      <a href="https://status.discord.com/incidents/qk9cdgnqnhcn">https://status.discord.com/incidents/qk9cdgnqnhcn</a>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      How it happened
+    </td>
+    <td>
+      Automatic migration changed the Redis secondary instance to be the primary instance. Due to a defect in failover code, the cluster nodes did not correctly failover to the new primary instance. This failure cascaded through many dependent systems.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Architecture
+    </td>
+    <td>
+      Multiple highly available clusters with Redis primary and secondary instances.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Technologies
+    </td>
+    <td>
+      <a href="../technologies.html#Redis">Redis</a>, <a href="../technologies.html#Google+Cloud+Platform+%28GCP%29">Google Cloud Platform (GCP)</a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Root cause
+    </td>
+    <td>
+      Previously known defect preventing proper failover behavior.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Failure
+    </td>
+    <td>
+      Memory exhaustion and failing cluster nodes.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Impact
+    </td>
+    <td>
+      Partial outage and reduced performance.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Mitigation
+    </td>
+    <td>
+      A full restart of service necessitating reconnecting millions of clients.
+    </td>
+  </tr>
+</table>
+
+  </body>
+</html>

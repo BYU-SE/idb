@@ -1,0 +1,131 @@
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Buildkite Outage</title>
+    <style>
+      
+body {
+  font-family: Helvetica, sans-serif;
+}
+a, a:visited {
+  color:#03e;
+}
+table {
+  border-collapse: collapse;
+}
+td {
+  border: 1px solid #ddd;
+  vertical-align:top;
+  text-align:left;
+  padding:10px;
+  line-height:150%;
+}
+blockquote {
+  font-size:125%;
+  padding:0px 20px;
+  margin:20px 0px;
+  border-left:1px solid #ddd;
+}
+tr.category td {
+  font-weight:bold;
+  background-color:#ffd;
+}
+tr.head {
+  font-weight:bold;
+}
+p.footer {
+  font-size:75%;
+}
+
+    </style>
+  </head>
+  <body>
+  <h1>
+    Buildkite Outage
+  </h1>
+  
+<blockquote>
+  &ldquo;We woke up at 21:00 UTC almost 4 hours after we went offline to see our phones full of emails, tweets and Slack messages letting us know Buildkite was down. Many expletives were yelled as we all raced out of bed, opened laptops, and started figuring out what was going on.&rdquo;
+</blockquote>
+
+<table>
+  <tr>
+    <td>
+      Incident
+    </td>
+    <td>
+      #1 at 
+      <a href="../organizations.html#Buildkite">Buildkite</a> on 
+      <a href="../years.html#2016">2016/09/23</a> by Kieth Pitt (Founder and CTO)
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Full report
+    </td>
+    <td>
+      <a href="https://building.buildkite.com/outage-post-mortem-for-august-23rd-82b619a3679b">https://building.buildkite.com/outage-post-mortem-for-august-23rd-82b619a3679b</a>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      How it happened
+    </td>
+    <td>
+      Downgraded to a lower capacity database instance. At subsequent daily peak, load exceeded database capacity and database connections failed. EC2 instances were removed by the load balancer due to health checks which called the database.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Architecture
+    </td>
+    <td>
+      A service running on multiple EC2 instances in an Autoscaling group (behind an Elastic Load Balancer) accessing a PostgreSQL Relational Database Service (RDS) instance.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Technologies
+    </td>
+    <td>
+      <a href="../technologies.html#Amazon+Elastic+Compute+Cloud+%28EC2%29">Amazon Elastic Compute Cloud (EC2)</a>, <a href="../technologies.html#Amazon+Relational+Databases+%28RDS%29">Amazon Relational Databases (RDS)</a>, <a href="../technologies.html#PostgreSQL">PostgreSQL</a>, <a href="../technologies.html#Elastic+Load+Balancing+%28ELB%29">Elastic Load Balancing (ELB)</a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Root cause
+    </td>
+    <td>
+      Database was under-scaled for peak load. The service's health checks called the database.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Failure
+    </td>
+    <td>
+      Failed connections to database; all EC2 instances removed and no new EC2 instances successfully activated.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Impact
+    </td>
+    <td>
+      Users could not log in or access other system features.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Mitigation
+    </td>
+    <td>
+      Upgraded database and added new EC2 instances to Elastic Load Balancer.
+    </td>
+  </tr>
+</table>
+
+  </body>
+</html>

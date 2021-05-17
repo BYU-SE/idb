@@ -1,0 +1,131 @@
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Details of the Cloudflare outage on July 2, 2019</title>
+    <style>
+      
+body {
+  font-family: Helvetica, sans-serif;
+}
+a, a:visited {
+  color:#03e;
+}
+table {
+  border-collapse: collapse;
+}
+td {
+  border: 1px solid #ddd;
+  vertical-align:top;
+  text-align:left;
+  padding:10px;
+  line-height:150%;
+}
+blockquote {
+  font-size:125%;
+  padding:0px 20px;
+  margin:20px 0px;
+  border-left:1px solid #ddd;
+}
+tr.category td {
+  font-weight:bold;
+  background-color:#ffd;
+}
+tr.head {
+  font-weight:bold;
+}
+p.footer {
+  font-size:75%;
+}
+
+    </style>
+  </head>
+  <body>
+  <h1>
+    Details of the Cloudflare outage on July 2, 2019
+  </h1>
+  
+<blockquote>
+  &ldquo;The real story of how the Cloudflare service went down for 27 minutes is much more complex than 'a regular expression went bad'.&rdquo;
+</blockquote>
+
+<table>
+  <tr>
+    <td>
+      Incident
+    </td>
+    <td>
+      #12 at 
+      <a href="../organizations.html#Cloudflare">Cloudflare</a> on 
+      <a href="../years.html#2019">2019/07/02</a> by John Graham-Cumming (CTO)
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Full report
+    </td>
+    <td>
+      <a href="https://blog.cloudflare.com/details-of-the-cloudflare-outage-on-july-2-2019/">https://blog.cloudflare.com/details-of-the-cloudflare-outage-on-july-2-2019/</a>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      How it happened
+    </td>
+    <td>
+      Engineer deployed a new web application firewall rule (to protect against cross-site scripting attacks). That rule required excessive CPU time to process for each request and led to a failure of all services accessed through the firewall, including services needed to mitigate the issue.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Architecture
+    </td>
+    <td>
+      Web application firewalls and tooling for quickly updating rules worldwide.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Technologies
+    </td>
+    <td>
+      <a href="../technologies.html#"></a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Root cause
+    </td>
+    <td>
+      A regular expression in a web application firewall rule contained excessive backtracking.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Failure
+    </td>
+    <td>
+      CPU exhaustion leading to a failure in proxy, CDN and firewall services globally.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Impact
+    </td>
+    <td>
+      Users were served a 502 error page when visiting any affected domain.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Mitigation
+    </td>
+    <td>
+      Responders disabled the web application firewall component, reverted the change and re-enabled the firewall.
+    </td>
+  </tr>
+</table>
+
+  </body>
+</html>

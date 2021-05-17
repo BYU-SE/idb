@@ -1,0 +1,131 @@
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Postmortem of database outage of January 31</title>
+    <style>
+      
+body {
+  font-family: Helvetica, sans-serif;
+}
+a, a:visited {
+  color:#03e;
+}
+table {
+  border-collapse: collapse;
+}
+td {
+  border: 1px solid #ddd;
+  vertical-align:top;
+  text-align:left;
+  padding:10px;
+  line-height:150%;
+}
+blockquote {
+  font-size:125%;
+  padding:0px 20px;
+  margin:20px 0px;
+  border-left:1px solid #ddd;
+}
+tr.category td {
+  font-weight:bold;
+  background-color:#ffd;
+}
+tr.head {
+  font-weight:bold;
+}
+p.footer {
+  font-size:75%;
+}
+
+    </style>
+  </head>
+  <body>
+  <h1>
+    Postmortem of database outage of January 31
+  </h1>
+  
+<blockquote>
+  &ldquo;Trying to restore the replication process, an engineer proceeds to wipe the PostgreSQL database directory, errantly thinking they were doing so on the secondary. Unfortunately this process was executed on the primary instead.&rdquo;
+</blockquote>
+
+<table>
+  <tr>
+    <td>
+      Incident
+    </td>
+    <td>
+      #6 at 
+      <a href="../organizations.html#Gitlab">Gitlab</a> on 
+      <a href="../years.html#2017">2017/01/31</a> by Sid Sijbrandij (CEO)
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Full report
+    </td>
+    <td>
+      <a href="https://about.gitlab.com/blog/2017/02/10/postmortem-of-database-outage-of-january-31/">https://about.gitlab.com/blog/2017/02/10/postmortem-of-database-outage-of-january-31/</a>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      How it happened
+    </td>
+    <td>
+      Increased load on database servers (due to spam and/or an automated maintenance script) led to replication between primary and secondary falling behind and then failing. During mitigation an engineer accidentally deleted data from the primary database server, thinking they were operating on the secondary.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Architecture
+    </td>
+    <td>
+      PostgreSQL database with primary and secondary servers. Azure disk snapshots, Logical Volume Manager (LVM) snapshots, and full backups uploaded to Amazon S3.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Technologies
+    </td>
+    <td>
+      <a href="../technologies.html#PostgreSQL">PostgreSQL</a>, <a href="../technologies.html#Azure+Disk+Snapshots">Azure Disk Snapshots</a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Root cause
+    </td>
+    <td>
+      High load on database servers; the accidental removal of 300 GB of data from primary database server (during mitigation).
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Failure
+    </td>
+    <td>
+      Data replication between primary and secondary servers fell behind and then failed. Data removal from primary database.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Impact
+    </td>
+    <td>
+      Service outage and permanent data loss (5,000 projects, 5,000 comments, and 700 new accounts).
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Mitigation
+    </td>
+    <td>
+      Responders restored the databases using the Logical Volume Manager (LVM) snapshot created 6 hours before the outage.
+    </td>
+  </tr>
+</table>
+
+  </body>
+</html>

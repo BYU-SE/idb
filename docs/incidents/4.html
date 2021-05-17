@@ -1,0 +1,131 @@
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Incident report on memory leak caused by Cloudflare parser bug</title>
+    <style>
+      
+body {
+  font-family: Helvetica, sans-serif;
+}
+a, a:visited {
+  color:#03e;
+}
+table {
+  border-collapse: collapse;
+}
+td {
+  border: 1px solid #ddd;
+  vertical-align:top;
+  text-align:left;
+  padding:10px;
+  line-height:150%;
+}
+blockquote {
+  font-size:125%;
+  padding:0px 20px;
+  margin:20px 0px;
+  border-left:1px solid #ddd;
+}
+tr.category td {
+  font-weight:bold;
+  background-color:#ffd;
+}
+tr.head {
+  font-weight:bold;
+}
+p.footer {
+  font-size:75%;
+}
+
+    </style>
+  </head>
+  <body>
+  <h1>
+    Incident report on memory leak caused by Cloudflare parser bug
+  </h1>
+  
+<blockquote>
+  &ldquo;So, the bug had been dormant for years until the internal feng shui of the buffers passed between NGINX filter modules changed with the introduction of cf-html.&rdquo;
+</blockquote>
+
+<table>
+  <tr>
+    <td>
+      Incident
+    </td>
+    <td>
+      #4 at 
+      <a href="../organizations.html#Cloudflare">Cloudflare</a> on 
+      <a href="../years.html#2017">2017/02/13</a> by John Graham-Cumming (Chief Technology Officer)
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Full report
+    </td>
+    <td>
+      <a href="https://blog.cloudflare.com/incident-report-on-memory-leak-caused-by-cloudflare-parser-bug/">https://blog.cloudflare.com/incident-report-on-memory-leak-caused-by-cloudflare-parser-bug/</a>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      How it happened
+    </td>
+    <td>
+      A new module was added to the webserver which subtly changed its buffering and triggered the latent defect (in a second module) leading to the buffer overrun and corrupted webpages.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Architecture
+    </td>
+    <td>
+      NGINX webserver, with multiple custom modules, including a Ragel based HTML parser used to modify HTML.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Technologies
+    </td>
+    <td>
+      <a href="../technologies.html#NGINX">NGINX</a>, <a href="../technologies.html#Ragel">Ragel</a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Root cause
+    </td>
+    <td>
+      A latent defect in how a custom webserver module checked for the end of a buffer.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Failure
+    </td>
+    <td>
+      Buffer overrun while preparing responses to some HTTP requests.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Impact
+    </td>
+    <td>
+      Webserver returned corrupted webpages which contained private information (cookies, authentication tokens, etc).
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Mitigation
+    </td>
+    <td>
+      Deployed fix for end of buffer check. Requested external organizations to clear corrupted pages from caches.
+    </td>
+  </tr>
+</table>
+
+  </body>
+</html>

@@ -1,0 +1,131 @@
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Heroku April 2017 App Crashes</title>
+    <style>
+      
+body {
+  font-family: Helvetica, sans-serif;
+}
+a, a:visited {
+  color:#03e;
+}
+table {
+  border-collapse: collapse;
+}
+td {
+  border: 1px solid #ddd;
+  vertical-align:top;
+  text-align:left;
+  padding:10px;
+  line-height:150%;
+}
+blockquote {
+  font-size:125%;
+  padding:0px 20px;
+  margin:20px 0px;
+  border-left:1px solid #ddd;
+}
+tr.category td {
+  font-weight:bold;
+  background-color:#ffd;
+}
+tr.head {
+  font-weight:bold;
+}
+p.footer {
+  font-size:75%;
+}
+
+    </style>
+  </head>
+  <body>
+  <h1>
+    Heroku April 2017 App Crashes
+  </h1>
+  
+<blockquote>
+  &ldquo;These missed state updates were very hard for us to discover because our routing fleet only maintains a connection to the affected class of instance for 30 minutes. After this time the connection is terminated and cycled to another server.&rdquo;
+</blockquote>
+
+<table>
+  <tr>
+    <td>
+      Incident
+    </td>
+    <td>
+      #30 at 
+      <a href="../organizations.html#Heroku">Heroku</a> on 
+      <a href="../years.html#2017">2017/04/03</a> 
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Full report
+    </td>
+    <td>
+      <a href="https://status.heroku.com/incidents/1091">https://status.heroku.com/incidents/1091</a>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      How it happened
+    </td>
+    <td>
+      During scheduled maintenance a configuration procedure timed-out leaving one instance configured incorrectly and this timeout was not visible to the engineers performing the maintenance. As a result, for newly stopped or started containers it was possible for the routing fleet to miss that state change (ie, treat a stopped container as running or a running container as stopped)
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Architecture
+    </td>
+    <td>
+      A fleet for creating hosted application containers (called Dynos) and a separate fleet that routes traffic to those containers.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Technologies
+    </td>
+    <td>
+      <a href="../technologies.html#"></a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Root cause
+    </td>
+    <td>
+      A recently added timeout for manual system administration activities that unexpectedly affected automated activities leading to potentially silent failures during updates. Specifically, a remote procedure to update instances of the fleet (the fleet that creates containers) configurations timed out leaving one instance with an incorrect configuration.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Failure
+    </td>
+    <td>
+      Traffic was routed to some stopped containers and not routed to some started containers.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Impact
+    </td>
+    <td>
+      Elevated error rate (including 'backend connection timeout', 'backend connetion refused', 'app crashed' and 'request error') for applications with containers that were stopped or started over the course of the incident.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Mitigation
+    </td>
+    <td>
+      Flushed the routing caches helped mitigate the issue during the investigation to minimize impact; updated instance with correct configuration.
+    </td>
+  </tr>
+</table>
+
+  </body>
+</html>

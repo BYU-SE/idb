@@ -1,0 +1,131 @@
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Travis CI Container-based Linux Precise infrastructure emergency maintenance</title>
+    <style>
+      
+body {
+  font-family: Helvetica, sans-serif;
+}
+a, a:visited {
+  color:#03e;
+}
+table {
+  border-collapse: collapse;
+}
+td {
+  border: 1px solid #ddd;
+  vertical-align:top;
+  text-align:left;
+  padding:10px;
+  line-height:150%;
+}
+blockquote {
+  font-size:125%;
+  padding:0px 20px;
+  margin:20px 0px;
+  border-left:1px solid #ddd;
+}
+tr.category td {
+  font-weight:bold;
+  background-color:#ffd;
+}
+tr.head {
+  font-weight:bold;
+}
+p.footer {
+  font-size:75%;
+}
+
+    </style>
+  </head>
+  <body>
+  <h1>
+    Travis CI Container-based Linux Precise infrastructure emergency maintenance
+  </h1>
+  
+<blockquote>
+  &ldquo;This change appears to have effects on how bash handles exit codes, in a manner that we have fully investigated yet. This change was not detected by our staging environment tests and revealed insufficient diversity in how our tests reflect the variety of builds ou users are running.&rdquo;
+</blockquote>
+
+<table>
+  <tr>
+    <td>
+      Incident
+    </td>
+    <td>
+      #39 at 
+      <a href="../organizations.html#Travis+CI">Travis CI</a> on 
+      <a href="../years.html#2017">2017/02/02</a> 
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Full report
+    </td>
+    <td>
+      <a href="https://www.traviscistatus.com/incidents/sxrh0l46czqn">https://www.traviscistatus.com/incidents/sxrh0l46czqn</a>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      How it happened
+    </td>
+    <td>
+      A new version of the service was deployed and builds were being incorrectly marked as failed, so the deployment was rolled back, but the rollback was unsuccessful as the previous version (ie, the version to rollback to) was not marked ("tagged") correctly in the source (Docker Hub).
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Architecture
+    </td>
+    <td>
+      A service that provisions virtual machines (VMs) or containers (for running software builds) and monitors those VMs over their lifetime. The service has multiple backends so the provisioned VM/container can be Docker, Google Compute Engine, vSphere for macOS, etc. The service is autoscaled using many EC2 instances (with solid state drives), with each running a finite number of concurrent jobs.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Technologies
+    </td>
+    <td>
+      <a href="../technologies.html#Amazon+Elastic+Compute+Cloud+%28EC2%29">Amazon Elastic Compute Cloud (EC2)</a>, <a href="../technologies.html#Docker">Docker</a>, <a href="../technologies.html#Google+Compute+Engine+%28GCE%29">Google Compute Engine (GCE)</a>, <a href="../technologies.html#vSphere">vSphere</a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Root cause
+    </td>
+    <td>
+      A new version of the service was deployed with a defect in how it determines a bash script failed or succeeded (ie in how it handles exit codes)
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Failure
+    </td>
+    <td>
+      The service marked successful jobs as failures; A rollback of the service failed.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Impact
+    </td>
+    <td>
+      Cutsomer jobs run on VMs provisioned by the service were marked as failed even if they succeeded in some cases.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Mitigation
+    </td>
+    <td>
+      Responders correctly marked the target verion in the source (Docker Hub) and forced the rollback, rather than wait for the normal cycle.
+    </td>
+  </tr>
+</table>
+
+  </body>
+</html>

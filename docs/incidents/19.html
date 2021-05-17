@@ -1,0 +1,131 @@
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Why Reddit was down on Aug 11</title>
+    <style>
+      
+body {
+  font-family: Helvetica, sans-serif;
+}
+a, a:visited {
+  color:#03e;
+}
+table {
+  border-collapse: collapse;
+}
+td {
+  border: 1px solid #ddd;
+  vertical-align:top;
+  text-align:left;
+  padding:10px;
+  line-height:150%;
+}
+blockquote {
+  font-size:125%;
+  padding:0px 20px;
+  margin:20px 0px;
+  border-left:1px solid #ddd;
+}
+tr.category td {
+  font-weight:bold;
+  background-color:#ffd;
+}
+tr.head {
+  font-weight:bold;
+}
+p.footer {
+  font-size:75%;
+}
+
+    </style>
+  </head>
+  <body>
+  <h1>
+    Why Reddit was down on Aug 11
+  </h1>
+  
+<blockquote>
+  &ldquo;Autoscaler read the partially migrated Zookeeper data and terminated many of our application servers, which serve our website and API, and our caching servers, in 16 seconds.&rdquo;
+</blockquote>
+
+<table>
+  <tr>
+    <td>
+      Incident
+    </td>
+    <td>
+      #19 at 
+      <a href="../organizations.html#Redit">Redit</a> on 
+      <a href="../years.html#2017">2017/08/11</a> by u/gooeyblob (Infrastructure leader)
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Full report
+    </td>
+    <td>
+      <a href="https://www.reddit.com/r/announcements/comments/4y0m56/why_reddit_was_down_on_aug_11/">https://www.reddit.com/r/announcements/comments/4y0m56/why_reddit_was_down_on_aug_11/</a>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      How it happened
+    </td>
+    <td>
+      Before an upgrade of a Zookeeper system the autoscaler was manually turned off by making a configuration change, since it depends on Zookeeper for server health information. During the upgrade, the package manager reverted the configuration change (since it detected it had been made manually), turing back on the autoscaler. The autoscaler (based on partial Zookeeper data) terminated many healthy servers, including caching servers.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Architecture
+    </td>
+    <td>
+      Application servers and caching servers managed by an autoscaler (which uses Zookeeper for server health information).
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Technologies
+    </td>
+    <td>
+      <a href="../technologies.html#Apache+ZooKeeper">Apache ZooKeeper</a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Root cause
+    </td>
+    <td>
+      Autoscaler (unintentionally) running during a Zookeeper upgrade.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Failure
+    </td>
+    <td>
+      Terminated application and caching servers.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Impact
+    </td>
+    <td>
+      Service unavailable for 1.5 hours followed by an additional 1.5 hours of increased response time.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Mitigation
+    </td>
+    <td>
+      Engineers restored the servers (ending the outage) and waited for the caches to fill (ending the performance degradation period).
+    </td>
+  </tr>
+</table>
+
+  </body>
+</html>

@@ -1,0 +1,131 @@
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Incident review: API and Dashboard outage on 10 October 2017</title>
+    <style>
+      
+body {
+  font-family: Helvetica, sans-serif;
+}
+a, a:visited {
+  color:#03e;
+}
+table {
+  border-collapse: collapse;
+}
+td {
+  border: 1px solid #ddd;
+  vertical-align:top;
+  text-align:left;
+  padding:10px;
+  line-height:150%;
+}
+blockquote {
+  font-size:125%;
+  padding:0px 20px;
+  margin:20px 0px;
+  border-left:1px solid #ddd;
+}
+tr.category td {
+  font-weight:bold;
+  background-color:#ffd;
+}
+tr.head {
+  font-weight:bold;
+}
+p.footer {
+  font-size:75%;
+}
+
+    </style>
+  </head>
+  <body>
+  <h1>
+    Incident review: API and Dashboard outage on 10 October 2017
+  </h1>
+  
+<blockquote>
+  &ldquo;The Pacemaker cluster correctly observed that Postgres was unhealthy on the primary node. It repeatedly attempted to promote a new primary, but each time it couldn't decide where that primary should run.&rdquo;
+</blockquote>
+
+<table>
+  <tr>
+    <td>
+      Incident
+    </td>
+    <td>
+      #10 at 
+      <a href="../organizations.html#GoCardless">GoCardless</a> on 
+      <a href="../years.html#2017">2017/10/10</a> by Chris Sinjakli, Harry Panayiotou, Lawrence Jones, Norberto Lopes, Raul Naveiras (Site Reliability Engineers)
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Full report
+    </td>
+    <td>
+      <a href="https://gocardless.com/blog/incident-review-api-and-dashboard-outage-on-10th-october/">https://gocardless.com/blog/incident-review-api-and-dashboard-outage-on-10th-october/</a>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      How it happened
+    </td>
+    <td>
+      A disk array failed on the primary database node and conicidently a database subprocess crashed on the synchronous replica. The cluster management system was then unable to promote one of the replicas to be primary, due to subtle interactions between three configurations.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Architecture
+    </td>
+    <td>
+      An API layer that connects to a PostgreSQL cluster using a virtual IP address. The cluster has 1 primary node, 1 synchronous replica node and 1 asynchronous replica node. The cluster and virtual IP address is managed by Pacemaker.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Technologies
+    </td>
+    <td>
+      <a href="../technologies.html#PostgreSQL">PostgreSQL</a>, <a href="../technologies.html#Pacemaker">Pacemaker</a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Root cause
+    </td>
+    <td>
+      A disk array failure on the primary database node combined with a conicident database subprocess crashing on the synchronous replica and some subtle interactions between cluster management configurations.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Failure
+    </td>
+    <td>
+      Primary database failed and the cluster (managed by Pacemaker) failed to promote a replica to be the new primary, leaving the database unavailable.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Impact
+    </td>
+    <td>
+      1 hour and 50 minute outage of API Dashboard.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Mitigation
+    </td>
+    <td>
+      Put the cluster into maintenance mode, configured the synchronous replica to be a primary, and manually started database. Configured clients of the database with the (non-virtual) IP address of the new primary.
+    </td>
+  </tr>
+</table>
+
+  </body>
+</html>

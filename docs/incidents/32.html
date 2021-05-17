@@ -1,0 +1,131 @@
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>GitHub January 28th Incident Report</title>
+    <style>
+      
+body {
+  font-family: Helvetica, sans-serif;
+}
+a, a:visited {
+  color:#03e;
+}
+table {
+  border-collapse: collapse;
+}
+td {
+  border: 1px solid #ddd;
+  vertical-align:top;
+  text-align:left;
+  padding:10px;
+  line-height:150%;
+}
+blockquote {
+  font-size:125%;
+  padding:0px 20px;
+  margin:20px 0px;
+  border-left:1px solid #ddd;
+}
+tr.category td {
+  font-weight:bold;
+  background-color:#ffd;
+}
+tr.head {
+  font-weight:bold;
+}
+p.footer {
+  font-size:75%;
+}
+
+    </style>
+  </head>
+  <body>
+  <h1>
+    GitHub January 28th Incident Report
+  </h1>
+  
+<blockquote>
+  &ldquo;Slightly over 25% of our servers and several network devices rebooted as a result. This left our infrastructure in a partially operational state and generated alerts to multiple on-call engineers.&rdquo;
+</blockquote>
+
+<table>
+  <tr>
+    <td>
+      Incident
+    </td>
+    <td>
+      #32 at 
+      <a href="../organizations.html#Github">Github</a> on 
+      <a href="../years.html#2016">2016/01/27</a> by Scott Sanders (Senior Operations Engineer)
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Full report
+    </td>
+    <td>
+      <a href="https://github.blog/2016-02-03-january-28th-incident-report/">https://github.blog/2016-02-03-january-28th-incident-report/</a>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      How it happened
+    </td>
+    <td>
+      The datacenter experienced a brief disruption in the systems that supply power to the servers and equipment. 25% of servers and several network devices rebooted, leaving the infrastructure in a partially operational state. Reboots of some machine types failed (due to physical drives not being recognized) and some application processes would not start because Redis clusters were unavailable.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Architecture
+    </td>
+    <td>
+      Datacenter with servers running applications with dependencies on Redis clusters.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Technologies
+    </td>
+    <td>
+      <a href="../technologies.html#Redis">Redis</a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Root cause
+    </td>
+    <td>
+      Power disruption to database; a known firmware issue prevented machines from recognizing their own drives after power-cycle; and some application processes (unnecessarily) depend on Redis for starting up.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Failure
+    </td>
+    <td>
+      Sever machines would not boot after power-cycle; Redis clusters were unavailable; and application processes failed to (re)start.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Impact
+    </td>
+    <td>
+      Applications began serving HTTP 503 repsonses to users.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Mitigation
+    </td>
+    <td>
+      Repaired servers that would not boot by removing residual static electricity (aka "flea power"); rebuilt Redis clusters on alternate hardware (ie, restoring data onto standby equipment).
+    </td>
+  </tr>
+</table>
+
+  </body>
+</html>

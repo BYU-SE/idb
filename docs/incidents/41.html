@@ -1,0 +1,131 @@
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Summary of the Amazon Kinesis Event in the Northern Virginia (US-EAST-1) Region</title>
+    <style>
+      
+body {
+  font-family: Helvetica, sans-serif;
+}
+a, a:visited {
+  color:#03e;
+}
+table {
+  border-collapse: collapse;
+}
+td {
+  border: 1px solid #ddd;
+  vertical-align:top;
+  text-align:left;
+  padding:10px;
+  line-height:150%;
+}
+blockquote {
+  font-size:125%;
+  padding:0px 20px;
+  margin:20px 0px;
+  border-left:1px solid #ddd;
+}
+tr.category td {
+  font-weight:bold;
+  background-color:#ffd;
+}
+tr.head {
+  font-weight:bold;
+}
+p.footer {
+  font-size:75%;
+}
+
+    </style>
+  </head>
+  <body>
+  <h1>
+    Summary of the Amazon Kinesis Event in the Northern Virginia (US-EAST-1) Region
+  </h1>
+  
+<blockquote>
+  &ldquo;The trigger, though not root cause, for the event was a relatively small addition of capacity&rdquo;
+</blockquote>
+
+<table>
+  <tr>
+    <td>
+      Incident
+    </td>
+    <td>
+      #41 at 
+      <a href="../organizations.html#Amazon+Web+Services">Amazon Web Services</a> on 
+      <a href="../years.html#2020">2020/11/25</a> 
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Full report
+    </td>
+    <td>
+      <a href="https://aws.amazon.com/message/11201/">https://aws.amazon.com/message/11201/</a>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      How it happened
+    </td>
+    <td>
+      New servers were added to the front-end fleet in one region, increasing the number operating system threads used in each of the new and existing front-end server, exceeding the thread limit. Then a wide variety of errors began being reported in the logs and operations began failing.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Architecture
+    </td>
+    <td>
+      A streaming service (Kinesis) with front-end servers for routing requests and back-end server clusters for processing streams. Routing is based on a sharding strategy, with the shard-map cached by front-end servers. Communication between front-end servers uses one operating system thread per other server.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Technologies
+    </td>
+    <td>
+      <a href="../technologies.html#Amazon+Kinesis">Amazon Kinesis</a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Root cause
+    </td>
+    <td>
+      New capacity caused all front-end servers to execced maxiumn number of allowed operating system threads. 6
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Failure
+    </td>
+    <td>
+      Cache construction failed on front-end servers (leading to an out of date shard-map) and routing failed. 6
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Impact
+    </td>
+    <td>
+      Service outage in one region; errors and failures in dependent services (Cognito, CloudWatch, AutoScaling and Lambda).
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Mitigation
+    </td>
+    <td>
+      Eliminated the additional capacity; made a configuration change to front-end servers to get data from authoritative metadata store rather than from peer servers (to avoid servers being judged as unhealthy during startup); multi-hour restart of front-end.
+    </td>
+  </tr>
+</table>
+
+  </body>
+</html>

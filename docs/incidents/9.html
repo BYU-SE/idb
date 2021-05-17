@@ -1,0 +1,131 @@
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Kafkapocalypse: a postmortem on our service outage</title>
+    <style>
+      
+body {
+  font-family: Helvetica, sans-serif;
+}
+a, a:visited {
+  color:#03e;
+}
+table {
+  border-collapse: collapse;
+}
+td {
+  border: 1px solid #ddd;
+  vertical-align:top;
+  text-align:left;
+  padding:10px;
+  line-height:150%;
+}
+blockquote {
+  font-size:125%;
+  padding:0px 20px;
+  margin:20px 0px;
+  border-left:1px solid #ddd;
+}
+tr.category td {
+  font-weight:bold;
+  background-color:#ffd;
+}
+tr.head {
+  font-weight:bold;
+}
+p.footer {
+  font-size:75%;
+}
+
+    </style>
+  </head>
+  <body>
+  <h1>
+    Kafkapocalypse: a postmortem on our service outage
+  </h1>
+  
+<blockquote>
+  &ldquo;The real problem here isn't failure, but correlated cluster-wide failure. Because we were close to network limits on all of our Kafka nodes, when one failed, the remaining nodes would have to serve more consumers, which would, in turn, lead to more network traffic on those remaining nodes.&rdquo;
+</blockquote>
+
+<table>
+  <tr>
+    <td>
+      Incident
+    </td>
+    <td>
+      #9 at 
+      <a href="../organizations.html#Parse.ly">Parse.ly</a> on 
+      <a href="../years.html#2015">2015/03/26</a> by Andrew Montalenti (Founder & Chief Product Officer)
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Full report
+    </td>
+    <td>
+      <a href="https://blog.parse.ly/post/1738/kafkapocalypse/">https://blog.parse.ly/post/1738/kafkapocalypse/</a>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      How it happened
+    </td>
+    <td>
+      Data volumes hit a new high which increased the outbound network volumes beyond the capcity of the machines running cluster nodes (either a hardware or system software limit). As a node in the cluster failed, load increased on the remaining nodes leading to more nodes failing for the same reason. As new nodes were added (as part of the mitigation) clients stopped writing to the cluster due to a defect in the configuration management system that led to new nodes being added to the cluster with incorrect host names.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Architecture
+    </td>
+    <td>
+      Two analytics dashboard systems (one production and one beta) powered by two parallel backend data processing systems that process data from a JavaScript tracker and forward it to a Kafka cluster.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Technologies
+    </td>
+    <td>
+      <a href="../technologies.html#Amazon+Elastic+Compute+Cloud+%28EC2%29">Amazon Elastic Compute Cloud (EC2)</a>, <a href="../technologies.html#Apache+Kafka">Apache Kafka</a>, <a href="../technologies.html#Opscode+Chef">Opscode Chef</a>, <a href="../technologies.html#Apache+ZooKeeper">Apache ZooKeeper</a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Root cause
+    </td>
+    <td>
+      Outbound network traffic on cluster nodes exceeded the capacity of the machines those nodes were running on (either a hardware or system software limit); and a configuration defect in the cluster management system which led to new nodes being assigned incorrect ip addresses.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Failure
+    </td>
+    <td>
+      Some nodes in the cluster failed and were removed from the cluster. Clients writing to the cluster (mistakenly) determined the cluster was unavailable and stopped writing to the cluster.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Impact
+    </td>
+    <td>
+      Several hours of no data processing and no new data appearing in the analytics dashboards. Data processing was delayed but no data was lost.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Mitigation
+    </td>
+    <td>
+      Corrected the configuration and then added new nodes to the cluster (bringing the per machine network usage under the limits). Restarted downstream data consumers of the cluster.
+    </td>
+  </tr>
+</table>
+
+  </body>
+</html>

@@ -1,0 +1,131 @@
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Discord Outage March 2017</title>
+    <style>
+      
+body {
+  font-family: Helvetica, sans-serif;
+}
+a, a:visited {
+  color:#03e;
+}
+table {
+  border-collapse: collapse;
+}
+td {
+  border: 1px solid #ddd;
+  vertical-align:top;
+  text-align:left;
+  padding:10px;
+  line-height:150%;
+}
+blockquote {
+  font-size:125%;
+  padding:0px 20px;
+  margin:20px 0px;
+  border-left:1px solid #ddd;
+}
+tr.category td {
+  font-weight:bold;
+  background-color:#ffd;
+}
+tr.head {
+  font-weight:bold;
+}
+p.footer {
+  font-size:75%;
+}
+
+    </style>
+  </head>
+  <body>
+  <h1>
+    Discord Outage March 2017
+  </h1>
+  
+<blockquote>
+  &ldquo;Shortly thereafter the nodes of another service [...] attempted a reconnection, triggering a massive 'thundering herd' towards the existing members of the presence cluster.&rdquo;
+</blockquote>
+
+<table>
+  <tr>
+    <td>
+      Incident
+    </td>
+    <td>
+      #15 at 
+      <a href="../organizations.html#Discord">Discord</a> on 
+      <a href="../years.html#2017">2017/03/20</a> 
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Full report
+    </td>
+    <td>
+      <a href="https://status.discord.com/incidents/dj3l6lw926kl">https://status.discord.com/incidents/dj3l6lw926kl</a>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      How it happened
+    </td>
+    <td>
+      CPU soft-locks stalled the network stack and caused one cluster node to disconnect, leaving the cluster in a split state. Nodes from a dependent service attempted to reconnect to the cluster, increasing the load on existing nodes, causing failures in the service and unhandled events queuing up in memory, eventually consuming available memory and crashing the service. The same incident occured a second time about 1 hour later.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Architecture
+    </td>
+    <td>
+      Multiple clusters with data dependencies between them.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Technologies
+    </td>
+    <td>
+      <a href="../technologies.html#Google+Compute+Engine+%28GCE%29">Google Compute Engine (GCE)</a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Root cause
+    </td>
+    <td>
+      CPU soft lockups; a known defect that prevented the cluster from properly handling a lost node; and unbounded in memory event queues.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Failure
+    </td>
+    <td>
+      Event queue exceeded memory limits crashing the (sessions) service.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Impact
+    </td>
+    <td>
+      One third of all clients could not send messages. Messaging sending was then disabled for all clients during mitigation and then clients were disconnected and reconnected, also as part of the mitigation.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Mitigation
+    </td>
+    <td>
+      The disconnected node was rebooted, which forced the virtual machine to land on another physical host and resolved the soft-lock issues. A reboot of (generallly) all services, disconnecting and reconnecting all clients in the process.
+    </td>
+  </tr>
+</table>
+
+  </body>
+</html>
