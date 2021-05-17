@@ -16,7 +16,7 @@ properties:
   
   architecture: Build services (creation, build and cleanup) running on Xserve hosts virtualized using a vSphere cluster and hosted by MacStadium. [5]
 
-  root cause: A resource clean up service did not get updated with the new credentials for the (vSphere) API; a configuration defect approved more virual machines than could be supprted by the underlying cluster. [9,10,11,18]
+  root cause: A resource clean up service did not get updated with the new credentials for the (vSphere) API; a configuration defect approved more virtual machines than could be supprted by the underlying cluster. [9,10,11,18]
 
   failure: Creating new virtual machines on the cluster failed, which led to elevated requeue rates and a backlog of work. [7,8,9]
 

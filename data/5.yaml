@@ -10,6 +10,8 @@ properties:
   url: https://mailchimp.com/what-we-learned-from-the-recent-mandrill-outage/
   technologies: PostgreSQL
   
+  summary: Database maintenance processes failed due high load so transaction IDs exceeded limit and database shutdown (Exceeding limits)
+  
   quote: In November of 2018, engineers on our Mandrill team identified the potential to reach wraparound, as the XIDs were climbing to approximately half their total limit during peak load. Our team determined wraparound was not an immediate threat, but we added a ticket to the backlog to set up additional monitoring.
   
   architecture: Job processing application using several PostgreSQL databases as a shared key-value store that is sharded by key. [12]
