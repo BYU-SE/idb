@@ -2,6 +2,8 @@
 
 IDB is a database of software failures (or _incidents_, as we call them) and a simple web site (that you can build locally) for browsing that database. We hope this will be a useful resource for researchers and engineers. Really anyone who is interested in software failures, should enjoy browsing IDB.
 
+Browse all incidents here: https://byu-se.github.io/idb/
+
 ## Background
 
 Many organizations conduct a postmortem analysis when they experience significant incidents, and in some cases they publish the results as an _incident report_. Well we've read through many of these reports (more than 40 of them so far) and extracted a uniform set of properties about each (title, organization, product, start and end dates, author, url, etc). We have also written a structured summary of each, capturing:  
