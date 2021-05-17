@@ -1,25 +1,25 @@
 properties:
 
   id: 29
-  title: "All Circuits are Busy Now: The 1990 AT&T Long Distance Network Collapse"
-  organization: AT&T
-  product: AT&T's long-distance network
-  start_ts: 1990/01/15 14:25
-  end_ts: 1990/01/15
-  author: Dennis Burke
-  url: http://users.csc.calpoly.edu/~jdalbey/SWE/Papers/att_collapse.html
-  technologies:
+  title: Outage Postmortem - January 24 2017
+  organization: Stack Exchange
+  product: Stack Exchange
+  start_ts: 2017/01/24 17:53
+  end_ts: 2017/01/24 18:45
+  author: 
+  url: https://stackstatus.net/post/156407746074/outage-postmortem-january-24-2017
+  technologies: SQL Server
   
-  quote: The problem repeated iteratively throughout the 114 switches in the network, blocking over 50 million calls in the nine hours it took to stabilize the system.
+  quote: It took us 2 minutes to notice the issue, 5 minutes to locate the source of the issue and 10 minutes to get service restored.
   
-  architecture: A network backbone of 114 computer-operated switches (4ESS) located across the country, all linked with a cascading network. [8]
+  architecture: Applications that depend on an SQL Server primary that has multiple standby servers [2]
 
-  root cause: A defect in the recovery software of each switch, meant that in the event of concurrent messages from the same switch that was marked as offline the first message's parameters overwrite the second's. [15]
-
-  failure: Switches (and backup links) continually reset (taking themselves) off line. [10]
-
-  impact: 50 million phone calls (~50% of calls placed) were blocked over the nine hours it took to stabilize the system. [6]
-
-  how it happened: One switch (located in New York) peformed a routine self-test that indicated it is was nearing its load limits. The switch performed a mainteance reset and took itself momentarily off line. When it came back on line it began distributing calls from its queue. A second switch received two messages from the first switch less than 10 mililiseconds apart. Due to a defect the (nearly) concurrent messages led to information from the first to be over written by the second. When the switch detected the overwrite it activated a backup link while resetting itself. The same problem occured on the backup and on all of the 114 switches. [10]
+  root cause: A SQL Server bugcheck caused by a (suspected) bad memory chip; and a fail-over related code defect [2,3] 
   
-  mitigation: Eventually network loads became low enough to allow the system to stabilize. [6]
+  failure: The service went into read-only mode for approximately 5 minutes and offline for 12 minutes [12]
+
+  impact: Service outage and 3.5 seconds of data loss [1]
+
+  how it happened: A bugcheck in the primary SQL Server placed the primary in read only state, but application-level failovers were disabled due to a code defect, so the SQL server failed, and the network went offline [2]
+  
+  mitigation: A sanity check on the SQL health was completed and the sites were put back into read-write mode [2]
