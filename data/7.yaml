@@ -1,27 +1,27 @@
 properties:
-  
+
   id: 7
-  title: Our First Kubernetes Outage
-  organization: Saltside
-  product: Kubernetes
-  start_ts: 2017/04/26
-  end_ts: 2017/04/26
-  author: Adam Hawkins (SRE Team Lead)
-  url: https://engineering.saltside.se/our-first-kubernetes-outage-c6b9249cfd3a
-  technologies: Amazon Elastic Compute Cloud (EC2) , Amazon Elastic Block Store (EBS)
-  
-  quote: I checked on things two hours later. The issue had not resolved itself. It became larger.
-  
-  summary: Exceeding disk space and available throughput limits led to a failed deployment and cluster instances in bad states (Exceeding limits)
+  title: RCM for NA14 Disruptions of Service - May 2016
+  organization: Salesforce
+  product: Salesforce
+  start_ts: 2016/05/09 17:47
+  end_ts: 2016/05/15 19:30
+  author: 
+  url: https://help.salesforce.com/articleView?id=000315819&language=en_US&type=1&mode=1
+  technologies: 
 
-  architecture: Multiple Kubernetes clusters for different use cases, each with Elastic Block Stores (EBS). [5]
+  quote: Each attempt to restore service resulted in errors or failures that prevented these approaches from continuing.
+    
+  summary: High traffic exposed a firmware defect, leaving a database in a corrupt state (System software or hardware failure)
+
+  architecture: Web application with primary and secondary data centers, depending on a database cluster
   
-  root cause: All activity on clusters exceeded available disk IO capacity (EBS IOPS). [38]
-
-  failure: A complete shutdown of an internal cluster. [3]
-
-  impact: Internal services provided by the cluster unavailable (Tiller, new pod creation, etc) [7,8,9,10,11]
-
-  how it happened: While running tests on the internal Kubernetes clusters, a small number of containers were deployed, overloading the disk IO capacity. [13]
+  root cause: A circuit breaker failure (cause unknown); A firmware defect triggered under high load. [21,22]
   
-  mitigation: Terminated three nodes and waited for new instances to join the cluster. [22]
+  failure: Database cluster was corrupted, failed and could not be restarted [27]
+  
+  impact: Complete outage of service for 16 hours, plus some degraded service time [11]
+  
+  how it happened: Due to a failed circuit breaker, responders manually switched application instance from the primary to the secondary data center. The database in the secondary data center became corrupted due to a storage firmware defect triggered under high load (due to automatic processes associated with establishing the new primary database, and a backlog of traffic associated with the power related downtime) and the corruption was replicated to the secondary. Once the database was corrupted, the database cluster failed and could not be restarted and the latest available backup was from the previous day. [21,22,23,24]
+  
+  mitigation: Restored database from most recent backup and manually replayed missing transactions (from redo log) until the database was needed for next day's peak traffic (leaving approximately 3.5 hours of logs not re-applied). Competing, inessential activities were halted. [14,15,16]

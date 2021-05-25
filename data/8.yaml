@@ -12,7 +12,7 @@ properties:
   
   quote: Fortnite hit a new peak of 3.4 million concurrent players last Sunday... and that didn't come without issues! 
   
-  summary: High traffic caused 6 outages due to exceeding various database,  loadbalancer, memcached limits (Exceeding limits)
+  summary: High traffic caused 6 outages due to exceeding various database, loadbalancer, memcached limits (Exceeding limits)
 
   architecture: (1) A service with a database connection pool that connects to a sidecar process which has its own connection pool for connecting to the shards in the 9 MongoDB shards, where each shard has a writer, two read replicas, and a hidden replica for redundancy. (2) A service with a sidecar process (as a shortcut for some request types) which has an NGINX proxy calling a Memcached instance. (3) A publish-subscribe messaging system based on XMPP. [9,10,28,68]
 
