@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>Our First Kubernetes Outage</title>
+    <title>RCM for NA14 Disruptions of Service - May 2016</title>
     <style>
       
 body {
@@ -42,11 +42,11 @@ p.footer {
   </head>
   <body>
   <h1>
-    Our First Kubernetes Outage
+    RCM for NA14 Disruptions of Service - May 2016
   </h1>
   
 <blockquote>
-  &ldquo;I checked on things two hours later. The issue had not resolved itself. It became larger.&rdquo;
+  &ldquo;Each attempt to restore service resulted in errors or failures that prevented these approaches from continuing.&rdquo;
 </blockquote>
 
 <table>
@@ -56,8 +56,8 @@ p.footer {
     </td>
     <td>
       #7 at 
-      <a href="../organizations.html#Saltside">Saltside</a> on 
-      <a href="../years.html#2017">2017/04/26</a> by Adam Hawkins (SRE Team Lead)
+      <a href="../organizations.html#Salesforce">Salesforce</a> on 
+      <a href="../years.html#2016">2016/05/09</a> 
     </td>
   </tr>
   <tr>
@@ -65,7 +65,7 @@ p.footer {
       Full report
     </td>
     <td>
-      <a href="https://engineering.saltside.se/our-first-kubernetes-outage-c6b9249cfd3a">https://engineering.saltside.se/our-first-kubernetes-outage-c6b9249cfd3a</a>
+      <a href="https://help.salesforce.com/articleView?id=000315819&language=en_US&type=1&mode=1">https://help.salesforce.com/articleView?id=000315819&language=en_US&type=1&mode=1</a>
     </td>
   </tr>
 
@@ -74,7 +74,7 @@ p.footer {
       How it happened
     </td>
     <td>
-      While running tests on the internal Kubernetes clusters, a small number of containers were deployed, overloading the disk IO capacity.
+      Due to a failed circuit breaker, responders manually switched application instance from the primary to the secondary data center. The database in the secondary data center became corrupted due to a storage firmware defect triggered under high load (due to automatic processes associated with establishing the new primary database, and a backlog of traffic associated with the power related downtime) and the corruption was replicated to the secondary. Once the database was corrupted, the database cluster failed and could not be restarted and the latest available backup was from the previous day.
     </td>
   </tr>
   <tr>
@@ -82,7 +82,7 @@ p.footer {
       Architecture
     </td>
     <td>
-      Multiple Kubernetes clusters for different use cases, each with Elastic Block Stores (EBS).
+      Web application with primary and secondary data centers, depending on a database cluster
     </td>
   </tr>
   <tr>
@@ -90,7 +90,7 @@ p.footer {
       Technologies
     </td>
     <td>
-      <a href="../technologies.html#Amazon+Elastic+Compute+Cloud+%28EC2%29">Amazon Elastic Compute Cloud (EC2)</a>, <a href="../technologies.html#Amazon+Elastic+Block+Store+%28EBS%29">Amazon Elastic Block Store (EBS)</a>
+      <a href="../technologies.html#"></a>
     </td>
   </tr>
   <tr>
@@ -98,7 +98,7 @@ p.footer {
       Root cause
     </td>
     <td>
-      All activity on clusters exceeded available disk IO capacity (EBS IOPS).
+      A circuit breaker failure (cause unknown); A firmware defect triggered under high load.
     </td>
   </tr>
   <tr>
@@ -106,7 +106,7 @@ p.footer {
       Failure
     </td>
     <td>
-      A complete shutdown of an internal cluster.
+      Database cluster was corrupted, failed and could not be restarted
     </td>
   </tr>
   <tr>
@@ -114,7 +114,7 @@ p.footer {
       Impact
     </td>
     <td>
-      Internal services provided by the cluster unavailable (Tiller, new pod creation, etc)
+      Complete outage of service for 16 hours, plus some degraded service time
     </td>
   </tr>
   <tr>
@@ -122,7 +122,7 @@ p.footer {
       Mitigation
     </td>
     <td>
-      Terminated three nodes and waited for new instances to join the cluster.
+      Restored database from most recent backup and manually replayed missing transactions (from redo log) until the database was needed for next day's peak traffic (leaving approximately 3.5 hours of logs not re-applied). Competing, inessential activities were halted.
     </td>
   </tr>
 </table>
