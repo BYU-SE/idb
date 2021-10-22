@@ -12,6 +12,8 @@ properties:
   
   quote: Unfortunately, one of the inputs to the command was entered incorrectly and a larger set of servers was removed than intended.
   
+  summary: During maintenance event, too many servers were removed. Dependent services were unavailable.
+  
   architecture: Multiple regional datacenters with multiple subsystems each with multiple servers. [1]
 
   root cause: A command executed by an engineer with incorrect paramters. [1]

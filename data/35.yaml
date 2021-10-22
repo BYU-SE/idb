@@ -12,6 +12,8 @@ properties:
   
   quote: So, if the ZooKeeper server is loaded and causes heartbeat timeouts because of GC pauses, TreeCache will start flooding ZooKeeper with requests, making the situation worse and leading to a chain reaction that prevents the ZooKeeper servers from recovering, and can also kill client services.
   
+  summary: Load increased on cluster manager. Clients lost connection and started resync processes which further increased load and caused out-of-memory errors on clients.
+  
   architecture: A proxy/routing layer that routes requests to cluster nodes manged by a ZooKeeper instance. The proxy/routing layer is a client to the ZooKeeper layer and caintains an in memory mirror (TreeCache) of all ZooKeeper node information. [12,13]
 
   root cause: When there is network instability between the cluster manager hosts and its clients (the proxy layer), the clients send large reqeusts to refresh state, with retries and queuing of requests. [35,36]

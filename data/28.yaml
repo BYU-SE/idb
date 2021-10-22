@@ -12,6 +12,8 @@ properties:
   
   quote: This caused all redis-slaves to reconnect and request full synchronization with the master at the same time. Receiving full sync requests from each redis-slave caused the master to suffer extreme load, resulting in performance degradation of the master and timeouts from redis-slaves to redis-master.
   
+  summary: Network disruption led to database failure and repeated customer charges.
+  
   architecture: An in-memory Redis cluster (storing account balances) with a single master and multiple slaves distributed across data-centers.
   
   root cause: A loss of network connectivity, led to redis-slaves disconnecting and reconnecting to redis-master with a request for full synchronization. Two configuraiton defects delayed recovery.

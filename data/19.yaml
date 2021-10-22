@@ -12,6 +12,8 @@ properties:
   
   quote: Autoscaler read the partially migrated Zookeeper data and terminated many of our application servers, which serve our website and API, and our caching servers, in 16 seconds.
   
+  summary: During maintenance, engineers shutdown cluster manager. Package manager restarted it unexpectedly.
+  
   architecture: Application servers and caching servers managed by an autoscaler (which uses Zookeeper for server health information). [8]
 
   root cause: Autoscaler (unintentionally) running during a Zookeeper upgrade. [9]

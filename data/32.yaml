@@ -12,6 +12,8 @@ properties:
   
   quote: Slightly over 25% of our servers and several network devices rebooted as a result. This left our infrastructure in a partially operational state and generated alerts to multiple on-call engineers.
   
+  summary: Power outage led to multiple servers unable to restart.
+  
   architecture: Datacenter with servers running applications with dependencies on Redis clusters.
 
   root cause: Power disruption to database; a known firmware issue prevented machines from recognizing their own drives after power-cycle; and some application processes (unnecessarily) depend on Redis for starting up.
