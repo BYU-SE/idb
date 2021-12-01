@@ -12,6 +12,8 @@ properties:
   
   quote: These missed state updates were very hard for us to discover because our routing fleet only maintains a connection to the affected class of instance for 30 minutes. After this time the connection is terminated and cycled to another server.
   
+  summary: A mainteance operation that silently failed (due to a newly added timeout) led to routing errors for newly started or stopped application containers 
+  
   architecture: A fleet for creating hosted application containers (called Dynos) and a separate fleet that routes traffic to those containers.
 
   root cause: A recently added timeout for manual system administration activities that unexpectedly affected automated activities leading to potentially silent failures during updates. Specifically, a remote procedure to update instances of the fleet (the fleet that creates containers) configurations timed out leaving one instance with an incorrect configuration.

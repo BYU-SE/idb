@@ -12,6 +12,8 @@ properties:
   
   quote: Slightly over 25% of our servers and several network devices rebooted as a result. This left our infrastructure in a partially operational state and generated alerts to multiple on-call engineers.
   
+  summary: A power distruption caused servers from multiple services to reboot into an error state (due to residual static electricity in hard drives and application level dependencies)
+  
   architecture: Datacenter with servers running applications with dependencies on Redis clusters.
 
   root cause: Power disruption to database; a known firmware issue prevented machines from recognizing their own drives after power-cycle; and some application processes (unnecessarily) depend on Redis for starting up.

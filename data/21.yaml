@@ -9,7 +9,7 @@ properties:
   author: The Joyent Team
   url: https://www.joyent.com/blog/manta-postmortem-7-27-2015
   technologies: PostgreSQL
-  
+    
   quote: There was a single 'DROP TRIGGER' query that was attempting to take an exclusive lock on the whole table. It appears that PostgreSQL blocks new attempts to take a shared lock while an exclusive lock is wanted. 
 
   architecture: An API layer that calls multiple sharded PostgreSQL databases. Each shard is a three-node PostgreSQL cluster using synchronous replication. [8,9,10]

@@ -12,6 +12,8 @@ properties:
   
   quote: To avoid running out of space, we have an automated cleanup service in place to delete images that have been removed from our internal image catalog service. You may already see where this is going.
   
+  summary: Accidental (and permanent) deletion of virtual machine images broke build jobs
+  
   architecture: Continuous integration tool running build jobs on Linux virtual machines in Google Compute Engine. [10]
 
   root cause: Virtual machine image cleanup script that queried a database for a list of valid images (so it knew what not to delete) had a limit of 100 on the query. [14]
