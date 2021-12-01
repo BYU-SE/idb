@@ -23,7 +23,7 @@ def blocks(md_filename):
   #
   # Parse the Markdown file passed as an argument and return a list of entities.Block objects
   
-  with open(md_filename) as file:
+  with open(md_filename, encoding='utf8') as file:
     blocks = []
     header = None
     

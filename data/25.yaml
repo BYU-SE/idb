@@ -11,6 +11,8 @@ properties:
   technologies: Elastic Load Balancing (ELB)
   
   quote: This process was run by one of a very small number of developers who have access to this production environment. Unfortunately, the developer did not realize the mistake at the time.
+
+  summary: Missing control data led to errors in customer data and degraded performance.
   
   architecture: Load balancer service, with a control plane that manages the configuration of the load balancers (for one region) and is controlled via an API.
   

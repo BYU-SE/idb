@@ -12,6 +12,8 @@ properties:
   
   quote: "At this point, we were in extended failure mode: the original cause of the outage was no longer the fire to be fought. We were suffering a cascading effect, and that was now where we needed to put our focus."
   
+  summary: Pause in web hooks led to backlog and site degradation.
+  
   architecture: An event queue (receiving external events, from GitHub); and service reading from that queue and querying a database (with events being re-queued if the query failed).
 
   root cause: A surge of events exceeded the database's capacity.

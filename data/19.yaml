@@ -12,7 +12,7 @@ properties:
   
   quote: Autoscaler read the partially migrated Zookeeper data and terminated many of our application servers, which serve our website and API, and our caching servers, in 16 seconds.
   
-  summary: Autoscaler, unintentionally running during upgrade, terminated healthy servers led to outage
+  summary: Autoscaler, unintentionally running during upgrade, terminated healthy servers leading to outage
   
   architecture: Application servers and caching servers managed by an autoscaler (which uses Zookeeper for server health information). [8]
 

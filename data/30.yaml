@@ -12,7 +12,7 @@ properties:
   
   quote: These missed state updates were very hard for us to discover because our routing fleet only maintains a connection to the affected class of instance for 30 minutes. After this time the connection is terminated and cycled to another server.
   
-  summary: A mainteance operation that silently failed (due to a newly added timeout) led to routing errors for newly started or stopped application containers 
+  summary: A mainteance operation that silently failed led to routing errors for newly started or stopped application containers 
   
   architecture: A fleet for creating hosted application containers (called Dynos) and a separate fleet that routes traffic to those containers.
 

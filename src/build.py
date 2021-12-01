@@ -53,7 +53,7 @@ incidents = db.incidents()
 #
 # Create an index.html file listing all incidents
 
-with open(html_dir + '/index.html', 'w') as file:
+with open(html_dir + '/index.html', 'w', encoding='utf8') as file:
   file.write(html.index(incidents))
 
 #
