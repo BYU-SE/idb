@@ -2,8 +2,8 @@ properties:
 
   id: 19
   title: Why Reddit was down on Aug 11
-  organization: Redit
-  product: Redit
+  organization: Reddit
+  product: Reddit
   start_ts: 2017/08/11 15:24
   end_ts: 2017/08/11 18:19
   author: u/gooeyblob (Infrastructure leader)
