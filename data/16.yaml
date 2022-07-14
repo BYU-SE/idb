@@ -1,7 +1,7 @@
 properties:
 
   id: 16
-  title: Google cloud Fails during maitainance
+  title: Google cloud Fails during maintenance
   organization: Google
   product: Google Cloud Platform
   start_ts: 2019/06/02 11:45
