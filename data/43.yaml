@@ -1,0 +1,28 @@
+properties:
+
+  id: 43
+  title: Slack’s Incident on 2-22-22
+  organization: Slack
+  product: Slack
+  start_ts: 2022/02/22 06:00
+  end_ts: 2022/02/22
+  author: Laura Nolan, Glen D. Sanford, Jamie Scheinblum, Chris Sullivan
+  author role: Senior Staff Engineer
+  url: https://slack.engineering/slacks-incident-on-2-22-22/
+  technologies: MySQL, Vitess clustering system, Memcached, Mcrouter
+  
+  quote: What was not obvious early on was why we were seeing so much database load on this keyspace and how we might get to a normal serving state.
+  
+  summary: A restart of 25% of the distributed cache hosts reduced the cache hit rate causing resource exhaustion in the database tier and cascading failures (Infrastructure change)
+
+  architecture: Messaging client connecting with backend; MySQL+Vitess database cluster; Memcached caching fleet managed with Mcrouter.
+  
+  root cause: Reduced cache fleet (and therefore high miss rate) + expensive query
+  
+  failure: Resource exhaustion in database tier.
+  
+  impact: Many slow and failed requests to API layer; newly started messaging clients could not boot.
+  
+  how it happened: A deliberate restart of 25% of the cache fleet to upgrade monitoring software on the hosts.
+  
+  mitigation: Responders throttled client boot operations (at API) so requests from already booted clients could succeed; modified query to be more efficient; gradually increased the limit for boot operations, allowing caches to fill.
