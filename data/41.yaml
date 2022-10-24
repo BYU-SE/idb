@@ -14,7 +14,7 @@ properties:
   
   architecture: A streaming service (Kinesis) with front-end servers for routing requests and back-end server clusters for processing streams. Routing is based on a sharding strategy, with the shard-map cached by front-end servers. Communication between front-end servers uses one operating system thread per other server. [3,4]
 
-  root cause: New capacity caused all front-end servers to execced maxiumn number of allowed operating system threads. 6
+  root cause: New capacity caused all front-end servers to exceed maximum number of allowed operating system threads. 6
 
   failure: Cache construction failed on front-end servers (leading to an out of date shard-map) and routing failed. 6
 
