@@ -1,0 +1,131 @@
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Slack’s Incident on 2-22-22</title>
+    <style>
+      
+body {
+  font-family: Helvetica, sans-serif;
+}
+a, a:visited {
+  color:#03e;
+}
+table {
+  border-collapse: collapse;
+}
+td {
+  border: 1px solid #ddd;
+  vertical-align:top;
+  text-align:left;
+  padding:10px;
+  line-height:150%;
+}
+blockquote {
+  font-size:125%;
+  padding:0px 20px;
+  margin:20px 0px;
+  border-left:1px solid #ddd;
+}
+tr.category td {
+  font-weight:bold;
+  background-color:#ffd;
+}
+tr.head {
+  font-weight:bold;
+}
+p.footer {
+  font-size:75%;
+}
+
+    </style>
+  </head>
+  <body>
+  <h1>
+    Slack’s Incident on 2-22-22
+  </h1>
+  
+<blockquote>
+  &ldquo;What was not obvious early on was why we were seeing so much database load on this keyspace and how we might get to a normal serving state.&rdquo;
+</blockquote>
+
+<table>
+  <tr>
+    <td>
+      Incident
+    </td>
+    <td>
+      #43 at 
+      <a href="../organizations.html#Slack">Slack</a> on 
+      <a href="../years.html#2022">2022/02/22</a> by Laura Nolan, Glen D. Sanford, Jamie Scheinblum, Chris Sullivan
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Full report
+    </td>
+    <td>
+      <a href="https://slack.engineering/slacks-incident-on-2-22-22/">https://slack.engineering/slacks-incident-on-2-22-22/</a>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      How it happened
+    </td>
+    <td>
+      A deliberate restart of 25% of the cache fleet to upgrade monitoring software on the hosts.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Architecture
+    </td>
+    <td>
+      Messaging client connecting with backend; MySQL+Vitess database cluster; Memcached caching fleet managed with Mcrouter.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Technologies
+    </td>
+    <td>
+      <a href="../technologies.html#MySQL">MySQL</a>, <a href="../technologies.html#Vitess+clustering+system">Vitess clustering system</a>, <a href="../technologies.html#Memcached">Memcached</a>, <a href="../technologies.html#Mcrouter">Mcrouter</a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Root cause
+    </td>
+    <td>
+      Reduced cache fleet (and therefore high miss rate) + expensive query
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Failure
+    </td>
+    <td>
+      Resource exhaustion in database tier.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Impact
+    </td>
+    <td>
+      Many slow and failed requests to API layer; newly started messaging clients could not boot.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Mitigation
+    </td>
+    <td>
+      Responders throttled client boot operations (at API) so requests from already booted clients could succeed; modified query to be more efficient; gradually increased the limit for boot operations, allowing caches to fill.
+    </td>
+  </tr>
+</table>
+
+  </body>
+</html>
